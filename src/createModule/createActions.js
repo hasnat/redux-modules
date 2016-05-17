@@ -1,4 +1,4 @@
-import { createAction } from 'redux-actions';
+import createAction from './createAction';
 import { reduce } from 'ramda';
 import camelize from 'camel-case';
 import payloadPropchecker from './payloadPropchecker';
@@ -14,13 +14,14 @@ const _generateActions = (generatedActions, transformation) => {
   const {
     action,
     payloadTypes = {},
+    middleware,
     formattedConstant: actionName,
   } = transformation;
   const camelizedActionName = camelize(action);
 
   generatedActions[camelizedActionName] = createAction(
     actionName,
-    payloadPropchecker({actionName, payloadTypes, onError})
+    middleware
   );
 
   return generatedActions;
