@@ -1,5 +1,4 @@
-const defaultMiddleware = action => action;
-const createAction = (actionName, middleware = [ defaultMiddleware ]) =>
+const createAction = (actionName, middleware) =>
   (payload, meta) => {
     return {
       type: actionName,
