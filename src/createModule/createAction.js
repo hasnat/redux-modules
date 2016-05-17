@@ -1,4 +1,4 @@
-const createAction = (actionName, middleware) =>
+const createAction = (actionName, middleware = []) =>
   (payload, meta) => {
     return {
       type: actionName,
