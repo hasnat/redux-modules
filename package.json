@@ -22,7 +22,7 @@
   "dependencies": {
     "camel-case": "^1.2.2",
     "immutable": "^3.7.6",
-    "ramda": "^0.19.1",
+    "ramda": "^0.19.1"
   },
   "peerDependencies": {
     "react-redux": "^4.4.1",
