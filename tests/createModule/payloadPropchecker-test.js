@@ -12,6 +12,9 @@ const mockTransforms = [
     payloadTypes: {
       name: PropTypes.string.isRequired,
     },
+    metaTypes: {
+      id: PropTypes.number.isRequired,
+    },
   },
   {
     action: 'MOCK_TWO',
@@ -19,26 +22,30 @@ const mockTransforms = [
     payloadTypes: {
       name: PropTypes.string.isRequired,
     },
+    metaTypes: {
+      id: PropTypes.number.isRequired,
+    },
   },
 ];
 
-const mockPayload = {
+const payload = {
   label: 'Joe',
 };
 
 describe('payloadPropchecker', () => {
   let warning = false;
 
-  const propCheckedPayloadCreator = payloadPropchecker({
-    actionName: mockTransforms[0].formattedConstant,
-    payloadTypes: mockTransforms[0].payloadTypes,
-    onError: err => {
-      console.error(err);
-      warning = err;
-    }
+  const propCheckedPayloadCreator = payloadPropchecker(err => {
+    console.error(err);
+    warning = err;
   });
 
-  propCheckedPayloadCreator(mockPayload);
+  const transformation = {
+    actionName: mockTransforms[0].formattedConstant,
+    payloadTypes: mockTransforms[0].payloadTypes,
+  };
+
+  propCheckedPayloadCreator(transformation, { payload });
 
   it('should return a function that takes a payload', () => {
     propCheckedPayloadCreator.length.should.equal(1);

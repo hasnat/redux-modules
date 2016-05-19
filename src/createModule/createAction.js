@@ -1,8 +1,8 @@
-const createAction = (actionName, middleware = []) =>
+const createAction = (transform, middleware = []) =>
   (payload, meta) => {
     return {
-      type: actionName,
-      ... middleware.reduce((acc, func) => func(acc), {payload, meta}),
+      type: transform.formattedConstant,
+      ... middleware.reduce((acc, func) => func(transform, acc), { payload, meta }),
     };
   }
 

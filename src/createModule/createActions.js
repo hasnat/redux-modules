@@ -3,7 +3,7 @@ import { reduce } from 'ramda';
 import camelize from 'camel-case';
 import payloadPropchecker from './payloadPropchecker';
 
-const parsePayloadErrors = ({payload, meta}) => {
+const parsePayloadErrors = (transformation, { payload, meta }) => {
   return {
     payload,
     meta,
@@ -11,29 +11,23 @@ const parsePayloadErrors = ({payload, meta}) => {
   };
 };
 
-const onError = err => {
-  console.error(
-    'Warning: Failed payloadType:',
-    err
-  );
-};
-
 const _generateActions = (generatedActions, transformation) => {
   const {
     action,
     payloadTypes = {},
+    metaTypes = {},
     middleware = [],
     formattedConstant: actionName,
   } = transformation;
 
   const camelizedActionName = camelize(action);
   const defaultMiddlewares = [
-    payloadPropchecker({actionName, payloadTypes, onError}),
+    payloadPropchecker(),
     parsePayloadErrors,
   ];
 
   generatedActions[camelizedActionName] = createAction(
-    actionName,
+    transformation,
     middleware.concat(defaultMiddlewares)
   );
 
