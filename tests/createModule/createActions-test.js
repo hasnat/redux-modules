@@ -26,7 +26,6 @@ describe('createActions', () => {
   describe('generated action', () => {
     const actionToTest = generatedActions[firstKey];
     const result = actionToTest({foo: 'bar'});
-    console.log('generated result', result);
 
     it('should contain a type key whose value is a well formatted action constant', () => {
       result.type.should.equal('mock/MOCK_ONE');
