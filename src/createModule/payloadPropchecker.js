@@ -9,19 +9,19 @@ const defaultOnError = err => {
 };
 
 export const propCheckedPayloadCreator = (onError = defaultOnError) =>
-  ({payloadTypes, formattedConstant: actionName}, {payload, meta}) => {
+  (transform, {payload, meta}) => {
     const _propCheck = (payloadTypes, payload) => type => {
       const propChecker = payloadTypes[type] || defaultPropCheck;
-      const typeError = propChecker(payload, type, actionName, 'prop') || {};
+      const typeError = propChecker(payload, type, transform.formattedConstant, 'prop') || {};
       const { message } = typeError;
 
       message && onError(message);
     }
 
     compose(
-      forEach(_propCheck(payloadTypes, payload)),
+      forEach(_propCheck(transform.payloadTypes, payload)),
       keys
-    )(payloadTypes);
+    )(transform.payloadTypes);
 
     if (meta) {
       compose (

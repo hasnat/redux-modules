@@ -36,19 +36,19 @@ describe('payloadPropchecker', () => {
   let warning = false;
 
   const propCheckedPayloadCreator = payloadPropchecker(err => {
-    console.error(err);
+    console.error('PROP CHECKER', err);
     warning = err;
   });
 
   const transformation = {
-    actionName: mockTransforms[0].formattedConstant,
+    formattedConstant: mockTransforms[0].formattedConstant,
     payloadTypes: mockTransforms[0].payloadTypes,
   };
 
   propCheckedPayloadCreator(transformation, { payload });
 
-  it('should return a function that takes a payload', () => {
-    propCheckedPayloadCreator.length.should.equal(1);
+  it('should return a function that takes a transformation and a payload', () => {
+    propCheckedPayloadCreator.length.should.equal(2);
   });
 
   it('should throw an error when the payload doesnt match stated type', () => {
