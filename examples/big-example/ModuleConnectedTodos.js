@@ -9,8 +9,10 @@ const mapState = state => {
   }
 };
 
-export default connectModule(
+const Connected = connectModule(
   mapState,
-  [todoModule, counterModule],
+  todoModule,
   TodoList
 );
+
+export default Connected;
