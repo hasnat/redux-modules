@@ -26,11 +26,20 @@ describe('connectModules', () => {
     expect(connectModule.length).to.equal(3);
   });
 
-  describe('usage with one module', () => {
-    it('still needs to be tested');
+  describe('function result', () => {
+    it('should return a connected component');
+
+    it('should work with a single module');
+
+    it('should work with multiple modules');
+
   });
 
-  describe('usage with n modules', () => {
-    it('still needs to be tested');
+  describe('generated props', () => {
+    it('combine selector, dispatch, and passed props correctly');
+
+    it('should namespace actions under module name');
+
+    it('should deeply merge selector and dispatch keys');
   });
 });
