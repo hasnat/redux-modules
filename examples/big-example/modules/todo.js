@@ -2,6 +2,8 @@ import { createModule } from '../../../src/index';
 import { PropTypes } from 'react';
 import { fromJS, List } from 'immutable';
 
+const { shape, number, string, bool } = PropTypes;
+
 export default createModule({
   name: 'todos',
   initialState: List(),
@@ -9,8 +11,8 @@ export default createModule({
     {
       action: 'CREATE',
       payloadTypes: {
-        todo: PropTypes.shape({
-          description: PropTypes.string.isRequired,
+        todo: shape({
+          description: string.isRequired,
         }),
       },
       reducer: (state, {payload: { todo }}) => {
@@ -20,7 +22,7 @@ export default createModule({
     {
       action: 'DESTROY',
       payloadTypes: {
-        index: PropTypes.number.isRequired,
+        index: number.isRequired,
       },
       reducer: (state, {payload: { index }}) => {
         return state.delete(index);
@@ -29,10 +31,10 @@ export default createModule({
     {
       action: 'UPDATE',
       payloadTypes: {
-        index: PropTypes.number.isRequired,
-        todo: PropTypes.shape({
-          description: PropTypes.string,
-          checked: PropTypes.bool,
+        index: number.isRequired,
+        todo: shape({
+          description: string,
+          checked: bool,
         }),
       },
       reducer: (state, {payload: { index, todo: updates }}) => {
