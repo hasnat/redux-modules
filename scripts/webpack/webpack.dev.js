@@ -10,7 +10,7 @@ const devConfig = baseConfig.mergeDeep({
     example: [
       `webpack-dev-server/client?http://${HOST}:${PORT}`,
       'webpack/hot/dev-server',
-      './TodoMVC/app',
+      './big-example/app',
     ],
   },
 
@@ -46,7 +46,7 @@ const devConfig = baseConfig.mergeDeep({
 
   debug: true,
 
-  devtool: 'eval-source-map',
+  devtool: '#eval-source-map',
 });
 
 export default devConfig;

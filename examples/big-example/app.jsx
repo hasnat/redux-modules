@@ -2,17 +2,18 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import ConnectedTodos from './ConnectedTodos';
-import ModuleConnectedTodos from './ModuleConnectedTodos';
+import Connected from './handlers/ModuleConnectedTodos';
+import MultipleConnected from './handlers/MultipleConnected';
+
 import store from './store';
 
-class TodoApp extends React.Component {
+class ExampleApp extends React.Component {
   render() {
     return (
       <Provider store={store}>
         <div>
-          <ConnectedTodos title="Todos w/ connect" />
-          <ModuleConnectedTodos title="Todos w/ connectModule" />
+          <Connected title="Todos w/ connectModule" />
+          <MultipleConnected />
         </div>
       </Provider>
     );
@@ -21,5 +22,5 @@ class TodoApp extends React.Component {
 
 document.addEventListener('DOMContentLoaded', () => {
   const node = document.querySelector('#todos');
-  render(<TodoApp/>, node);
+  render(<ExampleApp/>, node);
 });
