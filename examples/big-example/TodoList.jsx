@@ -29,12 +29,12 @@ const TodoItem = (actions, {id, title, description, checked}, i) =>
 
 export default class TodoList extends React.Component {
   static propTypes = {
-    todos: React.PropTypes.array.isRequired,
+    todos: React.PropTypes.object.isRequired,
   };
 
   render() {
     const { title, todos: todoProps } = this.props;
-    const { todos = [], actions } = todoProps ;
+    const { collection = [], actions } = todoProps ;
 
     return (
       <div>
@@ -58,7 +58,7 @@ export default class TodoList extends React.Component {
         </div>
 
         <ul>
-          {todos.map(TodoItem.bind(null, actions))}
+          {collection.map(TodoItem.bind(null, actions))}
         </ul>
       </div>
     );

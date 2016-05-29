@@ -8,6 +8,7 @@ import combineNamespacedProps from './combineNamespacedProps';
 const nestedBindDispatch = modules => dispatch =>
   modules.reduce((bna, module) => {
     bna[module.name] = { actions: bindActionCreators(module.actions, dispatch) };
+    return bna;
   }, {});
 
 

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import todoModule from './module';
+import todoModule from './todoModule';
 import TodoList from './TodoList';
 
 const { actions } = todoModule;
 
 const mapState = state => {
   return {
-    todos: [... state.toJS()],
+    todos: [... state.todos.toJS()],
   }
 };
 
