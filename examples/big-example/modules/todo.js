@@ -1,14 +1,5 @@
-/*
-  state = [
-    {
-      description,
-      index
-    }
-  ]
- */
-
 import { createModule } from '../../../src/index';
-import {PropTypes} from 'react';
+import { PropTypes } from 'react';
 import { fromJS, List } from 'immutable';
 
 export default createModule({
