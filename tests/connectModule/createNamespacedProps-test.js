@@ -1,23 +1,23 @@
 import { expect, should } from 'chai';
-import combineNamespacedProps from '../../src/connectModule/combineNamespacedProps';
+import createNamespacedProps from '../../src/connectModule/createNamespacedProps';
 
 should();
 
-describe('combineNamespacedProps', () => {
+describe('createNamespacedProps', () => {
   it('returns a combineProps function when invoked with no parameters', () => {
-    const combineProps = combineNamespacedProps();
+    const combineProps = createNamespacedProps();
     expect(typeof combineProps).to.equal('function');
     expect(combineProps.length).to.equal(3);
   });
 
   it('returns a combineProps function when invoked with namespace', () => {
-    const combineProps = combineNamespacedProps('test');
+    const combineProps = createNamespacedProps('test');
     expect(typeof combineProps).to.equal('function');
     expect(combineProps.length).to.equal(3);
   });
 
   describe('generated combineProps function without namespace', () => {
-    const combineProps = combineNamespacedProps();
+    const combineProps = createNamespacedProps();
     const stateProps = { foo: 'bar' };
     const dispatchProps = { bar: () => 'foo' };
     const props = { baz: 'bam' };
@@ -39,7 +39,7 @@ describe('combineNamespacedProps', () => {
 
   describe('generated combineProps function with namespace', () => {
     const namespace = 'test';
-    const combineProps = combineNamespacedProps(namespace);
+    const combineProps = createNamespacedProps(namespace);
     const stateProps = { foo: 'bar' };
     const dispatchProps = { bar: () => 'foo' };
     const props = { baz: 'bam' };

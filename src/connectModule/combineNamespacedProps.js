@@ -1,13 +1,7 @@
-const combineNamespacedProps =
-  (ns = '') => (mapStateProps, mapDispatchProps, props) => {
-    const generatedProps = {
-      ... mapStateProps,
-      actions: { ... mapDispatchProps },
-    };
+import deepAssign from 'deep-assign';
 
-    return ns
-      ? { [ns]: { ... generatedProps }, ... props }
-      : { ... generatedProps, ... props };
-  };
+const createNamespacedProps =
+  (mapStateProps, mapDispatchProps, props) =>
+    deepAssign({}, mapStateProps, mapDispatchProps, props);
 
-export default combineNamespacedProps;
+export default createNamespacedProps;

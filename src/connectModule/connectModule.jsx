@@ -11,7 +11,7 @@ function connectModule({namespace = '', actions, selector}, Component) {
   return connect(
     selector,
     curriedBind(actions),
-    combineNamespacedProps(namespace)
+    createNamespacedProps(namespace)
   )(Component);
 }
 
