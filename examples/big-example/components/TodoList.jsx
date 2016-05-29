@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import { List } from 'immutable';
 
+const { array, func, number, shape } = PropTypes;
 // TodoList View
 const TodoItem = (actions, {id, title, description, checked}, i) =>
   <li>
@@ -29,7 +30,14 @@ const TodoItem = (actions, {id, title, description, checked}, i) =>
 
 export default class TodoList extends React.Component {
   static propTypes = {
-    todos: React.PropTypes.object.isRequired,
+    todos: shape({
+      collection: array,
+      actions: shape({
+        create: func,
+        destroy: func,
+        update: func,
+      }),
+    }),
   };
 
   render() {
