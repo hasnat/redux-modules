@@ -11,6 +11,6 @@ const mapState = state => {
 
 export default connectModule(
   mapState,
-  [ todoModule, counterModule ],
+  [todoModule, counterModule],
   TodoList
 );
