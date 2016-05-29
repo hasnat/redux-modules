@@ -33,14 +33,15 @@ class MultipleConnected extends React.Component {
   };
 
   render() {
+    const { todos, counter } = this.props;
     return (
       <div>
-        <TodoList todos={this.props.todos} />
-        <button onClick={this.props.counter.actions.increment}>
+        <TodoList todos={todos} />
+        <button onClick={counter.actions.increment}>
           +
         </button>
-        <h2>Count: {this.props.counter.count}</h2>
-        <button onClick={this.props.counter.actions.decrement}>
+        <h2>Count: {counter.count}</h2>
+        <button onClick={counter.actions.decrement}>
           -
         </button>
       </div>
