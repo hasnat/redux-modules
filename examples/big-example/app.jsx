@@ -7,7 +7,7 @@ import MultipleConnected from './handlers/MultipleConnected';
 
 import store from './store';
 
-class TodoApp extends React.Component {
+class ExampleApp extends React.Component {
   render() {
     return (
       <Provider store={store}>
@@ -22,5 +22,5 @@ class TodoApp extends React.Component {
 
 document.addEventListener('DOMContentLoaded', () => {
   const node = document.querySelector('#todos');
-  render(<TodoApp/>, node);
+  render(<ExampleApp/>, node);
 });
