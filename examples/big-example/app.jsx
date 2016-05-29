@@ -2,9 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import ConnectedTodos from './ConnectedTodos';
-import Connected from './ModuleConnectedTodos';
-import MultipleConnected from './MultipleConnected';
+import Connected from './handlers/ModuleConnectedTodos';
+import MultipleConnected from './handlers/MultipleConnected';
 
 import store from './store';
 

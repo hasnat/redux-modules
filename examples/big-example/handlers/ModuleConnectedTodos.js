@@ -1,7 +1,7 @@
-import todoModule from './todoModule';
-import counterModule from './counterModule';
-import { connectModule } from '../../src/index';
-import TodoList from './TodoList';
+import todoModule from '../modules/todo';
+import counterModule from '../modules/counter';
+import { connectModule } from '../../../src/index';
+import TodoList from '../components/TodoList';
 
 const mapState = state => {
   return {

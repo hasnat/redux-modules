@@ -7,7 +7,7 @@
   ]
  */
 
-import { createModule } from '../../src/index';
+import { createModule } from '../../../src/index';
 import {PropTypes} from 'react';
 import { fromJS, List } from 'immutable';
 

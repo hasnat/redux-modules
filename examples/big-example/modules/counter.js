@@ -1,4 +1,4 @@
-import { createModule } from '../../src/index';
+import { createModule } from '../../../src/index';
 
 export default createModule({
   name: 'counter',
