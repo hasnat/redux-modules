@@ -1,5 +1,4 @@
 import todoModule from '../modules/todo';
-import counterModule from '../modules/counter';
 import { connectModule } from '../../../src/index';
 import TodoList from '../components/TodoList';
 
