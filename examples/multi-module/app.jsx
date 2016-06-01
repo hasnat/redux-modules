@@ -11,6 +11,7 @@ export default class ExampleApp extends React.Component {
     return (
       <Provider store={store}>
         <div>
+          <h1>Multi Module Example</h1>
           <MultipleConnected />
         </div>
       </Provider>

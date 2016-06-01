@@ -11,7 +11,7 @@ export default class ExampleApp extends React.Component {
     return (
       <Provider store={store}>
         <div>
-          <Connected title="Todos w/ connectModule" />
+          <Connected title="Single Module Example" />
         </div>
       </Provider>
     );
