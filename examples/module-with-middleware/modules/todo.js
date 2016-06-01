@@ -17,9 +17,11 @@ export default createModule({
         }),
       },
       middleware: [
-        ({ payload, meta }) => {
+        (_, {payload: { todo }, meta}) => {
+          const id = v4();
+          console.log('Middleware adding ID', id);
           return {
-            payload: { ... payload, id: v4() },
+            payload: { todo: { ... todo, id } },
             meta
           };
         },

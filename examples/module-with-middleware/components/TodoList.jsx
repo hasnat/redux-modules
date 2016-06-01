@@ -4,13 +4,13 @@ import { List } from 'immutable';
 
 const { array, func, number, shape } = PropTypes;
 // TodoList View
-const TodoItem = (actions, {id, title, description, checked}, i) =>
+const TodoItem = ({id, title, description, checked, actions}) =>
   <li>
     <div className="checkbox">
       <input
         onChange={e =>
           actions.update({
-            index: i,
+            index,
             todo: {checked: e.target.checked},
           })
         }
@@ -19,10 +19,10 @@ const TodoItem = (actions, {id, title, description, checked}, i) =>
       />
     </div>
     <p>
-      {description}
+      {`${id}-${description}`}
     </p>
     <aside>
-      <button onClick={() => actions.destroy({index: i})}>
+      <button onClick={() => actions.destroy({index})}>
         Delete Todo
       </button>
     </aside>
@@ -66,7 +66,13 @@ export default class TodoList extends React.Component {
         </div>
 
         <ul>
-          {collection.map(TodoItem.bind(null, actions))}
+          {collection.map((item, i) =>
+            <TodoItem { ... item}
+              key={i}
+              index={i}
+              actions={actions}
+            />
+          )}
         </ul>
       </div>
     );

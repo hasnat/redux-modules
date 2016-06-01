@@ -6,7 +6,6 @@ import todoModule from './modules/todo';
 
 const reducer = combineReducers({
   todos: todoModule.reducer,
-  counter: counterModule.reducer,
 });
 
 let logger = createLogger({
