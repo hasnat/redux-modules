@@ -4,10 +4,8 @@ import { path as rootPath } from 'app-root-path';
 
 export default fromJS({
 
-  context: `${rootPath}/examples`,
-
   entry: {
-    example: './TodoMVC/app',
+    examples: './examples/index',
   },
 
   module: {
