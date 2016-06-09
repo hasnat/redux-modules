@@ -1,14 +1,17 @@
 import { curry, compose, reduce } from 'ramda';
+import { combineReducers } from 'redux';
 
-let registeredModules = {};
+const registeredModules = {};
 
 const updateRegisteredModules = reducerHash => {
-  registeredModules = reducerHash;
+  console.info('New modules', reducerHash)
+  Object.assign(registeredModules, reducerHash);
+  return reducerHash;
 }
 
 const _moduleIsRegistered = name => {
   const registeredModuleNames = Object.keys(registeredModules);
-  return registeredModuleNames.indexOf(name) === -1;
+  return registeredModuleNames.indexOf(name) !== -1;
 }
 
 const _reducerShouldBeReplaced = modules =>
@@ -25,13 +28,15 @@ const collectReducers = (reducer, module) => {
   return reducer;
 };
 
-export default function recalculateReducers(module, store) {
+export default function recalculateReducers(modules, store) {
   if (!_reducerShouldBeReplaced(modules)) { return; }
+  console.info('Replacing reducers');
 
-  return compose(
-    store.replaceReducer,
+  const reducer = compose(
     combineReducers,
     updateRegisteredModules,
-    reduce(collectReducers, registeredModules)
+    reduce(collectReducers, {})
   )(modules)
+
+  store.replaceReducer(reducer);
 }

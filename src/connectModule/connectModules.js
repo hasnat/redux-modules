@@ -1,5 +1,5 @@
 import React from 'react';
-import { bindActionCreators, combineReducers } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { curry, compose, reduce } from 'ramda';
 
