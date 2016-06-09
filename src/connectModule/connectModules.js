@@ -4,26 +4,13 @@ import { connect } from 'react-redux';
 import { curry, compose, reduce } from 'ramda';
 
 import combineNamespacedProps from './combineNamespacedProps';
+import recalculateReducers from './recalculateReducers';
 
 const _nestedBindDispatch = modules => dispatch =>
   modules.reduce((bna, module) => {
     bna[module.name] = { actions: bindActionCreators(module.actions, dispatch) };
     return bna;
   }, {});
-
-const _collectReducers = (reducer, module) => {
-  reducer[module.name] = module.reducer;
-  return reducer;
-};
-
-const _registerReducers = (modules, store) => {
-  const reducer = compose(
-    combineReducers,
-    reduce(_collectReducers, {})
-  )(modules)
-
-  store.replaceReducer(reducer);
-};
 
 function connectModules({selector, modules}, Component) {
   const nestedBoundActions = _nestedBindDispatch(modules);
@@ -35,9 +22,7 @@ function connectModules({selector, modules}, Component) {
 
     constructor(props, context) {
       super(props, context);
-      if (context.store || props.store) {
-        _registerReducers(modules, context.store);
-      }
+      recalculateReducers(modules, context.store);
     }
 
     render() {
