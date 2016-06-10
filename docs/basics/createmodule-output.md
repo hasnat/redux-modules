@@ -22,4 +22,17 @@ const { actions, reducer, constants } = createModule({
 generates the following:
 
 ```js
+const constants = {
+  increment: 'counter/INCREMENT',
+  decrement: 'counter/DECREMENT',
+};
+
+const actions = {
+  increment: createAction(constants.increment),
+  decrement: createAction(constants.decrement),
+};
+
+const reducer = handleActions({
+  
+});
 ```
