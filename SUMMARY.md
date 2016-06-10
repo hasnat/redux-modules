@@ -1,6 +1,6 @@
 # Summary
 
 * Introduction
-* [Documentation](docs/apis/createModule.md)
+* [Basics](docs/apis/createModule.md)
    * createModule
 
