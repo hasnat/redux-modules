@@ -1,5 +1,5 @@
 # Summary
 
 * [Introduction](docs/README.md)
-* Basics
+* [Basics](docs/basics/README.md)
 
