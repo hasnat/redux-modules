@@ -33,6 +33,7 @@ const actions = {
 };
 
 const reducer = handleActions({
-  
+  [constants.increment]: state => state + 1,
+  [constants.decrement]: state => state - 1,
 });
 ```
