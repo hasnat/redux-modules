@@ -2,4 +2,5 @@
 
 * Introduction
 * Documentation
+   * createModule
 
