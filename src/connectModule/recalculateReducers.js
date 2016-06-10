@@ -4,7 +4,6 @@ import { combineReducers } from 'redux';
 const registeredModules = {};
 
 const updateRegisteredModules = reducerHash => {
-  console.info('New modules', reducerHash)
   Object.assign(registeredModules, reducerHash);
   return reducerHash;
 }
@@ -35,7 +34,7 @@ export default function recalculateReducers(modules, store) {
   const reducer = compose(
     combineReducers,
     updateRegisteredModules,
-    reduce(collectReducers, {})
+    reduce(collectReducers, registeredModules)
   )(modules)
 
   store.replaceReducer(reducer);
