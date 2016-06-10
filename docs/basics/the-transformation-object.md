@@ -1,6 +1,6 @@
 # The Transformation Object
 
-The `transformation` object serves as the definition of a state transformation. It is comprised of `action`, `middleware`, `payloadTypes`, and `reducer` keys.
+The `transformation` object serves as the definition of a state transformation. The object contains `action`, `middleware`, `payloadTypes`, and `reducer` keys.
 
 ```js
 {
@@ -13,3 +13,4 @@ The `transformation` object serves as the definition of a state transformation. 
 }
 ```
 
+This 
