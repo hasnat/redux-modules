@@ -13,4 +13,4 @@ The `transformation` object serves as the definition of a state transformation. 
 }
 ```
 
-This 
+Each of these objects gets turned into an `action creator`, a formatted `constant` prefixed with the module name, and a key in the module's `reducer`.
