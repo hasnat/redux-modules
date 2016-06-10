@@ -15,7 +15,8 @@ const mapState = state => {
   }
 };
 
-class MultipleConnected extends React.Component {
+@connectModule(mapState, [todoModule, counterModule])
+export default class MultipleConnected extends React.Component {
   static propTypes = {
     todos: shape({
       collection: array,
@@ -51,8 +52,3 @@ class MultipleConnected extends React.Component {
   }
 }
 
-export default connectModule(
-  mapState,
-  [todoModule, counterModule],
-  MultipleConnected
-);
