@@ -6,7 +6,7 @@ The `transformation` object serves as the definition of a state transformation. 
 {
   action: 'CREATE',
   payloadTypes: {
-  
+    description: React.PropTypes.string,
   },
   reducer: (state, { payload }) =>
     state.setIn(['collection', payload.id], fromJS(payload)),
