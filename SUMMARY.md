@@ -2,6 +2,6 @@
 
 * [Introduction](README.md)
 * [Basics](docs/basics/README.md)
-   * Creating a Module
+   * [Creating a Module](docs/basics/creating-a-module.md)
    * The Transformation Object
 
