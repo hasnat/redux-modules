@@ -19,7 +19,7 @@ const { actions, reducer, constants } = createModule({
 });
 ```
 
-generates the following:
+Generates something *roughly* equivalent to the following:
 
 ```js
 const constants = {
