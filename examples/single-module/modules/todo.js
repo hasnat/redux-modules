@@ -6,7 +6,7 @@ const { shape, number, string, bool } = PropTypes;
 
 export default createModule({
   name: 'todos',
-  initialState: List(),
+  initialState: List(), // eslint-disable-line new-cap
   transformations: [
     {
       action: 'CREATE',
@@ -15,18 +15,14 @@ export default createModule({
           description: string.isRequired,
         }),
       },
-      reducer: (state, {payload: { todo }}) => {
-        return state.push(fromJS(todo));
-      },
+      reducer: (state, { payload: { todo } }) => state.push(fromJS(todo)),
     },
     {
       action: 'DESTROY',
       payloadTypes: {
         index: number.isRequired,
       },
-      reducer: (state, {payload: { index }}) => {
-        return state.delete(index);
-      },
+      reducer: (state, { payload: { index } }) => state.delete(index),
     },
     {
       action: 'UPDATE',
@@ -37,12 +33,8 @@ export default createModule({
           checked: bool,
         }),
       },
-      reducer: (state, {payload: { index, todo: updates }}) => {
-        return state.update(
-          index,
-          todo => todo.merge(fromJS(updates))
-        );
-      },
+      reducer: (state, { payload: { index, todo: updates } }) =>
+        state.update(index, todo => todo.merge(fromJS(updates))),
     },
   ],
 });

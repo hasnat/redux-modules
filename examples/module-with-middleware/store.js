@@ -8,7 +8,7 @@ const reducer = combineReducers({
   todos: todoModule.reducer,
 });
 
-let logger = createLogger({
+const logger = createLogger({
   stateTransformer: object => fromJS(object).toJS(),
   actionTransformer: object => fromJS(object).toJS(),
   collapsed: true,
@@ -19,4 +19,4 @@ const createStoreWithMiddleware = compose(
   applyMiddleware(logger)
 )(createStore);
 
-export default createStoreWithMiddleware(reducer, List());
+export default createStoreWithMiddleware(reducer, List()); // eslint-disable-line new-cap

@@ -1,6 +1,4 @@
-import { resolve } from 'path';
 import { fromJS } from 'immutable';
-import { path as rootPath } from 'app-root-path';
 
 export default fromJS({
 

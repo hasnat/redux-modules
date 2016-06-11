@@ -1,4 +1,3 @@
-import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { curry } from 'ramda';
@@ -6,13 +5,14 @@ import { curry } from 'ramda';
 import combineNamespacedProps from './combineNamespacedProps';
 
 const nestedBindDispatch = modules => dispatch =>
-  modules.reduce((bna, module) => {
-    bna[module.name] = { actions: bindActionCreators(module.actions, dispatch) };
+  modules.reduce((bna, { name, actions }) => {
+    // eslint-disable-next-line no-param-reassign
+    bna[name] = { actions: bindActionCreators(actions, dispatch) };
     return bna;
   }, {});
 
 
-function connectModules({selector, modules}, Component) {
+function connectModules({ selector, modules }, Component) {
   const nestedBoundActions = nestedBindDispatch(modules);
 
   return connect(

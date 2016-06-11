@@ -3,21 +3,16 @@ import { reduce } from 'ramda';
 import camelize from 'camel-case';
 import payloadPropchecker from './payloadPropchecker';
 
-const parsePayloadErrors = (transformation, { payload, meta }) => {
-  return {
-    payload,
-    meta,
-    error: (payload instanceof Error),
-  };
-};
+const parsePayloadErrors = (transformation, { payload, meta }) => ({
+  payload,
+  meta,
+  error: (payload instanceof Error),
+});
 
-const _generateActions = (generatedActions, transformation) => {
+const generateActions = (generatedActions, transformation) => {
   const {
     action,
-    payloadTypes = {},
-    metaTypes = {},
     middleware = [],
-    formattedConstant: actionName,
   } = transformation;
 
   const camelizedActionName = camelize(action);
@@ -26,6 +21,7 @@ const _generateActions = (generatedActions, transformation) => {
     parsePayloadErrors,
   ];
 
+  // eslint-disable-next-line no-param-reassign
   generatedActions[camelizedActionName] = createAction(
     transformation,
     middleware.concat(defaultMiddlewares)
@@ -34,9 +30,6 @@ const _generateActions = (generatedActions, transformation) => {
   return generatedActions;
 };
 
-export const createActions = transformations => {
-  return reduce(_generateActions, {}, transformations);
-};
-
+export const createActions = transformations => reduce(generateActions, {}, transformations);
 
 export default createActions;
