@@ -15,14 +15,12 @@ const mapState = state => {
   }
 };
 
-@connectModule(mapState, [todoModule, counterModule])
+@connectModule(mapState, [todoCollectionModule, counterModule])
 export default class MultipleConnected extends React.Component {
   static propTypes = {
     todos: shape({
       collection: array,
       actions: shape({
-        create: func,
-        destroy: func,
         update: func,
       }),
     }),
@@ -39,7 +37,7 @@ export default class MultipleConnected extends React.Component {
     const { todos, counter } = this.props;
     return (
       <div>
-        <TodoList todos={todos} />
+        <TodoList title="Cool" todos={todos} />
         <button onClick={counter.actions.increment}>
           +
         </button>

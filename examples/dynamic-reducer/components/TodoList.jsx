@@ -4,15 +4,37 @@ import { List } from 'immutable';
 
 const { array, func, number, shape } = PropTypes;
 
-const mapDispatchTodo((dispatch, props) => {
+const mapDispatchList((dispatch, props) => {
   return {
-    destroy: () =>
+    todoActions: payload => mapDispatchTodo(dispatch, props)
+  }
+});
+
+update = payload => {
+  return dispatch({
+    type: 'todos/UPDATE',
+    payload,
+    // payload: {
+    //   id: payload.id,
+    //   action: { description }
+    // }
+  })
+}
+
+const mapDispatchTodo((dispatch, props) => {
+  // dispatch == actions.todos
+  // payload => dispatch(action.todos({ type: 'todos', action: action })
+  // actions.todos({ id, action })
+  return {
+    update: action =>
       dispatch({
         id: props.id,
-        action: props.actions.destroy(payload),
+        action
       })
   }
-})
+});
+
+const mapDispatchTodo
 
 @nestedDispatch((props => return { { id: props.id} } ), todoModule)
 class TodoItem extends React.Component {
@@ -87,8 +109,7 @@ export default class TodoList extends React.Component {
           {collection.map((todo, i) =>
             <TodoItem
               key={i}
-              actions={mapDispatchTodo(actions.todos)}
-              destroy={actions.destroy}
+              actions={mapDispatchTodo(todos.actions.update, todo)}
               { ... todo }
             />
           )}

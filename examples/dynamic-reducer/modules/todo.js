@@ -92,6 +92,8 @@ export default createModule({
         }),
       },
       reducer: (state, {payload: { index, todo: updates }}) => {
+        // state.todos
+        // state.todos[payload.id]
         return state.update(
           index,
           todo => todo.merge(fromJS(updates))
