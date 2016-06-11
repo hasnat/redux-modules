@@ -3,30 +3,48 @@ import { findDOMNode } from 'react-dom';
 import { List } from 'immutable';
 
 const { array, func, number, shape } = PropTypes;
-// TodoList View
-const TodoItem = (actions, {id, title, description, checked}, i) =>
-  <li>
-    <div className="checkbox">
-      <input
-        onChange={e =>
-          actions.update({
-            index: i,
-            todo: {checked: e.target.checked},
-          })
-        }
-        type='checkbox'
-        checked={checked}
-      />
-    </div>
-    <p>
-      {description}
-    </p>
-    <aside>
-      <button onClick={() => actions.destroy({index: i})}>
-        Delete Todo
-      </button>
-    </aside>
-  </li>
+
+const mapDispatchTodo((dispatch, props) => {
+  return {
+    destroy: () =>
+      dispatch({
+        id: props.id,
+        action: props.actions.destroy(payload),
+      })
+  }
+})
+
+@nestedDispatch((props => return { { id: props.id} } ), todoModule)
+class TodoItem extends React.Component {
+  render() {
+    const {title, description, checked, destroy, update} = props
+    return (
+      <li>
+        <div className="checkbox">
+          <input
+            onChange={e => {
+                return dispatch({
+                  type: 'todo/UPDATE',
+                  todo: {checked: e.target.checked},
+                });
+              }
+            }
+            type='checkbox'
+            checked={checked}
+          />
+        </div>
+        <p>
+          {description}
+        </p>
+        <aside>
+          <button onClick={() => dispatch({ type: 'todo/DESTROY' }) }>
+            Delete Todo
+          </button>
+        </aside>
+      </li>
+    );
+  }
+}
 
 export default class TodoList extends React.Component {
   static propTypes = {
@@ -66,7 +84,14 @@ export default class TodoList extends React.Component {
         </div>
 
         <ul>
-          {collection.map(TodoItem.bind(null, actions))}
+          {collection.map((todo, i) =>
+            <TodoItem
+              key={i}
+              actions={mapDispatchTodo(actions.todos)}
+              destroy={actions.destroy}
+              { ... todo }
+            />
+          )}
         </ul>
       </div>
     );
