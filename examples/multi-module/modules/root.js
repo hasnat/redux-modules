@@ -38,7 +38,7 @@ export default createModule({
       reducer: (state, {payload}) =>
         state.update(
           'todos',
-          todos => todosModule.reducer(state, { ... payload.action })
+          todos => todosModule.reducer(todos, { ... payload.action })
         ),
     },
   ],
