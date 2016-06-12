@@ -24,7 +24,7 @@ export default function createCollection(module) {
         },
       },
       {
-        action: 'UPDATE',
+        action: 'todo',
         payloadTypes: {
           id: string.isRequired,
           action: shape({

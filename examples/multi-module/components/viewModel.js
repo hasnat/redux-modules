@@ -13,6 +13,10 @@ function viewModel(module, Component) {
       }
     }
     return class ViewModel extends React.Component {
+      static contextTypes = {
+        parent: React.PropTypes.object,
+      };
+
       static childContextTypes = {
         parent: React.PropTypes.string,
       };
@@ -23,20 +27,28 @@ function viewModel(module, Component) {
       }
 
       getChildContext() {
+        console.log('MODULE', module);
         return {
           parent: module,
         };
       }
 
       bindActions(self, actions, props) {
-        const parentDispatch =
-          action =>
-            self
-            .context
-            .parent
-            .actions[module.name](
-              decoratePayload(module, action, props)
-            );
+        console.log('BINDING', module.name);
+        console.log('CONTEXT', self.context);
+        let parentDispatch;
+        if (!self.context.parent) {
+          return self.props[module.name].actions;
+        } else {
+          parentDispatch =
+            action =>
+              self
+              .context
+              .parent
+              .actions[module.name](
+                decoratePayload(module, action, props)
+              );
+        }
 
         return bindActionCreators(
           actions,

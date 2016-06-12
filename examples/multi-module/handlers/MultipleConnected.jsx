@@ -76,6 +76,6 @@ class MultipleConnected extends React.Component {
 
 export default connectModule(
   mapState,
-  [rootModule],
+  [ rootModule ],
   viewModel(rootModule, MultipleConnected)
 );
