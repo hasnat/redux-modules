@@ -70,7 +70,7 @@ export default class TodoList extends React.Component {
 
         <ul>
           {collection.map(todo =>
-            <TodoItem {...todo} />
+            <TodoItem key={todo.id} {...todo} />
           )}
         </ul>
       </div>

@@ -4,8 +4,8 @@ import counterModule from '../modules/counter';
 import todosModule from '../modules/todos';
 import { connectModule } from '../../../src/index';
 import DumbTodoList from '../components/TodoList';
-import collectionModel from '../components/collectionModel';
 import viewModel from '../components/viewModel';
+import containerModel from '../components/containerModel';
 import { bindActionCreators } from 'redux';
 const { array, func, number, shape } = PropTypes;
 

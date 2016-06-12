@@ -1,18 +1,16 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 
-const defaultDecorate = (action, props) => ({id: props.is, action});
+const defaultDecorate = (action, props) => ({id: props.id, action});
 
 function nestedModel(module, Component) {
 
   function getProxyAction(parent) {
-    const cProps = parent.container.props;
-    const cModName = parent.module.name;
-    return cProps[cModName].actions[module.name];
+    return parent.actions[module.name];
   }
 
   function bindActions(actions, context, props) {
-    const proxyAction = getProxyAction(contex.parent);
+    const proxyAction = getProxyAction(context.parent);
     const parentDispatch = action => {
       const decoratedAction = decorateAction(action, props);
       return proxyAction(decoratedAction);
@@ -32,35 +30,37 @@ function nestedModel(module, Component) {
   }
 
   return class NestedModel extends React.Component {
+    constructor(props, context) {
+      super(props);
+    }
+
     static contextTypes = {
       parent: React.PropTypes.shape({
-        module: React.PropTypes.object,
-        container: React.PropTypes.object,
+        actions: React.PropTypes.object,
       }),
     };
 
     static childContextTypes = {
       parent: React.PropTypes.shape({
-        module: React.PropTypes.object,
-        container: React.PropTypes.object,
+        actions: React.PropTypes.object,
       }),
     };
 
     getChildContext() {
       return {
-        parent: { module, container },
+        parent: { actions: this.getBoundActions() },
       };
     }
 
-    constructor(props, context) {
-      super(props);
+    getBoundActions() {
+      return bindActions(module.actions, this.context, this.props);
     }
 
     render() {
       return (
         <Component
           {...this.props}
-          actions={this.bindActions(module.actions, this.context, this.props)} />
+          actions={this.getBoundActions()} />
       );
     }
   }

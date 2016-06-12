@@ -6,13 +6,11 @@ const defaultDecorate = (action, props) => ({action});
 function viewModel(module, Component) {
 
   function getProxyAction(parent) {
-    const cProps = parent.container.props;
-    const cModName = parent.module.name;
-    return cProps[cModName].actions[module.name];
+    return parent.actions[module.name];
   }
 
   function bindActions(actions, context, props) {
-    const proxyAction = getProxyAction(contex.parent);
+    const proxyAction = getProxyAction(context.parent);
     const parentDispatch = action => {
       const decoratedAction = decorateAction(action, props);
       return proxyAction(decoratedAction);
@@ -32,35 +30,37 @@ function viewModel(module, Component) {
   }
 
   return class ViewModel extends React.Component {
+    constructor(props, context) {
+      super(props);
+    }
+
     static contextTypes = {
       parent: React.PropTypes.shape({
-        module: React.PropTypes.object,
-        container: React.PropTypes.object,
+        actions: React.PropTypes.object,
       }),
     };
 
     static childContextTypes = {
       parent: React.PropTypes.shape({
-        module: React.PropTypes.object,
-        container: React.PropTypes.object,
+        actions: React.PropTypes.object,
       }),
     };
 
     getChildContext() {
       return {
-        parent: { module, container: this },
+        parent: { actions: this.getBoundActions() },
       };
     }
 
-    constructor(props, context) {
-      super(props);
+    getBoundActions() {
+      return bindActions(module.actions, this.context, this.props);
     }
 
     render() {
       return (
         <Component
           {...this.props}
-          actions={this.bindActions(module.actions, this.context, this.props)} />
+          actions={this.getBoundActions()} />
       );
     }
   }

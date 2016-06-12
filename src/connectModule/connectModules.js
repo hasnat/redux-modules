@@ -19,7 +19,7 @@ function connectModules({selector, modules}, Component) {
     selector,
     nestedBoundActions,
     combineNamespacedProps
-  )(containerModel(Component));
+  )(Component);
 }
 
 export default curry(connectModules);

@@ -3,28 +3,20 @@ import React from 'react';
 function containerModel(module, Component) {
 
   return class ContainerModel extends React.Component {
-    static contextTypes = {
-      parent: React.PropTypes.shape({
-        module: React.PropTypes.object,
-        container: React.PropTypes.object,
-      }),
-    };
+    constructor(props, context) {
+      super(props);
+    }
 
     static childContextTypes = {
       parent: React.PropTypes.shape({
-        module: React.PropTypes.object,
-        container: React.PropTypes.object,
+        actions: React.PropTypes.object,
       }),
     };
 
     getChildContext() {
       return {
-        parent: { module, container: this },
+        parent: { actions: this.props[module.name].actions },
       };
-    }
-
-    constructor(props, context) {
-      super(props);
     }
 
     render() {
