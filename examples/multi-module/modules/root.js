@@ -23,34 +23,6 @@ const { shape, number, string, bool, any } = PropTypes;
 //   },
 // };
 
-const rootReducer = combineReducers({
-  todos: collectionReducer(
-    combineReducers({
-      location: location.reducer,
-      name: nameReducer,
-    })
-  ),
-});
-
-const collectionReducer = reducer => (state, action) => {
-  switch (action.type) {
-    case 'CREATE':
-      const id = v4();
-      return state.setIn(id, reducer());
-
-    case 'DESTROY':
-      return state.delete(action.id);
-
-    case 'UPDATE':
-      return state.update(
-        action.payload.id,
-        object => reducer(object, action.payload.action)
-      );
-    default:
-      return state;
-  }
-}
-
 export default createModule({
   name: 'root',
   initialState: Map(),
@@ -66,7 +38,8 @@ export default createModule({
       reducer: (state, {payload}) =>
         state.update(
           'todos',
-          todos => collectionModule(todoModule)
+          todos => todosModule(state, { payload.action })
+        ),
     },
   ],
 });
