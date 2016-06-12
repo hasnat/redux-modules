@@ -12,7 +12,7 @@ export default function createCollection(module) {
       {
         action: 'CREATE',
         reducer: (state, action) =>
-          state.set(5, module.reducer()),
+          state.set(5, module.reducer(module.initialState, action)),
       },
       {
         action: 'DESTROY',

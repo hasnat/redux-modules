@@ -30,13 +30,33 @@ class MultipleConnected extends React.Component {
   };
 
   componentDidMount() {
-
+    this.props.root.actions.todos({
+      action: {
+        type: 'todos/CREATE',
+      },
+    });
+    this.props.root.actions.todos({
+      action: {
+        type: 'todos/UPDATE',
+        payload: {
+          id: 5,
+          action: {
+            type: 'todo/SET_NAME',
+            payload: 'HELLO'
+          }
+        },
+      },
+    });
   }
 
   render() {
     return (
       <div>
-        {JSON.stringify(this.props)}
+        {
+          Object.keys(this.props).map( attr => {
+            return `${attr} ${JSON.stringify(this.props[attr])}`;
+          })
+        }
       </div>
     );
   }
