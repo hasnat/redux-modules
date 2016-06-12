@@ -1,6 +1,6 @@
 import { createModule } from '../../../src/index';
 import { PropTypes } from 'react';
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 
 const { shape, number, string, bool, object } = PropTypes;
 
@@ -11,9 +11,8 @@ export default function createCollection(module) {
     transformations: [
       {
         action: 'CREATE',
-        middleware: [ uuidMiddleware ],
         reducer: (state, action) =>
-          state.set(action.payload.id, module.reducer()),
+          state.set(5, module.reducer()),
       },
       {
         action: 'DESTROY',

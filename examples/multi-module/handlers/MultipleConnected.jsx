@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import todoModule from '../modules/todo';
+import todosModule from '../modules/todos';
 import counterModule from '../modules/counter';
 import { connectModule } from '../../../src/index';
 import TodoList from '../components/TodoList';
@@ -8,9 +8,8 @@ const { array, func, number, shape } = PropTypes;
 
 const mapState = state => {
   return {
-    todos: { collection: [... state.todos.toJS()] },
-    counter: { count: state.counter },
-  }
+    todos: state.todos.toJS(),
+  };
 };
 
 class MultipleConnected extends React.Component {
@@ -33,17 +32,9 @@ class MultipleConnected extends React.Component {
   };
 
   render() {
-    const { todos, counter } = this.props;
     return (
       <div>
-        <TodoList todos={todos} />
-        <button onClick={counter.actions.increment}>
-          +
-        </button>
-        <h2>Count: {counter.count}</h2>
-        <button onClick={counter.actions.decrement}>
-          -
-        </button>
+        {JSON.stringify(this.props)}
       </div>
     );
   }
@@ -51,6 +42,6 @@ class MultipleConnected extends React.Component {
 
 export default connectModule(
   mapState,
-  [todoModule, counterModule],
+  [todosModule],
   MultipleConnected
 );

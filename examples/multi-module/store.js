@@ -2,12 +2,10 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { List, fromJS } from 'immutable';
 import createLogger from 'redux-logger';
 
-import todoModule from './modules/todo';
-import counterModule from './modules/counter';
+import todoModules from './modules/todos';
 
 const reducer = combineReducers({
-  todos: todoModule.reducer,
-  counter: counterModule.reducer,
+  todos: todoModules.reducer,
 });
 
 let logger = createLogger({
@@ -21,4 +19,4 @@ const createStoreWithMiddleware = compose(
   applyMiddleware(logger)
 )(createStore);
 
-export default createStoreWithMiddleware(reducer, List());
+export default createStoreWithMiddleware(reducer, fromJS({}));
