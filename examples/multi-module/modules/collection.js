@@ -1,7 +1,7 @@
 import { createModule } from '../../../src/index';
 import { PropTypes } from 'react';
 import { fromJS, List, Map } from 'immutable';
-
+import uuid from 'uuid';
 const { shape, number, string, bool, object } = PropTypes;
 
 export default function createCollection(module) {
@@ -11,8 +11,11 @@ export default function createCollection(module) {
     transformations: [
       {
         action: 'CREATE',
-        reducer: (state, action) =>
-          state.set(5, module.reducer(module.initialState, action)),
+        reducer: (state, action) => {
+          const id = uuid.v4();
+          const item = module.reducer(undefined, action)
+          return state.set(id, item.set('id', id));
+        },
       },
       {
         action: 'DESTROY',

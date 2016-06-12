@@ -44,7 +44,7 @@ class MultipleConnected extends React.Component {
       action: {
         type: 'todos/UPDATE',
         payload: {
-          id: 5,
+          id: "5",
           action: {
             type: 'todo/SET_NAME',
             payload: 'HELLO'

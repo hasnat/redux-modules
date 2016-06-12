@@ -13,7 +13,7 @@ const { shape, number, string, bool, any } = PropTypes;
 //     action: {
 //       type: 'todos/UPDATE',
 //       payload: {
-//         id: 5,
+//         id: "5",
 //         action: {
 //           type: 'todo/SET_NAME',
 //           payload: 'hi'

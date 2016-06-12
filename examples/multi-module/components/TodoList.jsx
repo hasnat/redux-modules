@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom';
 import { List } from 'immutable';
 import { bindActionCreators } from 'redux';
 import todoModule from '../modules/todo';
-import viewModel from './viewModel';
 import nestedModel from './nestedModel';
 
 const { array, func, number, shape } = PropTypes;
@@ -57,13 +56,7 @@ export default class TodoList extends React.Component {
             type='button'
             value='Create'
             onClick={() => {
-              actions.update({
-                id: 5,
-                action: {
-                  type: 'todo/SET_NAME',
-                  payload: findDOMNode(this.refs.name).value,
-                }
-              })
+              actions.create()
             }}
           />
         </div>
