@@ -2,19 +2,10 @@ import { Map } from 'immutable';
 import { compose, reduce } from 'ramda';
 import { handleActions } from 'redux-actions';
 
-const _reduceChildModules = modules => (state, action) => {
-  return modules.reduce((newState, module) => {
-    return  state.updateIn(
-      path,
-      slice =>
-        module.reducer( slice, module.action(action.payload) );
-    }, state);
-}
-
 const _generateReducer = (generatedReducer, transformation) => {
-  const { formattedConstant, reducer, composes  } = transformation;
+  const { formattedConstant, reducer } = transformation;
 
-  generatedReducer[formattedConstant] = _reduceChildModules([... composes, reducer]);
+  generatedReducer[formattedConstant] = reducer;
   return generatedReducer;
 };
 
