@@ -58,20 +58,15 @@ export default createModule({
     {
       action: 'TODOS',
       propTypes: {
-        id: number.isRequired,
         action: shape({
           type: string.isRequired,
           payload: any.isRequired,
         }),
       },
-      composes: [
-        {
-          reducer: todosModule.reducer,
-          path: [ 'todos' ],
-          action: payload => payload.action,
-        }
-      ],
-      reducer: state => state,
+      reducer: (state, {payload}) =>
+        state.update(
+          'todos',
+          todos => collectionModule(todoModule)
     },
   ],
 });

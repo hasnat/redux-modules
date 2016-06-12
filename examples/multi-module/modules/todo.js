@@ -10,30 +10,10 @@ export default createModule({
   initialState: fromJS({ name: '', location: {}}),
   transformations: [
     {
-      action: 'INIT',
-      composes: [
-        {
-          reducer: locationModule.reducer,
-          path: [ 'location' ],
-          action: locationModule.actions.init(),
-        }
-      ],
-      reducer: state => state,
-    },
-    {
       action: 'SET_NAME',
-      payloadTypes: {
-        index: number.isRequired,
-        todo: shape({
-          description: string,
-          checked: bool,
-        }),
-      },
-      reducer: (state, {payload: { index, todo: updates }}) => {
-        return state.update(
-          index,
-          todo => todo.merge(fromJS(updates))
-        );
+      payloadTypes: string,
+      reducer: (state, {payload}) => {
+        return state.set('name', payload);
       },
     },
   ],
