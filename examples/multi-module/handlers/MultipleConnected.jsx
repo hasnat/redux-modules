@@ -7,9 +7,7 @@ import TodoList from '../components/TodoList';
 const { array, func, number, shape } = PropTypes;
 
 const mapState = state => {
-  return {
-    todos: state.todos.toJS(),
-  };
+  return state.toJS();
 };
 
 class MultipleConnected extends React.Component {

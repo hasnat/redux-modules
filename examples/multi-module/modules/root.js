@@ -1,6 +1,6 @@
 import { createModule } from '../../../src/index';
 import { PropTypes } from 'react';
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { v4 } from 'uuid';
 
 import todosModule from './todos';
@@ -38,7 +38,7 @@ export default createModule({
       reducer: (state, {payload}) =>
         state.update(
           'todos',
-          todos => todosModule(state, { payload.action })
+          todos => todosModule(state, { ... payload.action })
         ),
     },
   ],
