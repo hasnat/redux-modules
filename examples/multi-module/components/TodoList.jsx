@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import { bindActionCreators } from 'redux';
 import todoModule from '../modules/todo';
 import viewModel from './viewModel';
+import nestedModel from './nestedModel';
 
 const { array, func, number, shape } = PropTypes;
 // TodoList View
@@ -28,7 +29,7 @@ const DumbTodoItem = ({id, title, name, checked, actions}) =>
     </aside>
   </li>
 
-const TodoItem = viewModel(todoModule, DumbTodoItem);
+const TodoItem = nestedModel(todoModule, DumbTodoItem);
 
 export default class TodoList extends React.Component {
   static propTypes = {

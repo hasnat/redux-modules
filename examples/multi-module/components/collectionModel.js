@@ -3,7 +3,10 @@ import { bindActionCreators } from 'redux';
 
 function collectionModel(module, Component) {
     function decoratePayload(module, action, props) {
-      const decorator = props => { return { id: props.id } };
+      const decorator = props => {
+        debugger;
+        return { id: props.id }
+      };
 
       return {
         action,
@@ -26,19 +29,18 @@ function collectionModel(module, Component) {
 
       getChildContext() {
         return {
-          parent: module,
+          parent: this,
         };
       }
 
       bindActions(self, actions, props) {
         const parentDispatch =
-          action =>
-            self
-            .context
-            .parent
-            .actions[module.name](
-              decoratePayload(module, action, props)
-            );
+          action => {
+            const proxyAction = self.context.parent.actions[module.name];
+            const decoratedAction = decoratePayload(module, action, props);
+            debugger;
+            return proxyAction( decoratedAction );
+          }
 
         return bindActionCreators(
           actions,

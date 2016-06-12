@@ -56,7 +56,7 @@ class MultipleConnected extends React.Component {
 
 
   render() {
-    const TodoList = collectionModel(todosModule, DumbTodoList);
+    const TodoList = viewModel( todosModule, DumbTodoList );
 
     const collection = Object.keys(this.props.todos || {}).reduce((arr, key) => arr.concat(this.props.todos[key]), [])
     return (
@@ -77,5 +77,5 @@ class MultipleConnected extends React.Component {
 export default connectModule(
   mapState,
   [ rootModule ],
-  viewModel(rootModule, MultipleConnected)
+  containerModel(rootModule, MultipleConnected)
 );

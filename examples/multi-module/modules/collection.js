@@ -29,7 +29,6 @@ export default function createCollection(module) {
           id: string.isRequired,
           action: shape({
             type: string,
-            payload: object,
           }),
         },
         reducer: (state, {payload}) =>

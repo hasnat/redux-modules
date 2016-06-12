@@ -1,9 +1,9 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 
-const defaultDecorate = (action, props) => ({action});
+const defaultDecorate = (action, props) => ({id: props.is, action});
 
-function viewModel(module, Component) {
+function nestedModel(module, Component) {
 
   function getProxyAction(parent) {
     const cProps = parent.container.props;
@@ -31,7 +31,7 @@ function viewModel(module, Component) {
     }
   }
 
-  return class ViewModel extends React.Component {
+  return class NestedModel extends React.Component {
     static contextTypes = {
       parent: React.PropTypes.shape({
         module: React.PropTypes.object,
@@ -48,7 +48,7 @@ function viewModel(module, Component) {
 
     getChildContext() {
       return {
-        parent: { module, container: this },
+        parent: { module, container },
       };
     }
 
@@ -66,4 +66,4 @@ function viewModel(module, Component) {
   }
 };
 
-export default viewModel
+export default nestedModel
