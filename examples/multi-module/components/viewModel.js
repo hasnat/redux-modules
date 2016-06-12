@@ -14,24 +14,24 @@ function viewModel(module, Component) {
     }
     return class ViewModel extends React.Component {
       static childContextTypes = {
-        parent: string,
-      },
+        parent: React.PropTypes.string,
+      };
 
       constructor(props, context) {
         super(props);
-        this.bindActions = this.bindActions.bind(this);
+        this.bindActions = this.bindActions.bind(null, this);
       }
 
-      getChildContextTypes() {
+      getChildContext() {
         return {
           parent: module,
         };
       }
 
-      bindActions(actions, props) {
+      bindActions(self, actions, props) {
         const parentDispatch =
           action =>
-            this
+            self
             .context
             .parent
             .actions[module.name](

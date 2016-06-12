@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 function collectionModel(module, Component) {
     function decoratePayload(module, action, props) {
-      const decorator = props => { return { id: props.id } },
+      const decorator = props => { return { id: props.id } };
 
       return {
         action,
@@ -11,25 +11,29 @@ function collectionModel(module, Component) {
       }
     }
     return class ViewModel extends React.Component {
+      static contextTypes = {
+        parent: React.PropTypes.object,
+      };
+
       static childContextTypes = {
-        parent: string,
-      },
+        parent: React.PropTypes.object,
+      };
 
       constructor(props, context) {
         super(props);
-        this.bindActions = this.bindActions.bind(this);
+        this.bindActions = this.bindActions.bind(null, this);
       }
 
-      getChildContextTypes() {
+      getChildContext() {
         return {
           parent: module,
         };
       }
 
-      bindActions(actions, props) {
+      bindActions(self, actions, props) {
         const parentDispatch =
           action =>
-            this
+            self
             .context
             .parent
             .actions[module.name](

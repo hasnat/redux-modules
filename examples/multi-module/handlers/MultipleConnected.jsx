@@ -3,7 +3,9 @@ import rootModule from '../modules/root';
 import counterModule from '../modules/counter';
 import todosModule from '../modules/todos';
 import { connectModule } from '../../../src/index';
-import TodoList from '../components/TodoList';
+import DumbTodoList from '../components/TodoList';
+import collectionModel from '../components/collectionModel';
+import viewModel from '../components/viewModel';
 import { bindActionCreators } from 'redux';
 const { array, func, number, shape } = PropTypes;
 
@@ -66,7 +68,6 @@ class MultipleConnected extends React.Component {
         }
         <TodoList
           collection={collection}
-          actions={this.props.root.todos.actions()}
         />
       </div>
     );
