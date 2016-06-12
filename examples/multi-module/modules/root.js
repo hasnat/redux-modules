@@ -35,6 +35,7 @@ export default createModule({
           payload: any.isRequired,
         }),
       },
+      dispatches: todosModule.actions,
       reducer: (state, {payload}) =>
         state.update(
           'todos',

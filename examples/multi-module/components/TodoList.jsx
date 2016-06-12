@@ -6,7 +6,7 @@ import todoModule from '../modules/todo';
 
 const { array, func, number, shape } = PropTypes;
 // TodoList View
-const TodoItem = ({id, title, name, checked, actions}) =>
+const DumbTodoItem = ({id, title, name, checked, actions}) =>
   <li>
     <div className="checkbox">
       <input
@@ -27,6 +27,8 @@ const TodoItem = ({id, title, name, checked, actions}) =>
     </aside>
   </li>
 
+const TodoItem = viewModel(todoModule, DumbTodoItem);
+
 export default class TodoList extends React.Component {
   static propTypes = {
     collection: array,
@@ -40,7 +42,7 @@ export default class TodoList extends React.Component {
   render() {
     const { title, collection = [], actions } = this.props;
     console.log('todolist', collection);
-    const update = id => action => this.props.actions.update({ id, action })
+
     return (
       <div>
         <h1>{title}</h1>
@@ -66,9 +68,7 @@ export default class TodoList extends React.Component {
 
         <ul>
           {collection.map(todo =>
-            <TodoItem {...todo}
-              actions={bindActionCreators(todoModule.actions, update(todo.id))}
-            />
+            <TodoItem {...todo} />
           )}
         </ul>
       </div>

@@ -12,6 +12,7 @@ const mapState = state => {
 };
 
 
+
 class MultipleConnected extends React.Component {
   static propTypes = {
     todos: shape({
@@ -50,13 +51,11 @@ class MultipleConnected extends React.Component {
       },
     });
   }
-//
+
+
   render() {
-    const parentDispatch = action => this.props.root.actions.todos({ action });
-    const todoListActions = bindActionCreators(
-      todosModule.actions,
-      parentDispatch
-    );
+    const TodoList = collectionModel(todosModule, DumbTodoList);
+
     const collection = Object.keys(this.props.todos || {}).reduce((arr, key) => arr.concat(this.props.todos[key]), [])
     return (
       <div>
@@ -67,7 +66,7 @@ class MultipleConnected extends React.Component {
         }
         <TodoList
           collection={collection}
-          actions={todoListActions}
+          actions={this.props.root.todos.actions()}
         />
       </div>
     );
@@ -77,5 +76,5 @@ class MultipleConnected extends React.Component {
 export default connectModule(
   mapState,
   [rootModule],
-  MultipleConnected
+  viewModel(rootModule, MultipleConnected)
 );
