@@ -5,29 +5,9 @@ import { fromJS, List } from 'immutable';
 const { shape, number, string, bool } = PropTypes;
 
 export default createModule({
-  name: 'todos',
-  initialState: List(),
+  name: 'todo',
+  initialState: Map(),
   transformations: [
-    {
-      action: 'CREATE',
-      payloadTypes: {
-        todo: shape({
-          description: string.isRequired,
-        }),
-      },
-      reducer: (state, {payload: { todo }}) => {
-        return state.push(fromJS(todo));
-      },
-    },
-    {
-      action: 'DESTROY',
-      payloadTypes: {
-        index: number.isRequired,
-      },
-      reducer: (state, {payload: { index }}) => {
-        return state.delete(index);
-      },
-    },
     {
       action: 'UPDATE',
       payloadTypes: {
@@ -37,6 +17,13 @@ export default createModule({
           checked: bool,
         }),
       },
+      composes: [
+        {
+          reducer: locationModule.reducer,
+          path: [ 'location' ],
+          action: locationModule.actions.init(),
+        }
+      ],
       reducer: (state, {payload: { index, todo: updates }}) => {
         return state.update(
           index,
