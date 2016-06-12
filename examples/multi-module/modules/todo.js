@@ -7,7 +7,7 @@ const { shape, number, string, bool } = PropTypes;
 
 export default createModule({
   name: 'todo',
-  initialState: fromJS({ name: '', location: {}}),
+  initialState: fromJS({ id: '5', name: '', location: {}}),
   transformations: [
     {
       action: 'SET_NAME',
@@ -16,5 +16,11 @@ export default createModule({
         return state.set('name', payload);
       },
     },
+    {
+      action: 'SET_CHECKED',
+      reducer: (state, {payload}) => {
+        return state.set('checked', payload);
+      },
+    }
   ],
 });

@@ -1,28 +1,27 @@
 import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import { List } from 'immutable';
+import { bindActionCreators } from 'redux';
+import todoModule from '../modules/todo';
 
 const { array, func, number, shape } = PropTypes;
 // TodoList View
-const TodoItem = (actions, {id, title, description, checked}, i) =>
+const TodoItem = ({id, title, name, checked, actions}) =>
   <li>
     <div className="checkbox">
       <input
         onChange={e =>
-          actions.update({
-            index: i,
-            todo: {checked: e.target.checked},
-          })
+          actions.setChecked(e.target.checked)
         }
         type='checkbox'
         checked={checked}
       />
     </div>
     <p>
-      {description}
+      {`${name}-${checked}`}
     </p>
     <aside>
-      <button onClick={() => actions.destroy({index: i})}>
+      <button onClick={() => actions.setName('new one')}>
         Delete Todo
       </button>
     </aside>
@@ -30,35 +29,35 @@ const TodoItem = (actions, {id, title, description, checked}, i) =>
 
 export default class TodoList extends React.Component {
   static propTypes = {
-    todos: shape({
-      collection: array,
-      actions: shape({
-        create: func,
-        destroy: func,
-        update: func,
-      }),
+    collection: array,
+    actions: shape({
+      create: func,
+      destroy: func,
+      update: func,
     }),
   };
 
   render() {
-    const { title, todos: todoProps } = this.props;
-    const { collection = [], actions } = todoProps ;
-
+    const { title, collection = [], actions } = this.props;
+    console.log('todolist', collection);
+    const update = id => action => this.props.actions.update({ id, action })
     return (
       <div>
         <h1>{title}</h1>
 
         <div>
           <label>Description</label>
-          <input ref='description'/>
+          <input ref='name'/>
 
           <input
             type='button'
             value='Create'
             onClick={() => {
-              actions.create({
-                todo: {
-                  description: findDOMNode(this.refs.description).value,
+              actions.update({
+                id: 5,
+                action: {
+                  type: 'todo/SET_NAME',
+                  payload: findDOMNode(this.refs.name).value,
                 }
               })
             }}
@@ -66,7 +65,11 @@ export default class TodoList extends React.Component {
         </div>
 
         <ul>
-          {collection.map(TodoItem.bind(null, actions))}
+          {collection.map(todo =>
+            <TodoItem {...todo}
+              actions={bindActionCreators(todoModule.actions, update(todo.id))}
+            />
+          )}
         </ul>
       </div>
     );

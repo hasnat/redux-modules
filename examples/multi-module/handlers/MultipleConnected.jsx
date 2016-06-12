@@ -1,14 +1,16 @@
 import React, { PropTypes } from 'react';
 import rootModule from '../modules/root';
 import counterModule from '../modules/counter';
+import todosModule from '../modules/todos';
 import { connectModule } from '../../../src/index';
 import TodoList from '../components/TodoList';
-
+import { bindActionCreators } from 'redux';
 const { array, func, number, shape } = PropTypes;
 
 const mapState = state => {
   return state.toJS();
 };
+
 
 class MultipleConnected extends React.Component {
   static propTypes = {
@@ -48,8 +50,14 @@ class MultipleConnected extends React.Component {
       },
     });
   }
-
+//
   render() {
+    const parentDispatch = action => this.props.root.actions.todos({ action });
+    const todoListActions = bindActionCreators(
+      todosModule.actions,
+      parentDispatch
+    );
+    const collection = Object.keys(this.props.todos || {}).reduce((arr, key) => arr.concat(this.props.todos[key]), [])
     return (
       <div>
         {
@@ -57,6 +65,10 @@ class MultipleConnected extends React.Component {
             return `${attr} ${JSON.stringify(this.props[attr])}`;
           })
         }
+        <TodoList
+          collection={collection}
+          actions={todoListActions}
+        />
       </div>
     );
   }
