@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import todosModule from '../modules/todos';
+import rootModule from '../modules/root';
 import counterModule from '../modules/counter';
 import { connectModule } from '../../../src/index';
 import TodoList from '../components/TodoList';
@@ -29,6 +29,10 @@ class MultipleConnected extends React.Component {
     }),
   };
 
+  componentDidMount() {
+
+  }
+
   render() {
     return (
       <div>
@@ -40,6 +44,6 @@ class MultipleConnected extends React.Component {
 
 export default connectModule(
   mapState,
-  [todosModule],
+  [rootModule],
   MultipleConnected
 );
