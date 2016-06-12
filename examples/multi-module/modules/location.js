@@ -7,7 +7,7 @@ const { shape, number, string, bool } = PropTypes;
 
 export default createModule({
   name: 'location',
-  initialState: List(),
+  initialState: Map(),
   transformations: [
     {
       action: 'INIT',

@@ -2,6 +2,8 @@ import { createModule } from '../../../src/index';
 import { PropTypes } from 'react';
 import { fromJS, List } from 'immutable';
 
+import todoModule from './todo';
+
 const { shape, number, string, bool } = PropTypes;
 
 export default createModule({
@@ -13,10 +15,11 @@ export default createModule({
       payloadTypes: {
         description: string.isRequired,
       },
+      middleware: [ uuidMiddleware ],
       composes: [
         {
           reducer: todoModule.reducer,
-          path: [ action.payload.id ]
+          path: [ action.payload.id ],
           action: payload => todoModule.actions.init(),
         }
       ],
