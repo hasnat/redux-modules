@@ -56,6 +56,8 @@ const reducer = (state = List(), action) => {
       return state.push(fromJS(action.payload));
     case constants.delete:
       return state.delete(action.payload.index);
+    default:
+      return state;
   }
 }
 ```
