@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { curry } from 'ramda';
 
 import combineNamespacedProps from './combineNamespacedProps';
 
@@ -11,7 +12,7 @@ const nestedBindDispatch = modules => dispatch =>
   }, {});
 
 
-export const connectModules = (selector, modules, Component) => {
+function connectModules({ selector, modules }, Component) {
   const nestedBoundActions = nestedBindDispatch(modules);
 
   return connect(
@@ -21,4 +22,4 @@ export const connectModules = (selector, modules, Component) => {
   )(Component);
 }
 
-export default connectModules;//curry(connectModules);
+export default curry(connectModules);

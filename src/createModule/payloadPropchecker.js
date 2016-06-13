@@ -1,3 +1,6 @@
+import { keys, forEach, compose } from 'ramda';
+
+const defaultPropCheck = () => {};
 const defaultOnError = err => {
   // eslint-disable-next-line no-console
   console.error(
@@ -6,19 +9,24 @@ const defaultOnError = err => {
   );
 };
 
+const createPropCheck = (formattedConstant, onError) => (payloadTypes, payload) => type => {
+  const propChecker = payloadTypes[type] || defaultPropCheck;
+  const typeError = propChecker(payload, type, formattedConstant, 'prop') || {};
+  const { message } = typeError;
+
+  if (message) {
+    onError(message);
+  }
+};
+
 export const propCheckedPayloadCreator = (onError = defaultOnError) =>
   ({ payloadTypes, formattedConstant }, { payload, meta }) => {
-    // Object.keys may be preferable in cases where payloadTypes has a prototype chain
-    for (const key in payloadTypes) {
-      const propChecker = payloadTypes[key];
-      if (typeof propChecker === 'undefined') {
-        continue;
-      }
-      const { message } = propChecker(payload, key, formattedConstant, 'prop') || {};
-      if (message) {
-        onError(message);
-      }
-    }
+    const propCheck = createPropCheck(formattedConstant, onError);
+
+    compose(
+      forEach(propCheck(payloadTypes, payload)),
+      keys
+    )(payloadTypes);
 
     return { payload, meta };
   };
