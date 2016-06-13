@@ -6,8 +6,8 @@ The main API used in `redux-modules` is `createModule`. It expects a single para
 import { createModule } 'redux-modules';
 
 export default createModule({
-  name: 'counter',
-  initialState: 0,
+  name: 'todos',
+  initialState: Map(),
   transformations: [
     {
       action: 'INCREMENT',
