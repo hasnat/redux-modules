@@ -19,6 +19,14 @@
     "store"
   ],
   "author": "Marcus Bernales",
+  "bugs": {
+    "url": "https://github.com/mboperator/redux-modules/issues"
+  },
+  "homepage": "https://github.com/mboperator/redux-modules",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mboperator/redux-modules.git"
+  },
   "license": "ISC",
   "dependencies": {
     "camel-case": "^1.2.2",
