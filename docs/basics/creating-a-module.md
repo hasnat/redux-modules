@@ -32,6 +32,9 @@ export default createModule({
 
 The `name` specified is used to prefix the actions defined in the `transformations` array. The `initialState` is the initial state of the reducer for this piece of the state tree. The `transformations` key contains an array of objects which represent different state transformations.
 
+# API
+> createModule({ name, initialState, transformations })
+
 ## name
 > string
 
