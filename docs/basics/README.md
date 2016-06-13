@@ -1,6 +1,2 @@
 # Basics
-
-* Creating a module
-* Connecting a module
-* createModule Output
-
+This section will walk you through the process of creating and connecting a `redux-module`.
