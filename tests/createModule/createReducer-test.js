@@ -21,6 +21,7 @@ const mockTransforms = [
 ];
 
 describe('createReducer', () => {
+  // eslint-disable-next-line new-cap
   const generatedReducer = createReducer(Map(), mockTransforms);
 
   it('should generate a function', () => {
@@ -28,25 +29,22 @@ describe('createReducer', () => {
   });
 
   describe('reducer function', () => {
-    it('takes a state and an action', () => {
-      generatedReducer.length.should.equal(2);
-    });
-
     it('given a state and action, transforms the state', () => {
       const mockAction1 = {
         type: 'mock/MOCK_ONE',
         payload: {},
       };
-
+      // eslint-disable-next-line new-cap
       generatedReducer(Map(), mockAction1)
         .should
+        // eslint-disable-next-line new-cap
         .equal(Map());
 
       const mockAction2 = {
         type: 'mock/MOCK_TWO',
         payload: { foo: 'bar' },
       };
-
+      // eslint-disable-next-line new-cap
       generatedReducer(Map(), mockAction2)
         .should
         .equal(fromJS({ payload: { foo: 'bar' } }));
@@ -58,6 +56,7 @@ describe('createReducer', () => {
         payload: {},
       };
 
+      // eslint-disable-next-line new-cap
       generatedReducer(Map(), mockAction).should.equal(Map());
     });
   });
