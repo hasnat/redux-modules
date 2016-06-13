@@ -61,3 +61,5 @@ const reducer = (state = List(), action) => {
   }
 }
 ```
+
+Note that I say *roughly* equivalent because additional features like payload type checking and middleware are not reflected in this generated output.
