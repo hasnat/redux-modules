@@ -1,6 +1,6 @@
-# The Transformation Object
+# The Transformations Array
 
-The `transformation` object serves as the definition of a state transformation. The object contains `action`, `middleware`, `payloadTypes`, and `reducer` keys.
+The `transformations` array contains objects which define different state transformations. These objects contain `action`, `middleware`, `payloadTypes`, and `reducer` keys.
 
 ```js
 {
@@ -12,5 +12,6 @@ The `transformation` object serves as the definition of a state transformation. 
     state.setIn(['collection', payload.id], fromJS(payload)),
 }
 ```
+> Example transformation object
 
 Each of these objects gets turned into an `action creator`, a formatted `constant` prefixed with the module name, and a key in the module's `reducer`.
