@@ -10,7 +10,6 @@ const nestedBindDispatch = modules => dispatch =>
     return bna;
   }, {});
 
-
 export const connectModules = (selector, modules, Component) => {
   const nestedBoundActions = nestedBindDispatch(modules);
 
