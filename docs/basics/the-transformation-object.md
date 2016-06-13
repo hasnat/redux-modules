@@ -26,6 +26,11 @@ The name of the action. This is used to create a constant `<moduleName>/<action>
 
 PropTypes for your actions. Payload types define the payload that we're expecting to call the action creator with. The console will log an error for every key in the payload that fails type validation.
 
+## middleware
+> array of function(action) // {payload, meta}
+
+Middleware is an array of functions that receive {payload, meta} and return {payload, meta}. These functions serve to decorate the action before it's received by the reducer.
+
 ## reducer
 > function(state, action)
 
