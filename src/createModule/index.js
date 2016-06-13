@@ -14,7 +14,7 @@ export const createModule = ({ name, transformations, initialState = Map() }) =>
     name,
     actions: createActions(formattedTransformations),
     reducer: createReducer(initialState, formattedTransformations),
-    constants: createConstants(formattedTransformations)
+    constants: createConstants(formattedTransformations),
   };
 };
 

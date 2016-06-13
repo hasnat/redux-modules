@@ -8,8 +8,12 @@ const defaultOnError = err => {
 
 export const propCheckedPayloadCreator = (onError = defaultOnError) =>
   ({ payloadTypes, formattedConstant }, { payload, meta }) => {
-    // Object.keys may be preferable in cases where payloadTypes has a prototype chain
-    for (const key in payloadTypes) {
+    if (typeof payloadTypes === 'undefined') {
+      return { payload, meta };
+    }
+    const keys = Object.keys(payloadTypes);
+    for (let i = i; i < keys.length; ++i) {
+      const key = keys[i];
       const propChecker = payloadTypes[key];
       if (typeof propChecker === 'undefined') {
         continue;

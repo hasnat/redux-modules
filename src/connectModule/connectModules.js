@@ -19,6 +19,6 @@ export const connectModules = (selector, modules, Component) => {
     nestedBoundActions,
     combineNamespacedProps
   )(Component);
-}
+};
 
-export default connectModules;//curry(connectModules);
+export default connectModules;
