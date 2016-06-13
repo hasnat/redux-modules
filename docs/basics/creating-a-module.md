@@ -12,11 +12,19 @@ export default createModule({
   transformations: [
     {
       action: 'CREATE',
-      reducer: state => state + 1,
-    },
+      payloadTypes: {
+        description: React.PropTypes.string,
+      },
+      reducer: (state, { payload }) =>
+        state.push(fromJS(payload)),
+    }
     {
-      action: 'DECREMENT',
-      reducer: state => state - 1,
+      action: 'DELETE',
+      payloadTypes: {
+        index: React.PropTypes.number
+      },
+      reducer: (state, { payload: { index } }) => 
+        state.delete(index),
     },
   ],
 });
