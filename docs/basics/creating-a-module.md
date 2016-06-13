@@ -43,6 +43,10 @@ Used to prefix the actions defined in the `transformations` array, as well as na
 ## initialState
 > any
 
+> default: Map()
+
+> optional
+
 The initialState of this portion of the state tree.
 
 ## transformations
