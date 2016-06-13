@@ -1,4 +1,4 @@
-# The Transformations Array
+# The Transformation Object
 
 The `transformations` array contains objects which define different state transformations. These objects contain `action`, `middleware`, `payloadTypes`, and `reducer` keys.
 
