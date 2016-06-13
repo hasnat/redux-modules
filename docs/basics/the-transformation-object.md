@@ -17,3 +17,5 @@ The `transformations` array contains objects which define different state transf
 > Example transformation object
 
 ## action
+> string
+> 
