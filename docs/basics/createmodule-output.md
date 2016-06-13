@@ -1,9 +1,6 @@
 # createModule Output
 
 ```js
-import { createModule } 'redux-modules';
-import { List } from 'immutable';
-
 export default createModule({
   name: 'todos',
   initialState: List(),
