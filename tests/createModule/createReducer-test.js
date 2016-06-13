@@ -28,10 +28,6 @@ describe('createReducer', () => {
   });
 
   describe('reducer function', () => {
-    it('takes a state and an action', () => {
-      generatedReducer.length.should.equal(2);
-    });
-
     it('given a state and action, transforms the state', () => {
       const mockAction1 = {
         type: 'mock/MOCK_ONE',
