@@ -41,3 +41,8 @@ Used to prefix the actions defined in the `transformations` array, as well as na
 > any
 
 The initialState of this portion of the state tree.
+
+## transformations
+> array
+
+An array of objects that define state transformations.
