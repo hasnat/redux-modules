@@ -52,7 +52,15 @@ export const { actions, reducer, constants } = createModule({
 export default reducer;
 
 // src/views/events/List.jsx
-@connectModule(state => state.get('todos').toJS(), todoModule)
+const selector = state => {
+  return {
+    todos: {
+      collection: state.get('todos').toJS(),
+    }
+  };
+};
+
+@connectModule(selector, todoModule)
 export default class TodoList extends Component {
   static propTypes = {
     todos: shape({
