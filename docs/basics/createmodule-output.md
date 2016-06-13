@@ -1,19 +1,25 @@
 # createModule Output
 
 ```js
-import { createModule } 'redux-modules';
-
-const { actions, reducer, constants } = createModule({
-  name: 'counter',
-  initialState: 0,
+export default createModule({
+  name: 'todos',
+  initialState: List(),
   transformations: [
     {
-      action: 'INCREMENT',
-      reducer: state => state + 1,
-    },
+      action: 'CREATE',
+      payloadTypes: {
+        description: React.PropTypes.string,
+      },
+      reducer: (state, { payload }) =>
+        state.push(fromJS(payload)),
+    }
     {
-      action: 'DECREMENT',
-      reducer: state => state - 1,
+      action: 'DELETE',
+      payloadTypes: {
+        index: React.PropTypes.number
+      },
+      reducer: (state, { payload: { index } }) => 
+        state.delete(index),
     },
   ],
 });
@@ -23,17 +29,36 @@ Generates something *roughly* equivalent to the following:
 
 ```js
 const constants = {
-  increment: 'counter/INCREMENT',
-  decrement: 'counter/DECREMENT',
+  create: 'todos/CREATE',
+  delete: 'todos/DELETE',
 };
 
 const actions = {
-  increment: createAction(constants.increment),
-  decrement: createAction(constants.decrement),
+  create(payload, meta) {
+    return {
+      type: constants.create,
+      payload,
+      meta,
+    };
+  },
+  delete(payload, meta) {
+    return {
+      type: constants.delete,
+      payload,
+      meta,
+    };
+  },
 };
 
-const reducer = handleActions({
-  [constants.increment]: state => state + 1,
-  [constants.decrement]: state => state - 1,
-});
+const reducer = (state = List(), action) => {
+  switch (action.type) {
+    case constants.create:
+      return state.push(fromJS(action.payload));
+    case constants.delete:
+      return state.delete(action.payload.index);
+    default:
+      return state;
+  }
+}
 ```
+> This example output does not reflect `payload type checking` or `action middleware`.
