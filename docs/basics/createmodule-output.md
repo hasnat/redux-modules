@@ -34,8 +34,20 @@ const constants = {
 };
 
 const actions = {
-  create: createAction(constants.create),
-  delete: createAction(constants.delete),
+  create(payload, meta) {
+    return {
+      type: constants.create,
+      payload,
+      meta,
+    };
+  },
+  delete(payload, meta) {
+    return {
+      type: constants.delete,
+      payload,
+      meta,
+    };
+  },
 };
 
 const reducer = (state = List(), action) => {
