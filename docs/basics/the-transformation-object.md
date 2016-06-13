@@ -11,7 +11,7 @@ The `transformations` array contains objects which define different state transf
     description: React.PropTypes.string,
   },
   reducer: (state, { payload }) =>
-    state.setIn(['collection', payload.id], fromJS(payload)),
+    state.push(fromJS(payload)),
 }
 ```
 > Example transformation object
