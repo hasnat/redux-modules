@@ -18,4 +18,5 @@ The `transformations` array contains objects which define different state transf
 
 ## action
 > string
-> 
+
+The name of the action.
