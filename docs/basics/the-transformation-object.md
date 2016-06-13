@@ -29,7 +29,7 @@ PropTypes for your actions. Payload types define the payload that we're expectin
 ## middleware
 > array of function(action) // {payload, meta}
 
-Middleware is an array of functions that receive {payload, meta} and return {payload, meta}. These functions serve to decorate the action before it's received by the reducer.
+Middleware is an array of functions that receive {payload, meta} and return {payload, meta}. These functions can be used to decorate the action before it's received by the reducer.
 
 ## reducer
 > function(state, action)
