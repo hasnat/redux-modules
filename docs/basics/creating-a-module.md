@@ -4,13 +4,14 @@ The main API used in `redux-modules` is `createModule`. It expects a single para
 
 ```js
 import { createModule } 'redux-modules';
+import { List } from 'immutable';
 
 export default createModule({
   name: 'todos',
-  initialState: 0,
+  initialState: List(),
   transformations: [
     {
-      action: 'INCREMENT',
+      action: 'CREATE',
       reducer: state => state + 1,
     },
     {
