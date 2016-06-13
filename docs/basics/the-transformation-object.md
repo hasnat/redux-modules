@@ -14,4 +14,4 @@ The `transformations` array contains objects which define different state transf
 ```
 > Example transformation object
 
-Each of these objects gets turned into an `action creator`, a formatted `constant` prefixed with the module name, and a key in the module's `reducer`.
+`createModule` uses these definitions to generate `action creators`, `constants`, and the final reducer.
