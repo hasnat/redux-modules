@@ -4,7 +4,7 @@
 import { createModule } 'redux-modules';
 
 const { actions, reducer, constants } = createModule({
-  name: 'counter',
+  name: 'todos',
   initialState: 0,
   transformations: [
     {
