@@ -12,7 +12,7 @@ export const propCheckedPayloadCreator = (onError = defaultOnError) =>
       return { payload, meta };
     }
     const keys = Object.keys(payloadTypes);
-    for (let i = i; i < keys.length; ++i) {
+    for (let i = 0; i < keys.length; ++i) {
       const key = keys[i];
       const propChecker = payloadTypes[key];
       if (typeof propChecker === 'undefined') {
