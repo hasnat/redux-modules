@@ -8,12 +8,12 @@ const mockModule = createModule({
   name: 'mock',
   initialState: 0,
   transformations: [
-    { action: 'INCREMENT', reducer: state => state + 1},
-    { action: 'DECREMENT', reducer: state => state - 1},
+    { action: 'INCREMENT', reducer: state => state + 1 },
+    { action: 'DECREMENT', reducer: state => state - 1 },
   ],
 });
 
-const selector = state => { return { count: state } };
+const selector = state => { return { count: state }; };
 
 const MockComponent = props => (
   <div>

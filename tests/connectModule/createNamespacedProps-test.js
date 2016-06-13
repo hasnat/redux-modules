@@ -26,7 +26,7 @@ describe('createNamespacedProps', () => {
 
     it('should nest actions under actions key', () => {
       expect(generatedProps.actions).to.deep.equal(dispatchProps);
-    })
+    });
 
     it('should contain props', () => {
       expect(generatedProps).to.contain(props);
@@ -48,7 +48,7 @@ describe('createNamespacedProps', () => {
 
     it('should nest actions under actions key', () => {
       expect(generatedProps[namespace].actions).to.deep.equal(dispatchProps);
-    })
+    });
 
     it('should contain props NOT under namespace key', () => {
       expect(generatedProps).to.contain(props);
@@ -57,5 +57,5 @@ describe('createNamespacedProps', () => {
     it('should contain mapState props under namespace key', () => {
       expect(generatedProps[namespace]).to.contain(stateProps);
     });
-  })
+  });
 });

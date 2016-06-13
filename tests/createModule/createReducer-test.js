@@ -15,7 +15,7 @@ const mockTransforms = [
   {
     action: 'MOCK_TWO',
     formattedConstant: 'mock/MOCK_TWO',
-    reducer: (state, {payload}) =>
+    reducer: (state, { payload }) =>
       state.set('payload', fromJS(payload)),
   },
 ];
@@ -35,7 +35,7 @@ describe('createReducer', () => {
     it('given a state and action, transforms the state', () => {
       const mockAction1 = {
         type: 'mock/MOCK_ONE',
-        payload: {}
+        payload: {},
       };
 
       generatedReducer(Map(), mockAction1)
@@ -49,13 +49,13 @@ describe('createReducer', () => {
 
       generatedReducer(Map(), mockAction2)
         .should
-        .equal(fromJS({payload: {foo: 'bar'}}));
+        .equal(fromJS({ payload: { foo: 'bar' } }));
     });
 
     it('should not respond to actions not stated in transformations', () => {
       const mockAction = {
         type: 'mock/MOCK_THREE',
-        payload: {}
+        payload: {},
       };
 
       generatedReducer(Map(), mockAction).should.equal(Map());

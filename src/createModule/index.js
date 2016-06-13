@@ -5,7 +5,7 @@ import createConstants from './createConstants';
 import formatConstants from './formatConstants';
 import { Map } from 'immutable';
 
-const _generateReduxComponents = (name, initialState) => transformations => {
+const generateReduxComponents = (name, initialState) => transformations => {
   const generated = {
     name,
     actions: createActions(transformations),
@@ -16,9 +16,10 @@ const _generateReduxComponents = (name, initialState) => transformations => {
   return generated;
 };
 
-export const createModule = ({name, transformations, initialState = Map()}) => {
+// eslint-disable-next-line new-cap
+export const createModule = ({ name, transformations, initialState = Map() }) => {
   const generated = compose(
-    _generateReduxComponents(name, initialState),
+    generateReduxComponents(name, initialState),
     formatConstants(name)
   )(transformations);
 
