@@ -7,7 +7,7 @@ import { createModule } 'redux-modules';
 
 export default createModule({
   name: 'todos',
-  initialState: Map(),
+  initialState: List(),
   transformations: [
     {
       action: 'INCREMENT',
