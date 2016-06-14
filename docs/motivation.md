@@ -62,3 +62,16 @@ export const reducer = (state = List(), action) => {
 Both of these approaches disconnect the `constant`, the `action creator`, and the accompanying `reducer`. 
 
 Furthermore neither approach scales ideally. The standard Redux route generates 3 files of the same name for every new reducer. The duck/module paradigm grows out of control after about 10 actions, requiring the developer to frantically scroll up and down or open the file in another split.
+
+## A simpler solution
+`redux-modules` aims to streamline the process of defining state transformations by combining the `constant`, `action creator`, and `reducer` into a single object.
+
+```js
+{
+  action: 'CREATE',
+  reducer: (state, {payload}) => 
+    state.push(fromJS(payload)),
+}
+```
+
+These transformations as well as additional information, like the action prefix and reducer's initial state are defined in the `module definition` that's fed into `createModule`.
