@@ -53,7 +53,7 @@ export default const App = props => (
 )
 ```
 
-The last step is to wire it up to the view
+The last step is to connect the module to the view. This works like a normal Redux `connect` with the added bonus of auto dispatching and namespacing actions.
 
 #### src/views/Todos.jsx
 ```js
