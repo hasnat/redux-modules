@@ -82,6 +82,8 @@ export default class Todos extends Component {
 
 That's it!
 
-# Motivation
-# Basic Concepts
-# API Documentation
+# Documentation
+- Introduction
+- Motivation
+- Basic Concepts
+- API Reference
