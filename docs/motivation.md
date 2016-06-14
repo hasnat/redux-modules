@@ -69,9 +69,11 @@ Furthermore neither approach scales ideally. The standard Redux route generates 
 ```js
 {
   action: 'CREATE',
+  payloadTypes: { decription: string.isRequired },
   reducer: (state, {payload}) => 
     state.push(fromJS(payload)),
 }
 ```
+Combining these concepts into one object allows us to add extra functionality, such as `action middleware` and `propType` style payload introspection.
 
 These transformations as well as additional information, like the action prefix and reducer's initial state are defined in the `module definition` that's fed into `createModule`.
