@@ -2,14 +2,14 @@
 
 `redux-modules` was developed to simplify how state transformations are `defined` and how they're `exposed` to the view.
 
-## Making a better state transformation
+## Defining state transformations
 
-To create a state transformation we need a few ingredients:
+A state transformation is made up of the following:
 - an action constant
 - an action creator
 - a reducer function
 
-The following are common folder structures in the Redux community:
+These pieces are often divided into separate files, eg:
 ```
 actions/
   todos.js
@@ -22,15 +22,10 @@ containers/
 App.jsx
 ```
 
+or combined into the same file, but separated conceptually:
+
 ```
-todos/
-  components/
-    TodoList.jsx
-  actions.js
-  constants.js
-  index.js
-  reducer.js
-App.jsx
+
 ```
 
 To create a new state transformation given these folder structures one must create or modify at least `3` files. Additionally these files are 
