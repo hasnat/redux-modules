@@ -80,7 +80,7 @@ export default class Todos extends Component {
   };
 ```
 
-That's it!
+That's it! Check the documentation for comparisons
 
 # Documentation
 - Introduction
