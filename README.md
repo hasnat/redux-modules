@@ -30,12 +30,8 @@ export default createModule({
           description: string.isRequired,
         }),
       },
-      reducer: (state, {payload: { todo }}) => {
-        return state.update(
-          'collection',
-          todos => todos.push(fromJS(todo))
-        );
-      },
+      reducer: (state, {payload: { todo }}) =>
+        state.update('collection', todos => todos.push(fromJS(todo))),
     },
     {
       action: 'DESTROY',
@@ -43,11 +39,7 @@ export default createModule({
         index: number.isRequired,
       },
       reducer: (state, {payload: { index }}) => {
-        return state.update(
-          'collection',
-          todos => todos.delete(index)
-        );
-      },
+        state.update('collection', todos => todos.delete(index)),
     },
   ],
 });
