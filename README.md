@@ -82,43 +82,6 @@ export default class Todos extends Component {
 
 That's it!
 
-# Documentation
-
-### createModule({ name, initialState, transformations })
-```js
-const { actions, reducer, constants } = createModule({
-  name: 'users',
-  initialState: {},
-  transformations: [ /* array of transformation objects */ ],
-});
-```
-### parameters:
-- name (_string_): Name of module, used to prefix action types.
-- transformations (_array_): Array of `transformation` objects.
-- initialState (_any_): Initial store state. Defaults to immutable Map if undefined
-
-### Transformation Object
-```js
-{
-  action: 'CREATE_TODO',
-  payloadTypes: {
-    todo: PropTypes.shape({
-      description: PropTypes.string.isRequired,
-    }).isRequired,
-  },
-  reducer: (state, {todo}) => state.set(todo.id, todo),
-},
-```
-#### Attributes:
-- action (_string_): Action constant
-- payloadTypes (_object_): Like React PropTypes, but for your action payload.
-- reducer (_function(state, action)_): State transformation that corresponds to the action
-
-## connectModule(selector, module, Component)
-```js
-@connectModule(state => state.get('todos').toJS(), todoModule)
-```
-### Parameters
-- selector _(function)_: A function that receives state, props, and returns an object
-- module _(object)_: A redux module object
-- Component _(function or class)_: A React Component
+# Motivation
+# Basic Concepts
+# API Documentation
