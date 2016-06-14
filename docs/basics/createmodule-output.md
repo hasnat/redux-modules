@@ -1,4 +1,4 @@
-# createModule Output
+# Generated Module
 
 ```js
 export default createModule({
