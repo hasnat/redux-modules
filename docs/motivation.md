@@ -1,6 +1,6 @@
 # Motivation
 
-`redux-modules` was developed to simplify how state transformations are `defined` and how they're `exposed` to the view.
+`redux-modules` was developed to simplify how state transformations are **defined** and how they're **exposed** to the view.
 
 ## Defining state transformations
 
