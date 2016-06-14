@@ -9,7 +9,7 @@ A state transformation is made up of the following:
 - an action creator
 - a reducer function
 
-These pieces are often divided into separate files, eg:
+One strategy is to divide these pieces into separate files:
 ```
 actions/
   todos.js
@@ -21,14 +21,16 @@ containers/
   TodoList.jsx
 App.jsx
 ```
+In this example, to add a single new action three files must be modified. To create an entirely new set of transformations, three files must be created.
 
-or combined into the same file, but separated conceptually:
-
+The `redux module` proposition aims to consolidate these pieces into a single file, but they remain conceptually distinct:
 ```js
+// constants
 export const CREATE_TODO = 'todos/CREATE';
 export const DELETE_TODO = 'todos/DELETE';
 
-export function create(payload, meta) {
+// action creators
+export function createTodo(payload, meta) {
   return {
     type: CREATE_TODO,
     payload,
@@ -36,7 +38,7 @@ export function create(payload, meta) {
   };
 }
 
-export function delete(payload, meta) {
+export function deleteTodo(payload, meta) {
   return {
     type: DELETE_TODO,
     payload,
@@ -44,6 +46,7 @@ export function delete(payload, meta) {
   };
 }
 
+// reducer
 export const reducer = (state = List(), action) => {
   switch (action.type) {
     case CREATE_TODO:
@@ -55,6 +58,9 @@ export const reducer = (state = List(), action) => {
   }
 }
 ```
-```
 
-To create a new state transformation given these folder structures one must create or modify at least `3` files. Additionally these files are 
+Both of these approaches disconnect the `constant`, the `action creator`, and the accompanying `reducer`. Furthermore neither approach scales ideally
+- The standard Redux route generates 3 files of the same name for every new reducer
+- The duck/module paradigm grows out of control after about 10 actions, requiring the developer to frantically scroll up and down or open the file in another split.
+
+This library pulls these three pieces
