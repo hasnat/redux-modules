@@ -41,7 +41,7 @@ export default createModule({
 });
 ```
 
-Now we add the reducer to our store
+Once the module is complete, the reducer has to be added to the store.
 #### src/App.jsx
 ```js
 const store = createStore(todoModule.reducer, List());
