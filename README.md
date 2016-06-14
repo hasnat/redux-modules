@@ -11,7 +11,7 @@
 `npm install redux-modules --save`
 
 ### Usage Example
-Here's an example of a simple todo app. It can create todos and destroy them.
+Here's an example of a simple todo app. First create a module that allows todos to be created and destroyed.
 
 #### src/modules/todos.js
 ```js
