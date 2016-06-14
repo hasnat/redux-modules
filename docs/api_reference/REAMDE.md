@@ -1,6 +1,10 @@
 # API Reference
 
-## `createModule({ name, initialState, transformations })`
+- createModule({ name, initialState, transformations })
+  - transformation object ({ })
+- connectModule(selector, moduleOrModules)
+
+## `createModule`
 
 ### name
 > string
