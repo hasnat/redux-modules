@@ -19,7 +19,7 @@ const { shape, string, number } = PropTypes;
 import createModule from 'redux-modules';
 import { fromJS, List } from 'immutable';
 
-export const { actions, reducer, constants } = createModule({
+export default createModule({
   name: 'todos',
   initialState: List(),
   transformations: [
@@ -51,10 +51,29 @@ export const { actions, reducer, constants } = createModule({
     },
   ],
 });
+```
 
-export default reducer;
+Now we add the reducer to our store
+```js
+// src/App.jsx
+import { createStore } from 'redux';
+import { List } from 'immutable';
+import todoModule from './modules/todo';
+import Todos from './views/Todos';
 
-// src/views/events/List.jsx
+const store = createStore(todoModule.reducer, List());
+
+export default const App = props => (
+  <Provider store={store}>
+    <Todos {...props}/>
+  </Provider>
+)
+```
+
+The last step is to wire it up to the view
+
+```js
+// src/views/Todos.jsx
 const selector = state => {
   return {
     todos: {
@@ -64,7 +83,7 @@ const selector = state => {
 };
 
 @connectModule(selector, todoModule)
-export default class TodoList extends Component {
+export default class Todos extends Component {
   static propTypes = {
     todos: shape({
       // exposed by selector
