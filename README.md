@@ -1,10 +1,11 @@
 # redux-modules [![Circle CI](https://circleci.com/gh/mboperator/redux-modules/tree/master.svg?style=svg)](https://circleci.com/gh/mboperator/redux-modules/tree/master)
 
-This library is a refinement on the [Redux module](https://github.com/erikras/ducks-modular-redux) concept with:
+`redux-modules` is a refinement on the [Redux module](https://github.com/erikras/ducks-modular-redux) concept with developer experience in mind. It provides:
 - an **intuitive** way define actions and state transformations
 - **propType style typechecking** for action payloads
 ![Example](https://raw.githubusercontent.com/mboperator/redux-modules/master/examples/screenshots/payloadTypes.png "redux-modules")
-- a decorator for easily passing module actions to your React view
+- a decorator for passing bound module actions to React views
+- action middleware
 
 ## [Motivation](https://mboperator.gitbooks.io/redux-modules/content/)
 
