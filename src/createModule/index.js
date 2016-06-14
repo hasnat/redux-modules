@@ -1,10 +1,8 @@
 import createActions from './createActions';
 import createReducer from './createReducer';
 import createConstants from './createConstants';
-import { Map } from 'immutable';
 
-// eslint-disable-next-line new-cap
-export const createModule = ({ name, transformations, initialState = Map() }) => {
+export const createModule = ({ name, transformations, initialState }) => {
   const formatTransformation = transformation => ({
     ...transformation,
     formattedConstant: `${name}/${transformation.action}`,
