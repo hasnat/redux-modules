@@ -56,6 +56,7 @@ export default createModule({
 Now we add the reducer to our store
 ```js
 // src/App.jsx
+import React from 'react';
 import { createStore } from 'redux';
 import { List } from 'immutable';
 import todoModule from './modules/todo';
