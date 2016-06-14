@@ -8,6 +8,8 @@ This library is a refinement on the [Redux module](https://github.com/erikras/du
 
 ## [Motivation](https://mboperator.gitbooks.io/redux-modules/content/)
 
+## Getting Started
+
 ## Example Usage
 ```js
 // src/_shared/modules/todos.js
