@@ -1,12 +1,15 @@
 # Motivation
 
-`redux-modules` was developed to streamline the process of developing React/Redux based client side applications. 
-
-This project sets out to simplify `how state transformations are defined` and `how they're expoed` to the view.
+`redux-modules` was developed to simplify how state transformations are `defined` and how they're `exposed` to the view.
 
 ## Making a better state transformation
 
+To create a state transformation we need a few ingredients:
+- an action constant
+- an action creator
+- a reducer function
 
+The following are common folder structures in the Redux community:
 ```
 actions/
   todos.js
@@ -19,8 +22,6 @@ containers/
 App.jsx
 ```
 
-or
-
 ```
 todos/
   components/
@@ -32,3 +33,4 @@ todos/
 App.jsx
 ```
 
+To create a new state transformation given these folder structures one must create or modify at least `3` files. Additionally these files are 
