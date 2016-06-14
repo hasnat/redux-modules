@@ -4,7 +4,7 @@
   "description": "A library for defining clear, boilerplate free Redux reducers.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha  --compilers js:babel-register tests/*",
+    "test": "mocha --compilers js:babel-register tests/*",
     "dev": "node -r babel-core/register scripts/webpack",
     "build": "babel src --out-dir lib",
     "lint": "eslint .",
@@ -31,8 +31,7 @@
   "dependencies": {
     "camel-case": "^1.2.2",
     "deep-assign": "^2.0.0",
-    "immutable": "^3.7.6",
-    "ramda": "^0.19.1"
+    "immutable": "^3.7.6"
   },
   "peerDependencies": {
     "react-redux": "^4.4.1",

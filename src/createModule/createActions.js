@@ -1,5 +1,4 @@
 import createAction from './createAction';
-import { reduce } from 'ramda';
 import camelize from 'camel-case';
 import payloadPropchecker from './payloadPropchecker';
 
@@ -9,7 +8,7 @@ const parsePayloadErrors = (transformation, { payload, meta }) => ({
   error: (payload instanceof Error),
 });
 
-const generateActions = (generatedActions, transformation) => {
+const generateAction = (generatedActions, transformation) => {
   const {
     action,
     middleware = [],
@@ -30,6 +29,6 @@ const generateActions = (generatedActions, transformation) => {
   return generatedActions;
 };
 
-export const createActions = transformations => reduce(generateActions, {}, transformations);
+export const createActions = transformations => transformations.reduce(generateAction, {});
 
 export default createActions;
