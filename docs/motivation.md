@@ -4,12 +4,9 @@
 
 ## Defining state transformations
 
-A state transformation is made up of the following:
-- an action constant
-- an action creator
-- a reducer function
+A state transformation is made up of an action constant, an action creator, and a reducer function. The Redux community has come up with two strategies for organizing these pieces.
 
-One strategy is to divide these pieces into separate files:
+The first strategy is to divide these pieces into separate files:
 ```
 actions/
   todos.js
@@ -21,9 +18,8 @@ containers/
   TodoList.jsx
 App.jsx
 ```
-In this example, to add a single new action three files must be modified. To create an entirely new set of transformations, three files must be created.
 
-The `redux module` proposition aims to consolidate these pieces into a single file, but they remain conceptually distinct:
+The second strategy is to combine these pieces into a single file:
 ```js
 // constants
 export const CREATE_TODO = 'todos/CREATE';
@@ -61,7 +57,7 @@ export const reducer = (state = List(), action) => {
 
 Both of these approaches disconnect the `constant`, the `action creator`, and the accompanying `reducer`. 
 
-Furthermore neither approach scales ideally. The standard Redux route generates 3 files of the same name for every new reducer. The duck/module paradigm grows out of control after about 10 actions, requiring the developer to frantically scroll up and down or open the file in another split.
+Furthermore neither approach scales ideally. The first option generates 3 files of the same name for every new reducer, while second grows out of control after about 10 actions.
 
 ## A simpler solution
 `redux-modules` aims to streamline the process of defining state transformations by combining the `constant`, `action creator`, and `reducer` into a single object.
