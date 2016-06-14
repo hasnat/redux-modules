@@ -60,7 +60,7 @@ export const reducer = (state = List(), action) => {
 Both of these approaches disconnect the `constant`, the `action creator`, and the accompanying `reducer`. Neither approach scales well as new transformations are created. The first option generates 3 files of the same name for every new reducer while second grows out of control after about 10 actions.
 
 ## A simpler solution
-`redux-modules` aims to streamline the process of defining state transformations by combining the `constant`, `action creator`, and `reducer` into a single object.
+`redux-modules` aims to streamline the process of defining state transformations by combining the `constant`  and `reducer` into a single object. `createModules` then uses these objects to generate `action creators` for each state transformations.
 
 ```js
 {
@@ -70,5 +70,4 @@ Both of these approaches disconnect the `constant`, the `action creator`, and th
     state.push(fromJS(payload)),
 }
 ```
-
-Combining these concepts into one object allows us to add extra functionality, such as `action middleware` and `propType` style payload introspection.
+By colocating these concerns, adding a new state transformation is as easy as adding a new object to an array. Additionally, by generating `action creators` dynamically we're able to inject middleware behavior such as `payload typechecking`.
