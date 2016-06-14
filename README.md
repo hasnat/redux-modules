@@ -84,7 +84,7 @@ export default class Todos extends Component {
 That's it! Check the documentation for comparisons with idiomatic Redux, in depth examples, and advanced usage.
 
 # Documentation
-- Motivation
-- Basic Concepts
+- [Motivation](https://mboperator.gitbooks.io/redux-modules/content/docs/motivation/)
+- [Basic Concepts](https://mboperator.gitbooks.io/redux-modules/content/docs/basics/)
 - Recipes
-- API Reference
+- [API Reference](https://mboperator.gitbooks.io/redux-modules/content/docs/api_reference/)
