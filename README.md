@@ -6,11 +6,12 @@
 ![Example](https://raw.githubusercontent.com/mboperator/redux-modules/master/examples/screenshots/payloadTypes.png "redux-modules")
 - a decorator for passing bound module actions to React views
 
-## [Motivation](https://mboperator.gitbooks.io/redux-modules/content/)
-
 ## Getting Started
+### Install
+`npm install redux-modules --save`
 
-## Example Usage
+### Usage Example
+Here's an example with the quintessential todo app:
 ```js
 // src/_shared/modules/todos.js
 import { PropTypes } from 'react';
