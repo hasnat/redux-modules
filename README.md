@@ -5,7 +5,6 @@
 - **propType style typechecking** for action payloads
 ![Example](https://raw.githubusercontent.com/mboperator/redux-modules/master/examples/screenshots/payloadTypes.png "redux-modules")
 - a decorator for passing bound module actions to React views
-- action middleware
 
 ## [Motivation](https://mboperator.gitbooks.io/redux-modules/content/)
 
