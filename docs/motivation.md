@@ -74,18 +74,4 @@ Furthermore neither approach scales ideally. The standard Redux route generates 
 }
 ```
 
-These transformations as well as additional information, like the action prefix and reducer's initial state are defined in the `module definition`:
-
-```js
-export default createModule({
-  name: 'todos',
-  initialState: List(),
-  transformations: [
-    {
-      action: 'CREATE',
-      reducer: (state, {payload}) => 
-        state.push(fromJS(payload)),
-    }
-  ],
-});
-```
+These transformations as well as additional information, like the action prefix and reducer's initial state are defined in the `module definition` that's fed into `createModule`.
