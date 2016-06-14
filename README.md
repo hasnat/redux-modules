@@ -80,7 +80,7 @@ export default class Todos extends Component {
   };
 ```
 
-That's it! Check the documentation for comparisons
+That's it! Check the documentation for comparisons with idiomatic Redux, in depth examples, and advanced usage.
 
 # Documentation
 - Introduction
