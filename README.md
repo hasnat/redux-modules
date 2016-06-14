@@ -86,4 +86,5 @@ That's it! Check the documentation for comparisons with idiomatic Redux, in dept
 # Documentation
 - Motivation
 - Basic Concepts
+- Recipes
 - API Reference
