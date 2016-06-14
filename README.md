@@ -1,22 +1,22 @@
 # redux-modules [![Circle CI](https://circleci.com/gh/mboperator/redux-modules/tree/master.svg?style=svg)](https://circleci.com/gh/mboperator/redux-modules/tree/master)
 
-This library is a refinement on the [Redux module](https://github.com/erikras/ducks-modular-redux) concept with:
-- an **intuitive** way define actions and state transformations
+`redux-modules` is a refinement on the [Redux module](https://github.com/erikras/ducks-modular-redux) concept with developer experience in mind. It provides:
+- An **intuitive** way define actions and state transformations
+- The ability to add action creator middleware
 - **propType style typechecking** for action payloads
 ![Example](https://raw.githubusercontent.com/mboperator/redux-modules/master/examples/screenshots/payloadTypes.png "redux-modules")
-- a decorator for easily passing module actions to your React view
+- A decorator for passing bound module actions to React views
 
-## [Detailed Docs](https://mboperator.gitbooks.io/redux-modules/content/)
+## Getting Started
+### Install
+`npm install redux-modules --save`
 
-## Example Usage
+### Usage Example
+Here's an example of a simple todo app. First create a module that allows todos to be created and destroyed.
+
+#### src/modules/todos.js
 ```js
-// src/_shared/modules/todos.js
-import { PropTypes } from 'react';
-const { shape, string, number } = PropTypes;
-import createModule from 'redux-modules';
-import { fromJS, List } from 'immutable';
-
-export const { actions, reducer, constants } = createModule({
+export default createModule({
   name: 'todos',
   initialState: List(),
   transformations: [
@@ -27,12 +27,8 @@ export const { actions, reducer, constants } = createModule({
           description: string.isRequired,
         }),
       },
-      reducer: (state, {payload: { todo }}) => {
-        return state.update(
-          'collection',
-          todos => todos.push(fromJS(todo))
-        );
-      },
+      reducer: (state, {payload: { todo }}) =>
+        state.update('collection', todos => todos.push(fromJS(todo))),
     },
     {
       action: 'DESTROY',
@@ -40,18 +36,28 @@ export const { actions, reducer, constants } = createModule({
         index: number.isRequired,
       },
       reducer: (state, {payload: { index }}) => {
-        return state.update(
-          'collection',
-          todos => todos.delete(index)
-        );
-      },
+        state.update('collection', todos => todos.delete(index)),
     },
   ],
 });
+```
 
-export default reducer;
+Once the module is complete, the reducer has to be added to the store.
+#### src/App.jsx
+```js
+const store = createStore(todoModule.reducer, List());
 
-// src/views/events/List.jsx
+export default const App = props => (
+  <Provider store={store}>
+    <Todos {...props}/>
+  </Provider>
+)
+```
+
+The last step is to connect the module to the view. This works like a normal Redux `connect` with the added bonus of auto dispatching and namespacing actions.
+
+#### src/views/Todos.jsx
+```js
 const selector = state => {
   return {
     todos: {
@@ -61,7 +67,7 @@ const selector = state => {
 };
 
 @connectModule(selector, todoModule)
-export default class TodoList extends Component {
+export default class Todos extends Component {
   static propTypes = {
     todos: shape({
       // exposed by selector
@@ -74,43 +80,11 @@ export default class TodoList extends Component {
     }),
   };
 ```
+
+That's it! Check the documentation for comparisons with idiomatic Redux, in depth examples, and advanced usage.
+
 # Documentation
-
-### createModule({ name, initialState, transformations })
-```js
-const { actions, reducer, constants } = createModule({
-  name: 'users',
-  initialState: {},
-  transformations: [ /* array of transformation objects */ ],
-});
-```
-### parameters:
-- name (_string_): Name of module, used to prefix action types.
-- transformations (_array_): Array of `transformation` objects.
-- initialState (_any_): Initial store state. Defaults to immutable Map if undefined
-
-### Transformation Object
-```js
-{
-  action: 'CREATE_TODO',
-  payloadTypes: {
-    todo: PropTypes.shape({
-      description: PropTypes.string.isRequired,
-    }).isRequired,
-  },
-  reducer: (state, {todo}) => state.set(todo.id, todo),
-},
-```
-#### Attributes:
-- action (_string_): Action constant
-- payloadTypes (_object_): Like React PropTypes, but for your action payload.
-- reducer (_function(state, action)_): State transformation that corresponds to the action
-
-## connectModule(selector, module, Component)
-```js
-@connectModule(state => state.get('todos').toJS(), todoModule)
-```
-### Parameters
-- selector _(function)_: A function that receives state, props, and returns an object
-- module _(object)_: A redux module object
-- Component _(function or class)_: A React Component
+- [Motivation](https://mboperator.gitbooks.io/redux-modules/content/docs/motivation/)
+- [Basic Concepts](https://mboperator.gitbooks.io/redux-modules/content/docs/basics/)
+- Recipes
+- [API Reference](https://mboperator.gitbooks.io/redux-modules/content/docs/api_reference/)

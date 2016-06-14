@@ -1,4 +1,4 @@
-# createModule Output
+# Generated Module
 
 ```js
 export default createModule({
@@ -25,7 +25,8 @@ export default createModule({
 });
 ```
 
-Generates something *roughly* equivalent to the following:
+
+>  This generates something *roughly* equivalent to the following:
 
 ```js
 const constants = {
