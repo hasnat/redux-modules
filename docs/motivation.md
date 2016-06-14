@@ -55,7 +55,7 @@ export const reducer = (state = List(), action) => {
 }
 ```
 
-Both of these approaches disconnect the `constant`, the `action creator`, and the accompanying `reducer`. Neither approach scales well as new transformations are created. The first option generates 3 files of the same name for every new reducer, while second grows out of control after about 10 actions.
+Both of these approaches disconnect the `constant`, the `action creator`, and the accompanying `reducer`. Neither approach scales well as new transformations are created. The first option generates 3 files of the same name for every new reducer while second grows out of control after about 10 actions.
 
 ## A simpler solution
 `redux-modules` aims to streamline the process of defining state transformations by combining the `constant`, `action creator`, and `reducer` into a single object.
