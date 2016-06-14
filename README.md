@@ -6,7 +6,7 @@ This library is a refinement on the [Redux module](https://github.com/erikras/du
 ![Example](https://raw.githubusercontent.com/mboperator/redux-modules/master/examples/screenshots/payloadTypes.png "redux-modules")
 - a decorator for easily passing module actions to your React view
 
-## [Detailed Docs](https://mboperator.gitbooks.io/redux-modules/content/)
+## [Motivation](https://mboperator.gitbooks.io/redux-modules/content/)
 
 ## Example Usage
 ```js
