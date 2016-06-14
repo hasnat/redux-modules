@@ -18,6 +18,7 @@ containers/
   TodoList.jsx
 App.jsx
 ```
+> At least 4 files must be created/modified to support a new state transformation
 
 The second strategy is to combine these pieces into a single file:
 ```js
@@ -54,6 +55,7 @@ export const reducer = (state = List(), action) => {
   }
 }
 ```
+> Readability drops as the number of actions increases
 
 Both of these approaches disconnect the `constant`, the `action creator`, and the accompanying `reducer`. Neither approach scales well as new transformations are created. The first option generates 3 files of the same name for every new reducer while second grows out of control after about 10 actions.
 
