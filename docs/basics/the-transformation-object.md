@@ -16,7 +16,7 @@ The `transformations` array contains objects which define different state transf
 ```
 > Example transformation object
 
-#API
+#Usage
 > transformations: [ {action, payloadTypes, middleware, reducer} ]
 
 ## action
