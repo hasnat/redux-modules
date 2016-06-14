@@ -11,14 +11,10 @@
 `npm install redux-modules --save`
 
 ### Usage Example
-Here's an example with the quintessential todo app:
-```js
-// src/_shared/modules/todos.js
-import { PropTypes } from 'react';
-const { shape, string, number } = PropTypes;
-import createModule from 'redux-modules';
-import { fromJS, List } from 'immutable';
+Here's an example of a simple todo app. It can create todos and destroy them.
 
+#### src/modules/todos.js
+```js
 export default createModule({
   name: 'todos',
   initialState: List(),
@@ -46,14 +42,8 @@ export default createModule({
 ```
 
 Now we add the reducer to our store
+#### src/App.jsx
 ```js
-// src/App.jsx
-import React from 'react';
-import { createStore } from 'redux';
-import { List } from 'immutable';
-import todoModule from './modules/todo';
-import Todos from './views/Todos';
-
 const store = createStore(todoModule.reducer, List());
 
 export default const App = props => (
@@ -65,8 +55,8 @@ export default const App = props => (
 
 The last step is to wire it up to the view
 
+#### src/views/Todos.jsx
 ```js
-// src/views/Todos.jsx
 const selector = state => {
   return {
     todos: {
@@ -89,6 +79,9 @@ export default class Todos extends Component {
     }),
   };
 ```
+
+That's it!
+
 # Documentation
 
 ### createModule({ name, initialState, transformations })
