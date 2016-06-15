@@ -45,13 +45,25 @@ export default createModule({
 Once the module is complete, the reducer has to be added to the store.
 #### src/App.jsx
 ```js
-const store = createStore(todoModule.reducer, List());
+const store = createStore(todoModule.provider, {});
 
 export default const App = props => (
   <Provider store={store}>
     <Todos {...props}/>
   </Provider>
 )
+
+/*
+  Alternatively, us `ModuleProvider` to allow reducers to be added to the store automatically
+*/
+
+const store = createStore(state => state, {});
+export default const App = props => (
+  <ModuleProvider store={store}>
+    <Todos {...props}/>
+  </ModuleProvider>
+)
+
 ```
 
 The last step is to connect the module to the view. This works like a normal Redux `connect` with the added bonus of auto dispatching and namespacing actions.
