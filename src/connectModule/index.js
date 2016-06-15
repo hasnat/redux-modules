@@ -1,9 +1,8 @@
-import { curry } from 'ramda';
-import _connectModules from './connectModules';
+import connectModules from './connectModules';
 
 export const connectModule = (selector, modules, Component) => {
-  const formatted = Array.isArray(modules) ? modules : [ modules ];
-  return _connectModules({selector, modules: formatted}, Component);
-}
+  const formatted = Array.isArray(modules) ? modules : [modules];
+  return connectModules(selector, formatted, Component);
+};
 
-export default curry(connectModule);
+export default connectModule;

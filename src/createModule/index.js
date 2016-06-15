@@ -1,28 +1,19 @@
-import { compose } from 'ramda';
 import createActions from './createActions';
 import createReducer from './createReducer';
 import createConstants from './createConstants';
-import formatConstants from './formatConstants';
-import { Map } from 'immutable';
 
-const _generateReduxComponents = (name, initialState) => transformations => {
-  const generated = {
+export const createModule = ({ name, transformations, initialState }) => {
+  const formatTransformation = transformation => ({
+    ...transformation,
+    formattedConstant: `${name}/${transformation.action}`,
+  });
+  const formattedTransformations = transformations.map(formatTransformation);
+  return {
     name,
-    actions: createActions(transformations),
-    reducer: createReducer(initialState, transformations),
-    constants: createConstants(transformations),
+    actions: createActions(formattedTransformations),
+    reducer: createReducer(initialState, formattedTransformations),
+    constants: createConstants(formattedTransformations),
   };
-
-  return generated;
-};
-
-export const createModule = ({name, transformations, initialState = Map()}) => {
-  const generated = compose(
-    _generateReduxComponents(name, initialState),
-    formatConstants(name)
-  )(transformations);
-
-  return generated;
 };
 
 export default createModule;

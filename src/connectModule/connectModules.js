@@ -1,43 +1,23 @@
-import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { curry, compose, reduce } from 'ramda';
 
 import combineNamespacedProps from './combineNamespacedProps';
-import recalculateReducers from './recalculateReducers';
 
-const _nestedBindDispatch = modules => dispatch =>
-  modules.reduce((bna, module) => {
-    bna[module.name] = { actions: bindActionCreators(module.actions, dispatch) };
+const nestedBindDispatch = modules => dispatch =>
+  modules.reduce((bna, { name, actions }) => {
+    // eslint-disable-next-line no-param-reassign
+    bna[name] = { actions: bindActionCreators(actions, dispatch) };
     return bna;
   }, {});
 
-function connectModules({selector, modules}, Component) {
-  const nestedBoundActions = _nestedBindDispatch(modules);
-
-  class ModuleConnector extends React.Component {
-    static contextTypes = {
-      store: React.PropTypes.object,
-    };
-
-    constructor(props, context) {
-      super(props, context);
-      recalculateReducers(modules, context.store);
-    }
-
-    render() {
-      return (
-        <Component {...this.props} />
-      );
-    }
-  }
-
+export const connectModules = (selector, modules, Component) => {
+  const nestedBoundActions = nestedBindDispatch(modules);
 
   return connect(
     selector,
     nestedBoundActions,
     combineNamespacedProps
-  )(ModuleConnector);
-}
+  )(Component);
+};
 
-export default curry(connectModules);
+export default connectModules;
