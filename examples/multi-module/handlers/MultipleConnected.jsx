@@ -52,5 +52,4 @@ class MultipleConnected extends React.Component {
 export default connectModule(
   mapState,
   [todoModule, counterModule],
-  MultipleConnected
-);
+)(MultipleConnected);

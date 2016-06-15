@@ -8,6 +8,9 @@ import DynamicReducerExample from './dynamic-reducer/app';
 
 const Examples = () => (
   <div>
+    <SingleModuleExample />
+    <MultiModuleExample />
+    <MiddlewareExample />
     <DynamicReducerExample />
   </div>
 );
