@@ -8,11 +8,11 @@ import { List } from 'immutable';
 const { array, func, number, shape } = PropTypes;
 
 const mapState = state => {
-  const { todos = List(), counter = 0} = state;
+  const { todos = List(), counter = 0 } = state;
   return {
-    todos: { collection: [ todos.toJS() ] },
+    todos: { collection: todos.toJS() },
     counter: { count: counter },
-  }
+  };
 };
 
 @connectModule(mapState, [todoModule, counterModule])
