@@ -22,8 +22,11 @@ export const connectModules = (selector, modules, Component) => {
     };
 
     constructor(props, context) {
-      super(props);
-      context.registerModule(modules);
+      super(props, context);
+
+      if (context.registerModule) {
+        context.registerModule(modules);
+      }
     }
 
     render() {
