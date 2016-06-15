@@ -1,7 +1,5 @@
-import { curry, keys, forEach, compose } from 'ramda';
-
-const defaultPropCheck = () => { return {}; };
 const defaultOnError = err => {
+  // eslint-disable-next-line no-console
   console.error(
     'Warning: Failed payloadType:',
     err
@@ -10,20 +8,23 @@ const defaultOnError = err => {
 
 export const propCheckedPayloadCreator = (onError = defaultOnError) =>
   ({ payloadTypes, formattedConstant }, { payload, meta }) => {
-    const _propCheck = (payloadTypes, payload) => type => {
-      const propChecker = payloadTypes[type] || defaultPropCheck;
-      const typeError = propChecker(payload, type, formattedConstant, 'prop') || {};
-      const { message } = typeError;
-
-      message && onError(message);
+    if (typeof payloadTypes === 'undefined') {
+      return { payload, meta };
+    }
+    const keys = Object.keys(payloadTypes);
+    for (let i = 0; i < keys.length; ++i) {
+      const key = keys[i];
+      const propChecker = payloadTypes[key];
+      if (typeof propChecker === 'undefined') {
+        continue;
+      }
+      const { message } = propChecker(payload, key, formattedConstant, 'prop') || {};
+      if (message) {
+        onError(message);
+      }
     }
 
-    compose(
-      forEach(_propCheck(payloadTypes, payload)),
-      keys
-    )(payloadTypes);
-
     return { payload, meta };
-  }
+  };
 
 export default propCheckedPayloadCreator;

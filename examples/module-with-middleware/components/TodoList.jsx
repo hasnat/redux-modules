@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import { List } from 'immutable';
 
+const { array, func, number, shape } = PropTypes;
 // TodoList View
-const TodoItem = (actions, {id, title, description, checked}, i) =>
+const TodoItem = ({id, title, description, checked, actions}) =>
   <li>
     <div className="checkbox">
       <input
         onChange={e =>
           actions.update({
-            index: i,
+            index,
             todo: {checked: e.target.checked},
           })
         }
@@ -18,10 +19,10 @@ const TodoItem = (actions, {id, title, description, checked}, i) =>
       />
     </div>
     <p>
-      {description}
+      {`${id}-${description}`}
     </p>
     <aside>
-      <button onClick={() => actions.destroy({index: i})}>
+      <button onClick={() => actions.destroy({index})}>
         Delete Todo
       </button>
     </aside>
@@ -29,12 +30,19 @@ const TodoItem = (actions, {id, title, description, checked}, i) =>
 
 export default class TodoList extends React.Component {
   static propTypes = {
-    todos: React.PropTypes.array.isRequired,
+    todos: shape({
+      collection: array,
+      actions: shape({
+        create: func,
+        destroy: func,
+        update: func,
+      }),
+    }),
   };
 
   render() {
     const { title, todos: todoProps } = this.props;
-    const { todos = [], actions } = todoProps ;
+    const { collection = [], actions } = todoProps ;
 
     return (
       <div>
@@ -58,7 +66,13 @@ export default class TodoList extends React.Component {
         </div>
 
         <ul>
-          {todos.map(TodoItem.bind(null, actions))}
+          {collection.map((item, i) =>
+            <TodoItem { ... item}
+              key={i}
+              index={i}
+              actions={actions}
+            />
+          )}
         </ul>
       </div>
     );

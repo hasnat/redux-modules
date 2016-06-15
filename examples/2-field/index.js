@@ -17,7 +17,11 @@ const module = createModule({
   ],
 });
 
-const selector = state => { return { content: state.field.toJS().content } };
+const selector = state => {
+  return {
+    field: { content: state.field.toJS().content }
+  };
+};
 
 const FieldExample = ({ field: { actions, content } }) => (
   <div>
@@ -26,7 +30,11 @@ const FieldExample = ({ field: { actions, content } }) => (
   </div>
 );
 
-const ConnectedFieldExample = connectModule(selector, module, FieldExample);
+const ConnectedFieldExample = connectModule(
+  selector,
+  module,
+  FieldExample
+);
 
 const App = wrapProvider(
   { field: module.reducer },
@@ -34,6 +42,6 @@ const App = wrapProvider(
 );
 
 document.addEventListener('DOMContentLoaded', () => {
-  const node = document.querySelector('#todos');
+  const node = document.querySelector('#examples');
   render(<App/>, node);
 });

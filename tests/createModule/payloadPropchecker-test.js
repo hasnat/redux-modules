@@ -51,7 +51,7 @@ describe('payloadPropchecker', () => {
     propCheckedPayloadCreator.length.should.equal(2);
   });
 
-  it('should throw an error when the payload doesnt match stated type', () => {
+  it('should throw an error when the payload does not match stated type', () => {
     warning.should.not.equal(false);
   });
 

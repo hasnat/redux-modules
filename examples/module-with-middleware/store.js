@@ -1,11 +1,14 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { List, fromJS } from 'immutable';
 import createLogger from 'redux-logger';
 
-import todoModule from './module';
-const { reducer } = todoModule;
+import todoModule from './modules/todo';
 
-let logger = createLogger({
+const reducer = combineReducers({
+  todos: todoModule.reducer,
+});
+
+const logger = createLogger({
   stateTransformer: object => fromJS(object).toJS(),
   actionTransformer: object => fromJS(object).toJS(),
   collapsed: true,
@@ -16,4 +19,4 @@ const createStoreWithMiddleware = compose(
   applyMiddleware(logger)
 )(createStore);
 
-export default createStoreWithMiddleware(reducer, List());
+export default createStoreWithMiddleware(reducer, List()); // eslint-disable-line new-cap

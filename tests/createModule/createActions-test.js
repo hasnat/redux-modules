@@ -25,14 +25,14 @@ describe('createActions', () => {
 
   describe('generated action', () => {
     const actionToTest = generatedActions[firstKey];
-    const result = actionToTest({foo: 'bar'});
+    const result = actionToTest({ foo: 'bar' });
 
     it('should contain a type key whose value is a well formatted action constant', () => {
       result.type.should.equal('mock/MOCK_ONE');
     });
 
     it('should handle object payloads', () => {
-      result.payload.should.deep.equal({foo: 'bar'});
+      result.payload.should.deep.equal({ foo: 'bar' });
     });
 
     it('should handle null payloads', () => {

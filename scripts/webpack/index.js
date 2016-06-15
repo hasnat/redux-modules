@@ -1,17 +1,17 @@
 import devConfig from './webpack.dev';
-import webpackDevServer from 'webpack-dev-server';
+import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 
 const HOST = 'localhost';
 const PORT = '8080';
 
-let config = devConfig;
-let contentBase = `http://${HOST}:${PORT}`;
+const config = devConfig;
+const contentBase = `http://${HOST}:${PORT}`;
 const compiler = webpack(config.toJS());
 
-console.info('Starting development server. Please wait...');
+console.info('Starting development server. Please wait...'); // eslint-disable-line no-console
 
-const server = new webpackDevServer(compiler, {
+const server = new WebpackDevServer(compiler, {
   // Configure hot replacement
   hot: true,
 
