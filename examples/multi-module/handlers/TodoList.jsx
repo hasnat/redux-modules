@@ -1,25 +1,25 @@
 import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import { List } from 'immutable';
+import todoModule from '../modules/todo';
+import { connectModule } from '../../../src/index';
+import Counter from './Counter';
 
 const { array, func, number, shape } = PropTypes;
-// TodoList View
-const TodoItem = (actions, {id, title, description, checked}, i) =>
+
+const mapState = state => {
+  return {
+    todos: { collection: [... state.todos.toJS()] },
+  }
+};
+
+const TodoItem = (actions, {title, description, checked, count = 0}, i) =>
   <li>
     <div className="checkbox">
-      <input
-        onChange={e =>
-          actions.update({
-            index: i,
-            todo: {checked: e.target.checked},
-          })
-        }
-        type='checkbox'
-        checked={checked}
-      />
+      <Counter id={i} count={count}/>
     </div>
     <p>
-      {description}
+      {`${description}-${count}`}
     </p>
     <aside>
       <button onClick={() => actions.destroy({index: i})}>
@@ -28,7 +28,7 @@ const TodoItem = (actions, {id, title, description, checked}, i) =>
     </aside>
   </li>
 
-export default class TodoList extends React.Component {
+class TodoList extends React.Component {
   static propTypes = {
     todos: shape({
       collection: array,
@@ -42,7 +42,7 @@ export default class TodoList extends React.Component {
 
   render() {
     const { title, todos: todoProps } = this.props;
-    const { collection = [], actions } = todoProps ;
+    const { collection = [], actions } = todoProps;
 
     return (
       <div>
@@ -72,3 +72,5 @@ export default class TodoList extends React.Component {
     );
   }
 }
+
+export default connectModule(mapState, todoModule, TodoList);

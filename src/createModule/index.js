@@ -2,7 +2,7 @@ import createActions from './createActions';
 import createReducer from './createReducer';
 import createConstants from './createConstants';
 
-export const createModule = ({ name, transformations, initialState }) => {
+export const createModule = ({ name, transformations, initialState, childModules }) => {
   const formatTransformation = transformation => ({
     ...transformation,
     formattedConstant: `${name}/${transformation.action}`,
@@ -11,7 +11,12 @@ export const createModule = ({ name, transformations, initialState }) => {
   return {
     name,
     actions: createActions(formattedTransformations),
-    reducer: createReducer(initialState, formattedTransformations),
+    reducer: createReducer({
+      name,
+      initialState,
+      childModules,
+      transformations: formattedTransformations,
+    }),
     constants: createConstants(formattedTransformations),
   };
 };

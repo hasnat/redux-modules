@@ -1,12 +1,23 @@
 import { createModule } from '../../../src/index';
 import { PropTypes } from 'react';
 import { fromJS, List } from 'immutable';
+import counter from './counter';
 
 const { shape, number, string, bool } = PropTypes;
 
 export default createModule({
   name: 'todos',
   initialState: List(), // eslint-disable-line new-cap
+  childModules: [
+    {
+      module: 'counter',
+      reducer: (state, action) =>
+        state.updateIn(
+          [action.meta.counter.id, 'count'],
+          count => counter.reducer(count, action)
+        ),
+    },
+  ],
   transformations: [
     {
       action: 'CREATE',

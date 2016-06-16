@@ -7,9 +7,7 @@ import MiddlewareExample from './module-with-middleware/app';
 
 const Examples = () => (
   <div>
-    <SingleModuleExample />
     <MultiModuleExample />
-    <MiddlewareExample />
   </div>
 );
 
