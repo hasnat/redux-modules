@@ -1,4 +1,4 @@
-import { expect, should } from 'chai';
+import { should } from 'chai';
 import { Map } from 'immutable';
 import createModule from '../../src/createModule';
 should();
@@ -11,6 +11,7 @@ const mockTransforms = [
 describe('createModule', () => {
   const generatedModule = createModule({
     name: 'mock',
+    // eslint-disable-next-line new-cap
     initialState: Map(),
     transformations: mockTransforms,
   });

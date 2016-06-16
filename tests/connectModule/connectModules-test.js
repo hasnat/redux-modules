@@ -1,25 +1,25 @@
-import React from 'react';
+// import React from 'react';
 import { expect, should } from 'chai';
-import { createModule, connectModule } from '../../src';
+import { connectModule } from '../../src';
 
 should();
 
-const mockModule = createModule({
-  name: 'mock',
-  initialState: 0,
-  transformations: [
-    { action: 'INCREMENT', reducer: state => state + 1 },
-    { action: 'DECREMENT', reducer: state => state - 1 },
-  ],
-});
+// const mockModule = createModule({
+//   name: 'mock',
+//   initialState: 0,
+//   transformations: [
+//     { action: 'INCREMENT', reducer: state => state + 1 },
+//     { action: 'DECREMENT', reducer: state => state - 1 },
+//   ],
+// });
 
-const selector = state => { return { count: state }; };
+// const selector = state => { return { count: state }; };
 
-const MockComponent = props => (
-  <div>
-    {JSON.stringify(props)}
-  </div>
-);
+// const MockComponent = props => (
+//   <div>
+//     {JSON.stringify(props)}
+//   </div>
+// );
 
 describe('connectModules', () => {
   it('accepts three parameters', () => {
@@ -32,7 +32,6 @@ describe('connectModules', () => {
     it('should work with a single module');
 
     it('should work with multiple modules');
-
   });
 
   describe('generated props', () => {

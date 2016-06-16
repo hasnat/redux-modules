@@ -1,7 +1,6 @@
 import { PropTypes } from 'react';
-import { expect, should } from 'chai';
+import { should } from 'chai';
 require('mocha-sinon');
-import { Map } from 'immutable';
 import payloadPropchecker from '../../src/createModule/payloadPropchecker';
 should();
 
@@ -36,6 +35,7 @@ describe('payloadPropchecker', () => {
   let warning = false;
 
   const propCheckedPayloadCreator = payloadPropchecker(err => {
+    // eslint-disable-next-line no-console
     console.error('PROP CHECKER', err);
     warning = err;
   });
