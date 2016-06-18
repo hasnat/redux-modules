@@ -22,8 +22,8 @@ const MockComponent = props => (
 );
 
 describe('connectModules', () => {
-  it('accepts three parameters', () => {
-    expect(connectModule.length).to.equal(3);
+  it('accepts two parameters', () => {
+    expect(connectModule.length).to.equal(2);
   });
 
   describe('function result', () => {
