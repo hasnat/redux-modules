@@ -31,12 +31,9 @@ export const createReducer = ({
 
     const reducer = reducerMap[action.type] || defaultReducer;
 
-    console.log('ME', name, 'META', current, ancestors);
     if (!ancestors.length) {
-      console.log('No more ancestors, running');
       return reducer(state, action);
     } else if (ancestors.length && ancestors[0].name !== name) {
-      console.log('Ancestor found, running', ancestors[0].name);
       return childReducers[ancestors[0].name](state, newAction);
     } else {
       return state;
