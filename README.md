@@ -54,10 +54,11 @@ export default const App = props => (
     <Todos {...props}/>
   </Provider>
 )
+```
 
-/*
-  Alternatively, us `ModuleProvider` to allow reducers to be added to the store automatically
-*/
+Alternatively, use `ModuleProvider` to allow reducers to be automatically added to the store at runtime.
+
+```js
 import { createModuleProvider } from 'redux-modules';
 const ModuleProvider = createModuleProvider();
 
