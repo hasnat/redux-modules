@@ -30,7 +30,7 @@ export const connectModules = (selector, modules, Component) => {
     }
 
     render() {
-      return (<Component { ...this.props } />);
+      return (<Component {...this.props} />);
     }
   }
 

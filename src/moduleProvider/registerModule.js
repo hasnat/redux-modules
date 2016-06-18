@@ -1,45 +1,35 @@
-import { curry, compose, reduce } from 'ramda';
 import { combineReducers } from 'redux';
 
-const registeredModules = {};
+let registeredModules = {};
 
-const updateRegisteredModules = reducerHash => {
-  Object.assign(registeredModules, reducerHash);
-  return reducerHash;
-};
-
-const moduleIsRegistered = name => {
-  const registeredModuleNames = Object.keys(registeredModules);
-  return registeredModuleNames.indexOf(name) !== -1;
-};
+const moduleIsRegistered = ({ name }) =>
+  registeredModules.hasOwnProperty(name);
 
 const reducerShouldBeReplaced = modules =>
-  modules.reduce((shouldReplace, { name }) => {
-    // If module isn't currently registered, reducer should be replaced
-    if (!moduleIsRegistered(name)) { return true; }
-    return shouldReplace;
-  }, false);
+  !modules.some(moduleIsRegistered);
 
-const collectReducers = (reducer, module) => {
+const collectReducers = ({ name, reducer }) => {
   // If reducer is already registered, return
-  if (reducer[module.name]) { return reducer; }
+  if (typeof reducer[name] !== 'undefined') {
+    return registeredModules;
+  }
   return {
-    ... reducer,
-    [module.name]: module.reducer,
+    ...registeredModules,
+    [name]: reducer,
   };
 };
 
-function recalculateReducers(store, modules) {
-  if (!reducerShouldBeReplaced(modules)) { return; }
+const recalculateReducers = store => modules => {
+  if (!reducerShouldBeReplaced(modules)) {
+    return;
+  }
+  // eslint-disable-next-line no-console
   console.info('Replacing reducers');
-
-  const reducer = compose(
-    combineReducers,
-    updateRegisteredModules,
-    reduce(collectReducers, registeredModules)
-  )(modules);
-
+  for (let i = 0; i < modules.length; ++i) {
+    registeredModules = collectReducers(modules[i]);
+  }
+  const reducer = combineReducers(registeredModules);
   store.replaceReducer(reducer);
-}
+};
 
-export default curry(recalculateReducers);
+export default recalculateReducers;
