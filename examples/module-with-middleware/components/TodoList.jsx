@@ -4,7 +4,7 @@ import { List } from 'immutable';
 
 const { array, func, number, shape } = PropTypes;
 // TodoList View
-const TodoItem = ({id, title, description, checked, actions}) =>
+const TodoItem = ({id, index, title, description, checked, actions}) =>
   <li>
     <div className="checkbox">
       <input
