@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux';
-
 let registeredModules = {};
 
 const moduleIsRegistered = ({ name }) =>
@@ -19,17 +17,18 @@ const collectReducers = ({ name, reducer }) => {
   };
 };
 
-const recalculateReducers = store => modules => {
-  if (!reducerShouldBeReplaced(modules)) {
-    return;
-  }
-  // eslint-disable-next-line no-console
-  console.info('Replacing reducers');
-  for (let i = 0; i < modules.length; ++i) {
-    registeredModules = collectReducers(modules[i]);
-  }
-  const reducer = combineReducers(registeredModules);
-  store.replaceReducer(reducer);
-};
+const recalculateReducers = (combineReducers, store) =>
+  modules => {
+    if (!reducerShouldBeReplaced(modules)) {
+      return;
+    }
+    // eslint-disable-next-line no-console
+    console.info('Replacing reducers');
+    for (let i = 0; i < modules.length; ++i) {
+      registeredModules = collectReducers(modules[i]);
+    }
+    const reducer = combineReducers(registeredModules);
+    store.replaceReducer(reducer);
+  };
 
 export default recalculateReducers;
