@@ -16,6 +16,8 @@ Here's an example of a simple todo app. First create a module that allows todos 
 
 #### src/modules/todos.js
 ```js
+import { createModule } from 'redux-modules';
+
 export default createModule({
   name: 'todos',
   initialState: List(),
@@ -45,7 +47,7 @@ export default createModule({
 Once the module is complete, the reducer has to be added to the store.
 #### src/App.jsx
 ```js
-const store = createStore(todoModule.provider, {});
+const store = createStore(todoModule.reducer, {});
 
 export default const App = props => (
   <Provider store={store}>
@@ -56,8 +58,11 @@ export default const App = props => (
 /*
   Alternatively, us `ModuleProvider` to allow reducers to be added to the store automatically
 */
+import { createModuleProvider } from 'redux-modules';
+const ModuleProvider = createModuleProvider();
 
 const store = createStore(state => state, {});
+
 export default const App = props => (
   <ModuleProvider store={store}>
     <Todos {...props}/>
@@ -70,6 +75,7 @@ The last step is to connect the module to the view. This works like a normal Red
 
 #### src/views/Todos.jsx
 ```js
+import { connectModule } from 'redux-modules';
 const selector = state => {
   return {
     todos: {
