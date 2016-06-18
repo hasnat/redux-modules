@@ -3,17 +3,20 @@ import todoModule from '../modules/todo';
 import counterModule from '../modules/counter';
 import { connectModule } from '../../../src/index';
 import TodoList from '../components/TodoList';
+import { List } from 'immutable';
 
 const { array, func, number, shape } = PropTypes;
 
 const mapState = state => {
+  const { todos = List(), counter = 0 } = state;
   return {
-    todos: { collection: [... state.todos.toJS()] },
-    counter: { count: state.counter },
-  }
+    todos: { collection: todos.toJS() },
+    counter: { count: counter },
+  };
 };
 
-class MultipleConnected extends React.Component {
+@connectModule(mapState, [todoModule, counterModule])
+export default class MultipleConnected extends React.Component {
   static propTypes = {
     todos: shape({
       collection: array,
@@ -49,7 +52,3 @@ class MultipleConnected extends React.Component {
   }
 }
 
-export default connectModule(
-  mapState,
-  [todoModule, counterModule],
-)(MultipleConnected);
