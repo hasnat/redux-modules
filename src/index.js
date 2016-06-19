@@ -1,7 +1,7 @@
-import exportedCreate from './createModule';
-import exportedConnect from './connectModule';
-import exportedProvider from './createModuleProvider';
+import exportCreate from './createModule';
+import exportConnect from './connectModule';
+import exportProvider from './ModuleProvider';
 
-export const createModule = exportedCreate;
-export const connectModule = exportedConnect;
-export const createModuleProvider = exportedProvider;
+export const createModule = exportCreate;
+export const connectModule = exportConnect;
+export const ModuleProvider = exportProvider;
