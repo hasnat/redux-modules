@@ -6,10 +6,15 @@ import combineNamespacedProps from './combineNamespacedProps';
 
 const { func } = PropTypes;
 
-const nestedBindDispatch = modules => dispatch =>
+const nestedBindDispatch = modules => (dispatch, props) =>
   modules.reduce((bna, { name, actions }) => {
     // eslint-disable-next-line no-param-reassign
-    bna[name] = { actions: bindActionCreators(actions, dispatch) };
+    bna[name] = {
+      actions: bindActionCreators(
+        actions,
+        props.dispatch || dispatch
+      ),
+    };
     return bna;
   }, {});
 
