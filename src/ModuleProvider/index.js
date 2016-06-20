@@ -14,7 +14,7 @@ export default class ModuleProvider extends React.Component {
       subscribe: PropTypes.func.isRequired,
       dispatch: PropTypes.func.isRequired,
       getState: PropTypes.func.isRequired,
-    }),
+    }).isRequired,
   };
 
   static childContextTypes = {

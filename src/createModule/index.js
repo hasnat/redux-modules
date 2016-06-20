@@ -14,7 +14,7 @@ const formatTransformation = (name, transformation) => ({
   ...transformation,
 });
 
-export const createModule = ({ name, transformations, initialState }) => {
+export const createModule = ({ name, initialState, selector, transformations }) => {
   const defaultMiddleware = [payloadPropchecker(), parsePayloadErrors];
   const actions = {};
   const constants = {};
@@ -38,6 +38,7 @@ export const createModule = ({ name, transformations, initialState }) => {
     constants,
     name,
     reducer,
+    selector,
   };
 };
 
