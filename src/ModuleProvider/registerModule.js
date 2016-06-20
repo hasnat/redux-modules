@@ -3,6 +3,8 @@
   const moduleIsUnregistered = ({ name }) =>
     !registeredModules.hasOwnProperty(name);
 
+  store.replaceReducer(combineReducers(registeredModules));
+
   return modules => {
     const unregisteredModules = modules.filter(moduleIsUnregistered);
     if (unregisteredModules.length === 0) {
