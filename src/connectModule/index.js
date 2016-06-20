@@ -29,11 +29,14 @@ const createModuleSelector = modules => {
 };
 
 export const connectModule = (selector, modules) => {
-  let formattedSelector = selector;
-  let formattedModules = Array.isArray(modules) ? modules : [modules];
-  if (typeof selector === 'object' && typeof modules === 'undefined') {
+  let formattedSelector;
+  let formattedModules;
+  if (typeof modules === 'undefined') {
     formattedModules = Array.isArray(selector) ? selector : [selector];
     formattedSelector = createModuleSelector(formattedModules);
+  } else {
+    formattedSelector = selector;
+    formattedModules = Array.isArray(modules) ? modules : [modules];
   }
   return Component => connectModules(formattedSelector, formattedModules, Component);
 };
