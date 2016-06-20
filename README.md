@@ -59,9 +59,7 @@ export default const App = props => (
 Alternatively, use `ModuleProvider` to allow reducers to be automatically added to the store at runtime.
 
 ```js
-import { createModuleProvider } from 'redux-modules';
-const ModuleProvider = createModuleProvider();
-
+import { ModuleProvider } from 'redux-modules';
 const store = createStore(state => state, {});
 
 export default const App = props => (
