@@ -1,15 +1,31 @@
 import connectModules from './connectModules';
 
-const createModuleSelector = modules => {
-  const moduleNames = modules.map(module => module.name);
-  // If there's only one module (as in most cases), use a simple accessor
-  if (moduleNames.length === 1) {
-    const name = moduleNames[0];
-    return state => state[name];
+const createSelectorOrDefault = ({ name, selector }) => {
+  if (typeof selector === 'function') {
+    return selector;
   }
-  // If https://github.com/reactjs/react-redux/issues/407 makes it, reselect can be used here
-  return state => moduleNames.reduce(
-    (props, name) => Object.assign(props, state[name]), {});
+  return state => state[name];
+};
+
+const createModuleSelector = modules => {
+  if (modules.length === 1) {
+    return createSelectorOrDefault(modules[0]);
+  }
+  const selectors = {};
+  for (let i = 0; i < modules.length; ++i) {
+    const module = modules[i];
+    selectors[module.name] = createSelectorOrDefault(module);
+  }
+  const keys = Object.keys(selectors);
+  return state => {
+    const props = {};
+    for (let i = 0; i < keys.length; ++i) {
+      const key = keys[i];
+      const selector = selectors[key];
+      props[key] = selector(state);
+    }
+    return props;
+  };
 };
 
 export const connectModule = (selector, modules) => {
