@@ -4,26 +4,26 @@ import { connect } from 'react-redux';
 
 import combineNamespacedProps from './combineNamespacedProps';
 
-const { func } = PropTypes;
-
-const nestedBindDispatch = modules => (dispatch, props) =>
-  modules.reduce((bna, { name, actions }) => {
-    // eslint-disable-next-line no-param-reassign
-    bna[name] = {
-      actions: bindActionCreators(
-        actions,
-        props.dispatch || dispatch
-      ),
-    };
-    return bna;
-  }, {});
+const createMapDispatchToProps = modules => (_, ownProps) => {
+  const propsDispatch = ownProps.dispatch;
+  return dispatch => {
+    const props = {};
+    for (let i = 0; i < modules.length; ++i) {
+      const { actions, name } = modules[i];
+      props[name] = {
+        actions: bindActionCreators(actions, propsDispatch || dispatch),
+      };
+    }
+    return props;
+  };
+};
 
 export const connectModules = (selector, modules, Component) => {
-  const nestedBoundActions = nestedBindDispatch(modules);
+  const mapDispatchToProps = createMapDispatchToProps(modules);
 
   class ModuleConnector extends React.Component {
     static contextTypes = {
-      registerModule: func,
+      registerModule: PropTypes.func,
     };
 
     constructor(props, context) {
@@ -41,7 +41,7 @@ export const connectModules = (selector, modules, Component) => {
 
   return connect(
     selector,
-    nestedBoundActions,
+    mapDispatchToProps,
     combineNamespacedProps
   )(ModuleConnector);
 };
