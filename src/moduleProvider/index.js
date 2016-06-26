@@ -1,29 +1,26 @@
-﻿import React, { PropTypes } from 'react';
-import { Provider } from 'react-redux';
+﻿import { Children, Component, PropTypes } from 'react';
 import { combineReducers } from 'redux';
 
 import registerModule from './registerModule';
 
-export default class ModuleProvider extends React.Component {
+import storeShape from '../utils/storeShape';
+
+export default class ModuleProvider extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     combineReducers: PropTypes.func,
     staticReducers: PropTypes.object,
-    // Alternatively, you could pull "storeShape" from "react-redux"
-    store: PropTypes.shape({
-      subscribe: PropTypes.func.isRequired,
-      dispatch: PropTypes.func.isRequired,
-      getState: PropTypes.func.isRequired,
-    }).isRequired,
+    store: storeShape.isRequired,
   };
 
   static childContextTypes = {
-    registerModule: PropTypes.func,
+    registerModule: PropTypes.func.isRequired,
+    store: storeShape.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
-    // <Provider> does not support changing "store", so "store" should always be the same instance
+    this.store = props.store;
     this.registerModule = registerModule(
       props.store,
       props.combineReducers || combineReducers,
@@ -33,15 +30,11 @@ export default class ModuleProvider extends React.Component {
   getChildContext() {
     return {
       registerModule: this.registerModule,
+      store: this.store,
     };
   }
 
   render() {
-    const { store, children } = this.props;
-    return (
-      <Provider store={store}>
-        {children}
-      </Provider>
-    );
+    return Children.only(this.props.children);
   }
 }

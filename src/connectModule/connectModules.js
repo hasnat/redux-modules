@@ -1,49 +1,182 @@
-import React, { PropTypes } from 'react';
+import hoistStatics from 'hoist-non-react-statics';
+import { Component, createElement, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-import combineNamespacedProps from './combineNamespacedProps';
+import memoizeProps from '../utils/memoizeProps';
+import Subscription from '../utils/Subscription';
+import storeShape from '../utils/storeShape';
 
-const createMapDispatchToProps = modules => (_, ownProps) => {
-  const propsDispatch = ownProps.dispatch;
-  return dispatch => {
-    const props = {};
-    for (let i = 0; i < modules.length; ++i) {
-      const { actions, name } = modules[i];
-      props[name] = {
-        actions: bindActionCreators(actions, propsDispatch || dispatch),
-      };
+import createFinalPropsSelector from '../selectors/getFinalProps';
+
+export const createMapOrMapFactoryProxy = mapToProps => {
+  let map;
+  const firstRun = (storePart, props) => {
+    const result = mapToProps(storePart, props);
+    if (typeof result === 'function') {
+      map = result;
+      return map(storePart, props);
     }
-    return props;
+    map = mapToProps;
+    return result;
+  };
+
+  const proxy = (storePart, props) => (map || firstRun)(storePart, props);
+  proxy.dependsOnProps = () => (map || mapToProps).length !== 1;
+  return proxy;
+};
+
+export const createGetState = mapStateToProps => {
+  const map = createMapOrMapFactoryProxy(mapStateToProps);
+  const memoizeMapResult = memoizeProps();
+  let lastState;
+  let lastProps;
+  let result;
+
+  return (state, props) => {
+    const nextProps = map.dependsOnProps() ? props : {};
+    if (lastState !== state || lastProps !== nextProps) {
+      result = memoizeMapResult(map(state, nextProps));
+      lastState = state;
+      lastProps = nextProps;
+    }
+    return result;
   };
 };
 
-export const connectModules = (selector, modules, Component) => {
+export const selectorFactory = ({ dispatch, mapDispatchToProps, mapStateToProps }) =>
+  createFinalPropsSelector({
+    getState: createGetState(mapStateToProps),
+    getDispatch: props => mapDispatchToProps(dispatch, props),
+  });
+
+export const createMapDispatchToProps = modules => (dispatch, ownProps) => {
+  const props = {};
+  for (let i = 0; i < modules.length; ++i) {
+    const { actions, name } = modules[i];
+    props[name] = {
+      actions: bindActionCreators(actions, ownProps.dispatch || dispatch),
+    };
+  }
+  return props;
+};
+
+let hotReloadingVersion = 0;
+export const connectModules = (mapStateToProps, modules) => {
+  const version = ++hotReloadingVersion;
   const mapDispatchToProps = createMapDispatchToProps(modules);
 
-  class ModuleConnector extends React.Component {
-    static contextTypes = {
-      registerModule: PropTypes.func,
-    };
+  return WrappedComponent => {
+    class Connect extends Component {
+      static contextTypes = {
+        registerModule: PropTypes.func,
+        store: storeShape.isRequired,
+        storeSubscription: PropTypes.instanceOf(Subscription),
+      };
 
-    constructor(props, context) {
-      super(props, context);
+      static childContextTypes = {
+        storeSubscription: PropTypes.instanceOf(Subscription).isRequired,
+      };
 
-      if (context.registerModule) {
-        context.registerModule(modules);
+      constructor(props, context) {
+        super(props, context);
+
+        this.version = version;
+        this.state = {};
+        this.store = this.context.store;
+        this.parentSub = this.context.storeSubscription;
+
+        if (context.registerModule) {
+          context.registerModule(modules);
+        }
+
+        this.initSelector();
+        this.initSubscription();
+      }
+
+      getChildContext() {
+        return { storeSubscription: this.subscription };
+      }
+
+      componentDidMount() {
+        this.subscription.trySubscribe();
+
+        if (this.lastRenderedProps !== this.selector(this.props)) {
+          this.forceUpdate();
+        }
+      }
+
+      shouldComponentUpdate(nextProps) {
+        return this.lastRenderedProps !== this.selector(nextProps);
+      }
+
+      componentWillUnmount() {
+        this.subscription.tryUnsubscribe();
+        this.subscription = { isSubscribed: () => false };
+        this.store = null;
+        this.parentSub = null;
+        this.selector = () => this.lastRenderedProps;
+      }
+
+      initSelector() {
+        this.lastRenderedProps = null;
+
+        const sourceSelector = selectorFactory({
+          mapDispatchToProps,
+          mapStateToProps,
+          dispatch: this.store.dispatch,
+        });
+
+        const memoizeOwn = memoizeProps();
+        const memoizeFinal = memoizeProps();
+
+        this.selector = ownProps => {
+          const state = this.store.getState();
+          const props = memoizeOwn(ownProps);
+          return memoizeFinal(sourceSelector(state, props));
+        };
+      }
+
+      initSubscription() {
+        const onStoreStateChange = notifyNestedSubs => {
+          if (this.shouldComponentUpdate(this.props)) {
+            this.setState({}, notifyNestedSubs);
+          } else {
+            notifyNestedSubs();
+          }
+        };
+
+        this.subscription = new Subscription(
+          this.store,
+          this.parentSub,
+          onStoreStateChange.bind(this));
+      }
+
+      isSubscribed() {
+        return this.subscription.isSubscribed();
+      }
+
+      render() {
+        this.lastRenderedProps = this.selector(this.props);
+
+        return createElement(WrappedComponent, this.lastRenderedProps);
       }
     }
 
-    render() {
-      return (<Component {...this.props} />);
-    }
-  }
+    if (process.env.NODE_ENV !== 'production') {
+      Connect.prototype.componentWillUpdate = function componentWillUpdate() {
+        if (this.version !== version) {
+          this.version = version;
+          this.initSelector();
 
-  return connect(
-    selector,
-    mapDispatchToProps,
-    combineNamespacedProps
-  )(ModuleConnector);
+          this.subscription.tryUnsubscribe();
+          this.initSubscription();
+          this.subscription.trySubscribe();
+        }
+      };
+    }
+
+    return hoistStatics(Connect, WrappedComponent);
+  };
 };
 
 export default connectModules;
