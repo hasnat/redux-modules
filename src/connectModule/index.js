@@ -1,31 +1,21 @@
 import connectModules from './connectModules';
 
-export const createSelectorOrDefault = ({ selector }) => {
-  if (typeof selector === 'function') {
-    return selector;
-  }
-  return () => ({});
-};
-
 export const createModuleSelector = modules => {
   if (modules.length === 1) {
-    return createSelectorOrDefault(modules[0]);
+    return modules[0].selector || (() => ({}));
   }
-  const selectors = {};
-  for (let i = 0; i < modules.length; ++i) {
-    const module = modules[i];
-    selectors[module.name] = createSelectorOrDefault(module);
-  }
-  const keys = Object.keys(selectors);
-  return state => {
-    const props = {};
-    for (let i = 0; i < keys.length; ++i) {
-      const key = keys[i];
-      const selector = selectors[key];
-      props[key] = selector(state);
-    }
-    return props;
-  };
+
+  const selectors = modules
+    .filter(m => m.selector)
+    .map(
+      ({ selector, name }) => ({ selector, name })
+    );
+
+  return (state, props) => selectors
+    .reduce((acc, selector) =>
+      ({ ... acc, [name]: selector(state, props) })
+      , {}
+    );
 };
 
 export const connectModule = (selector, modules) => {
