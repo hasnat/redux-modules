@@ -1,10 +1,10 @@
 import connectModules from './connectModules';
 
-export const createSelectorOrDefault = ({ name, selector }) => {
+export const createSelectorOrDefault = ({ selector }) => {
   if (typeof selector === 'function') {
     return selector;
   }
-  return state => state[name];
+  return () => ({});
 };
 
 export const createModuleSelector = modules => {
