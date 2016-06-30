@@ -3,45 +3,46 @@ import todoModule from '../modules/todo';
 import counterModule from '../modules/counter';
 import { connectModule } from '../../../src/index';
 import TodoList from '../components/TodoList';
+import { List } from 'immutable';
 
 const { array, func, number, shape } = PropTypes;
 
 const mapState = state => {
+  const { todos = List(), counter = 0 } = state;
   return {
-    todos: { collection: [... state.todos.toJS()] },
-    counter: { count: state.counter },
-  }
+    todoCollection: todos.toJS(),
+    counter,
+  };
 };
 
-class MultipleConnected extends React.Component {
+@connectModule(mapState, [todoModule, counterModule])
+export default class MultipleConnected extends React.Component {
   static propTypes = {
-    todos: shape({
-      collection: array,
-      actions: shape({
+    todoCollection: array,
+    counter: number,
+    actions: shape({
+      counter: shape({
+        increment: func,
+        decrement: func,
+      }),
+      todos: shape({
         create: func,
         destroy: func,
         update: func,
       }),
     }),
-    counter: shape({
-      count: number,
-      actions: shape({
-        increment: func,
-        decrement: func,
-      }),
-    }),
   };
 
   render() {
-    const { todos, counter } = this.props;
+    const { todoCollection, counter, actions } = this.props;
     return (
       <div>
-        <TodoList todos={todos} />
-        <button onClick={counter.actions.increment}>
+        <TodoList todos={todoCollection} actions={actions.todos} />
+        <button onClick={actions.counter.increment}>
           +
         </button>
-        <h2>Count: {counter.count}</h2>
-        <button onClick={counter.actions.decrement}>
+        <h2>Count: {counter}</h2>
+        <button onClick={actions.counter.decrement}>
           -
         </button>
       </div>
@@ -49,7 +50,3 @@ class MultipleConnected extends React.Component {
   }
 }
 
-export default connectModule(
-  mapState,
-  [todoModule, counterModule],
-)(MultipleConnected);

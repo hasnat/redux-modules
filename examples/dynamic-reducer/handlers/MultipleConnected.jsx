@@ -10,41 +10,39 @@ const { array, func, number, shape } = PropTypes;
 const mapState = state => {
   const { todos = List(), counter = 0 } = state;
   return {
-    todos: { collection: todos.toJS() },
-    counter: { count: counter },
+    todoCollection: todos.toJS(),
+    counter,
   };
 };
 
 @connectModule(mapState, [todoModule, counterModule])
 export default class MultipleConnected extends React.Component {
   static propTypes = {
-    todos: shape({
-      collection: array,
-      actions: shape({
+    todoCollection: array,
+    counter: number,
+    actions: shape({
+      counter: shape({
+        increment: func,
+        decrement: func,
+      }),
+      todos: shape({
         create: func,
         destroy: func,
         update: func,
       }),
     }),
-    counter: shape({
-      count: number,
-      actions: shape({
-        increment: func,
-        decrement: func,
-      }),
-    }),
   };
 
   render() {
-    const { todos, counter } = this.props;
+    const { todoCollection, counter, actions } = this.props;
     return (
       <div>
-        <TodoList todos={todos} />
-        <button onClick={counter.actions.increment}>
+        <TodoList todos={todoCollection} actions={actions.todos} />
+        <button onClick={actions.counter.increment}>
           +
         </button>
-        <h2>Count: {counter.count}</h2>
-        <button onClick={counter.actions.decrement}>
+        <h2>Count: {counter}</h2>
+        <button onClick={actions.counter.decrement}>
           -
         </button>
       </div>

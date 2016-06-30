@@ -51,11 +51,19 @@ export const selectorFactory = ({ dispatch, mapDispatchToProps, mapStateToProps 
 
 export const createMapDispatchToProps = modules => (dispatch, ownProps) => {
   const props = {};
-  for (let i = 0; i < modules.length; ++i) {
-    const { actions, name } = modules[i];
-    props[name] = {
-      actions: bindActionCreators(actions, ownProps.dispatch || dispatch),
-    };
+  const dispatchFunc = ownProps.dispatch || dispatch;
+
+  if (modules.length === 1) {
+    props.actions = bindActionCreators(
+      modules[0].actions,
+      dispatchFunc
+    );
+  } else {
+    for (let i = 0; i < modules.length; ++i) {
+      const { actions, name } = modules[i];
+      if (!props.actions) { props.actions = {}; }
+      props.actions[name] = bindActionCreators(actions, dispatchFunc);
+    }
   }
   return props;
 };
