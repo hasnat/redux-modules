@@ -8,11 +8,18 @@ const createMapDispatchToProps = modules => (_, ownProps) => {
   const propsDispatch = ownProps.dispatch;
   return dispatch => {
     const props = {};
-    for (let i = 0; i < modules.length; ++i) {
-      const { actions, name } = modules[i];
-      props[name] = {
-        actions: bindActionCreators(actions, propsDispatch || dispatch),
-      };
+    if (modules.length === 1) {
+      props.actions = bindActionCreators(
+        modules[0].actions,
+        propsDispatch || dispatch
+      );
+    } else {
+      for (let i = 0; i < modules.length; ++i) {
+        const { actions, name } = modules[i];
+        props[name] = {
+          actions: bindActionCreators(actions, propsDispatch || dispatch),
+        };
+      }
     }
     return props;
   };
