@@ -77,20 +77,16 @@ The last step is to connect the module to the view. This works like a normal Red
 import { connectModule } from 'redux-modules';
 const selector = state => {
   return {
-    todos: {
-      collection: state.get('todos').toJS(),
-    }
+    todos: state.get('todos').toJS(),
   };
 };
 
 @connectModule(selector, todoModule)
 export default class Todos extends Component {
   static propTypes = {
-    todos: shape({
-      // exposed by selector
-      collection: array,
-      // actions from module w/ bound dispatch
-      actions: shape({
+    todos: array,
+    actions: shape({
+      todos: shape({
         create: func,
         destroy: func,
       }),
