@@ -61,9 +61,8 @@ export const createMapDispatchToProps = modules => (dispatch, ownProps) => {
   } else {
     for (let i = 0; i < modules.length; ++i) {
       const { actions, name } = modules[i];
-      props.actions = {
-        [name]: bindActionCreators(actions, dispatchFunc),
-      };
+      if (!props.actions) { props.actions = {}; }
+      props.actions[name] = bindActionCreators(actions, dispatchFunc);
     }
   }
   return props;
