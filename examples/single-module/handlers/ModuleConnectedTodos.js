@@ -3,7 +3,7 @@ import { connectModule } from '../../../src/index';
 import TodoList from '../components/TodoList';
 
 const mapState = state => ({
-  todos: { collection: [...state.todos.toJS()] },
+  todos: state.todos.toJS(),
 });
 
 const Connected = connectModule(

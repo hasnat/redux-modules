@@ -41,8 +41,7 @@ export default class TodoList extends React.Component {
   };
 
   render() {
-    const { title, todos: todoProps } = this.props;
-    const { collection = [], actions } = todoProps ;
+    const { title, todos: collection, actions } = this.props;
 
     return (
       <div>
