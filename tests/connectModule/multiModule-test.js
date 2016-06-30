@@ -50,8 +50,8 @@ describe('ConnectedComponent', () => {
     });
 
     it('should pass namespaced dispatched actions', () => {
-      expect(props).to.deep.contain.keys('actions');
-      expect(actions).to.deep.contain.keys(['mock1', 'mock2']);
+      expect(props).to.contain.keys('actions');
+      expect(actions).to.contain.keys(['mock1', 'mock2']);
       expect(actions.mock1).to.contain.keys(['increment', 'decrement']);
       expect(actions.mock2).to.contain.keys(['increment', 'decrement']);
     });
@@ -76,13 +76,13 @@ describe('ConnectedComponent', () => {
     const actionKeys = Object.keys(actions);
 
     it('should only pass dispatched actions', () => {
-      expect(props).to.deep.contain.keys('actions');
-      expect(actions).to.deep.contain.keys(['mock1', 'mock2']);
+      expect(props).to.contain.keys('actions');
+      expect(actions).to.contain.keys(['mock1', 'mock2']);
     });
 
     it('should pass namespaced dispatched actions', () => {
-      expect(props).to.deep.contain.keys('actions');
-      expect(actions).to.deep.contain.keys(['mock1', 'mock2']);
+      expect(props).to.contain.keys('actions');
+      expect(actions).to.contain.keys(['mock1', 'mock2']);
       expect(actions.mock1).to.contain.keys(['increment', 'decrement']);
       expect(actions.mock2).to.contain.keys(['increment', 'decrement']);
     });
