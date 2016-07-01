@@ -45,7 +45,7 @@ export const createGetState = mapStateToProps => {
 
 export const selectorFactory = ({ dispatch, mapDispatchToProps, mapStateToProps }) =>
   createFinalPropsSelector({
-    getState: createGetState(mapStateToProps),
+    getState: (props, action) => props.dispatch ? {} : createGetState(mapStateToProps)(props, action),
     getDispatch: props => mapDispatchToProps(dispatch, props),
   });
 

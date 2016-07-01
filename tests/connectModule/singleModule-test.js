@@ -67,11 +67,11 @@ describe('ConnectedComponent', () => {
   });
 
   describe('Single Module a selector and passed props', () => {
-    const Single = connectModule(selector, mockModule)(Component);
+    const Single = connectModule(() => ({ foo: 'bar' }), mockModule)(Component);
     const wrapper = mount(
       <ModuleProvider store={store}>
         <div>
-          <Single count={1} />
+          <Single count={1} dispatch={() => {}} />
         </div>
       </ModuleProvider>
     );
@@ -82,8 +82,9 @@ describe('ConnectedComponent', () => {
       expect(child.props().actions).to.contain.keys(['increment', 'decrement']);
     });
 
-    it('should prefer passed props', () => {
+    it('should only use passed props if dispatch is passed', () => {
       expect(child.props().count).to.equal(1);
+      expect(child.props().foo).to.equal(undefined);
     });
   });
 });
