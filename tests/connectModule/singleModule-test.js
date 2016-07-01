@@ -30,18 +30,20 @@ describe('ConnectedComponent', () => {
     const Single = connectModule(selector, mockModule)(Component);
     const wrapper = mount(
       <ModuleProvider store={store}>
-        <Single />
+        <div>
+          <Single />
+        </div>
       </ModuleProvider>
     );
     const child = wrapper.findWhere(node => node.type() === Component);
     const props = child.props();
     const actions = props.actions;
 
-    it('Should pass selector props', () => {
-      expect(props).to.contain({ count: 0 });
+    it('should pass selector props', () => {
+      expect(props.count).to.equal(0);
     });
 
-    it('Should pass dispatched actions', () => {
+    it('should pass dispatched actions', () => {
       expect(props).to.contain.keys('actions');
       expect(actions).to.contain.keys(['increment', 'decrement']);
     });
@@ -51,16 +53,37 @@ describe('ConnectedComponent', () => {
     const Single = connectModule(mockModule)(Component);
     const wrapper = mount(
       <ModuleProvider store={store}>
-        <Single />
+        <div>
+          <Single />
+        </div>
       </ModuleProvider>
     );
     const child = wrapper.findWhere(node => node.type() === Component);
-    const props = child.props();
-    const actions = props.actions;
 
-    it('Should only pass dispatched actions', () => {
-      expect(props).to.contain.keys(['actions']);
-      expect(actions).to.contain.keys(['increment', 'decrement']);
+    it('should only pass dispatched actions', () => {
+      expect(Object.keys(child.props())).to.deep.equal(['actions']);
+      expect(child.props().actions).to.contain.keys(['increment', 'decrement']);
+    });
+  });
+
+  describe('Single Module a selector and passed props', () => {
+    const Single = connectModule(selector, mockModule)(Component);
+    const wrapper = mount(
+      <ModuleProvider store={store}>
+        <div>
+          <Single count={1} />
+        </div>
+      </ModuleProvider>
+    );
+    const child = wrapper.findWhere(node => node.type() === Component);
+
+    it('should only pass dispatched actions', () => {
+      expect(child.props()).to.contain.keys(['actions']);
+      expect(child.props().actions).to.contain.keys(['increment', 'decrement']);
+    });
+
+    it('should prefer passed props', () => {
+      expect(child.props().count).to.equal(1);
     });
   });
 });
