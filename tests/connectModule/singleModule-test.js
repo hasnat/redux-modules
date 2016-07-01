@@ -67,7 +67,7 @@ describe('ConnectedComponent', () => {
   });
 
   describe('Single Module a selector and passed props', () => {
-    const Single = connectModule(() => ({ count: 0 }), mockModule)(Component);
+    const Single = connectModule(() => ({ count: 0, foo: 2 }), mockModule)(Component);
     const wrapper = mount(
       <ModuleProvider store={store}>
         <div>
@@ -84,7 +84,7 @@ describe('ConnectedComponent', () => {
 
     it('should prefer passed props over selector props', () => {
       expect(child.props().count).to.equal(1);
-      expect(child.props().foo).to.equal(undefined);
+      expect(child.props().foo).to.equal(2);
     });
   });
 });
