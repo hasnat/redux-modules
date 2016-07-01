@@ -12,7 +12,7 @@ export const createModuleSelector = modules => {
     );
 
   return (state, props) => selectors
-    .reduce((acc, selector) =>
+    .reduce((acc, { selector, name }) =>
       ({ ... acc, [name]: selector(state, props) })
       , {}
     );
