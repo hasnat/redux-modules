@@ -29,8 +29,8 @@ const Component = () => <div>Hello world.</div>;
 describe('ConnectedComponent', () => {
   describe('Multi Module with selector', () => {
     const Multi = connectModule(selector, [
-        generateMockModule(1),
-        generateMockModule(2)
+      generateMockModule(1),
+      generateMockModule(2),
     ])(Component);
 
     const wrapper = mount(
@@ -42,8 +42,6 @@ describe('ConnectedComponent', () => {
     const child = wrapper.findWhere(node => node.type() === Component);
     const props = child.props();
     const actions = child.props().actions;
-    const propKeys = Object.keys(props);
-    const actionKeys = Object.keys(actions);
 
     it('should pass selector props', () => {
       expect(props).to.contain({ mock1: 0, mock2: 0 });
@@ -59,8 +57,8 @@ describe('ConnectedComponent', () => {
 
   describe('Multi Module without selector', () => {
     const Multi = connectModule([
-        generateMockModule(1),
-        generateMockModule(2)
+      generateMockModule(1),
+      generateMockModule(2),
     ])(Component);
 
     const wrapper = mount(
@@ -72,8 +70,6 @@ describe('ConnectedComponent', () => {
     const child = wrapper.findWhere(node => node.type() === Component);
     const props = child.props();
     const actions = child.props().actions;
-    const propKeys = Object.keys(props);
-    const actionKeys = Object.keys(actions);
 
     it('should only pass dispatched actions', () => {
       expect(props).to.contain.keys('actions');
