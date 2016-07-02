@@ -71,7 +71,7 @@ describe('ConnectedComponent', () => {
     const wrapper = mount(
       <ModuleProvider store={store}>
         <div>
-          <Single count={1}  dispatch={() => {}} />
+          <Single count={1} dispatch={() => {}} />
         </div>
       </ModuleProvider>
     );

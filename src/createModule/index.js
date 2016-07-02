@@ -14,13 +14,42 @@ const formatTransformation = (name, transformation) => ({
   ...transformation,
 });
 
-export const createModule = ({ name, initialState, selector, transformations }) => {
+const parseTransformation = (action, transformation) => {
+  if (typeof transformation === 'function') {
+    return {
+      action,
+      reducer: transformation,
+    };
+  }
+  return {
+    action,
+    ...transformation,
+  };
+};
+
+const parseTransformations = transformations => {
+  if (Array.isArray(transformations)) {
+    return transformations;
+  }
+  const finalTransformations = [];
+  const keys = Object.keys(transformations);
+  for (let i = 0; i < keys.length; ++i) {
+    const key = keys[i];
+    const transformation = transformations[key];
+    const finalTransformation = parseTransformation(key, transformation);
+    finalTransformations.push(finalTransformation);
+  }
+  return finalTransformations;
+};
+
+export const createModule = ({ initialState, name, selector, transformations }) => {
   const defaultMiddleware = [payloadPropchecker(), parsePayloadErrors];
   const actions = {};
   const constants = {};
   const reducerMap = {};
-  for (let i = 0; i < transformations.length; ++i) {
-    const transformation = formatTransformation(name, transformations[i]);
+  const finalTransformations = parseTransformations(transformations);
+  for (let i = 0; i < finalTransformations.length; ++i) {
+    const transformation = formatTransformation(name, finalTransformations[i]);
     const { action, formattedConstant, reducer } = transformation;
     const camelizedActionName = camelize(action);
     actions[camelizedActionName] = createAction(transformation, defaultMiddleware);
