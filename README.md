@@ -93,10 +93,8 @@ export default class Todos extends Component {
   static propTypes = {
     todos: array,
     actions: shape({
-      todos: shape({
-        create: func,
-        destroy: func,
-      }),
+      create: func,
+      destroy: func,
     }),
   };
 ```
