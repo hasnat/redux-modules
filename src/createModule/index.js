@@ -45,7 +45,7 @@ const parseTransformations = transformations => {
 export const createModule = ({ initialState, name, selector, transformations }) => {
   const defaultMiddleware = [parsePayloadErrors];
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     defaultMiddleware.push(payloadPropchecker());
   }
 
