@@ -64,9 +64,9 @@ Both of these approaches disconnect the `constant`, the `action creator`, and th
 
 ```js
 {
-  action: 'CREATE',
+  type: 'CREATE',
   payloadTypes: { decription: string.isRequired },
-  reducer: (state, {payload}) => 
+  reducer: (state, {payload}) =>
     state.push(fromJS(payload)),
 }
 ```
