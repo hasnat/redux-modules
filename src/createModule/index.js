@@ -54,7 +54,9 @@ export const createModule = ({ initialState, name, selector, transformations }) 
     const transformation = formatTransformation(name, finalTransformations[i]);
     const { action, type, formattedConstant, reducer } = transformation;
 
-    if (action) { console.warn('The `action` key is deprecated. Use `type` instead.'); }
+    if (process.env.NODE_ENV !== 'production') {
+      action && console.warn('The `action` key is deprecated. Use `type` instead.');
+    }
 
     const camelizedActionName = camelize(type);
     actions[camelizedActionName] = createAction(transformation, defaultMiddleware);
