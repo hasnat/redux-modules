@@ -4,8 +4,8 @@ import createModule from '../../src/createModule';
 should();
 
 const mockTransforms = [
-  { action: 'MOCK_ONE' },
-  { action: 'MOCK_TWO' },
+  { type: 'MOCK_ONE' },
+  { type: 'MOCK_TWO' },
 ];
 
 describe('createModule', () => {
