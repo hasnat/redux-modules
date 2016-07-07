@@ -43,7 +43,12 @@ const parseTransformations = transformations => {
 };
 
 export const createModule = ({ initialState, name, selector, transformations }) => {
-  const defaultMiddleware = [payloadPropchecker(), parsePayloadErrors];
+  const defaultMiddleware = [parsePayloadErrors];
+
+  if (process.env.NODE_ENV !== 'production') {
+    defaultMiddleware.push(payloadPropchecker());
+  }
+
   const actions = {};
   const constants = {};
   const reducerMap = {};
