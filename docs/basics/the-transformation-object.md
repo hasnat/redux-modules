@@ -1,6 +1,6 @@
 # The Transformation Object
 
-The `transformations` array contains objects which define different state transformations. These objects contain `action`, `middleware`, `payloadTypes`, and `reducer` keys. 
+The `transformations` array contains objects which define different state transformations. These objects contain `action`, `middleware`, `payloadTypes`, and `reducer` keys.
 
 `createModule` uses these definitions to generate `action creators`, `constants`, the final reducer, and more.
 
@@ -19,10 +19,10 @@ The `transformations` array contains objects which define different state transf
 #Usage
 > transformations: [ {action, payloadTypes, middleware, reducer} ]
 
-## action
+## type
 > string
 
-The name of the action. This is used to create a constant `<moduleName>/<action>`. The generated constant is in turn used in the final reducer.
+The type of transformation. This is used to create a constant `<moduleName>/<action>`. The generated constant is in turn used in the final reducer.
 
 ## payloadTypes
 > object
@@ -40,9 +40,9 @@ Middleware is an array of functions that receive {payload, meta} and return {pay
 
 ## reducer
 > function(state, action)
-> 
+>
 > default: state => state
-> 
+>
 > optional
 
 This is the state transformation associated to the `action`.

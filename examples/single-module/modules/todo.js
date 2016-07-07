@@ -9,7 +9,7 @@ export default createModule({
   initialState: List(), // eslint-disable-line new-cap
   transformations: [
     {
-      action: 'CREATE',
+      type: 'CREATE',
       payloadTypes: {
         todo: shape({
           description: string.isRequired,
@@ -18,14 +18,14 @@ export default createModule({
       reducer: (state, { payload: { todo } }) => state.push(fromJS(todo)),
     },
     {
-      action: 'DESTROY',
+      type: 'DESTROY',
       payloadTypes: {
         index: number.isRequired,
       },
       reducer: (state, { payload: { index } }) => state.delete(index),
     },
     {
-      action: 'UPDATE',
+      type: 'UPDATE',
       payloadTypes: {
         index: number.isRequired,
         todo: shape({

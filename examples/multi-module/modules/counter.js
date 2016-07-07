@@ -5,11 +5,11 @@ export default createModule({
   initialState: 0,
   transformations: [
     {
-      action: 'INCREMENT',
+      type: 'INCREMENT',
       reducer: state => state + 1,
     },
     {
-      action: 'DECREMENT',
+      type: 'DECREMENT',
       reducer: state => state - 1,
     },
   ],

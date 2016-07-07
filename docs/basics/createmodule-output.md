@@ -6,7 +6,7 @@ export default createModule({
   initialState: List(),
   transformations: [
     {
-      action: 'CREATE',
+      type: 'CREATE',
       payloadTypes: {
         description: React.PropTypes.string,
       },
@@ -14,11 +14,11 @@ export default createModule({
         state.push(fromJS(payload)),
     }
     {
-      action: 'DELETE',
+      type: 'DELETE',
       payloadTypes: {
         index: React.PropTypes.number
       },
-      reducer: (state, { payload: { index } }) => 
+      reducer: (state, { payload: { index } }) =>
         state.delete(index),
     },
   ],

@@ -27,7 +27,7 @@ export default createModule({
   initialState: List(),
   transformations: [
     {
-      action: 'CREATE',
+      type: 'CREATE',
       payloadTypes: {
         todo: shape({
           description: string.isRequired,
@@ -37,7 +37,7 @@ export default createModule({
         state.update('collection', todos => todos.push(fromJS(todo))),
     },
     {
-      action: 'DESTROY',
+      type: 'DESTROY',
       payloadTypes: {
         index: number.isRequired,
       },

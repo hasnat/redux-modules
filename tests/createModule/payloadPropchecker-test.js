@@ -6,7 +6,7 @@ should();
 
 const mockTransforms = [
   {
-    action: 'MOCK_ONE',
+    type: 'MOCK_ONE',
     formattedConstant: 'mock/MOCK_ONE',
     payloadTypes: {
       name: PropTypes.string.isRequired,
@@ -16,7 +16,7 @@ const mockTransforms = [
     },
   },
   {
-    action: 'MOCK_TWO',
+    type: 'MOCK_TWO',
     formattedConstant: 'mock/MOCK_TWO',
     payloadTypes: {
       name: PropTypes.string.isRequired,

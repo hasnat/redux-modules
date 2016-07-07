@@ -17,8 +17,8 @@ const generateMockModule = id => createModule({
   name: `mock${id}`,
   initialState: 0,
   transformations: [
-    { action: 'INCREMENT', reducer: state => state + 1 },
-    { action: 'DECREMENT', reducer: state => state - 1 },
+    { type: 'INCREMENT', reducer: state => state + 1 },
+    { type: 'DECREMENT', reducer: state => state - 1 },
   ],
 });
 

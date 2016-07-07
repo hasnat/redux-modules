@@ -9,8 +9,10 @@ const parsePayloadErrors = (transformation, { payload, meta }) => ({
   error: (payload instanceof Error),
 });
 
-const formatTransformation = (name, transformation) => ({
-  formattedConstant: `${name}/${transformation.action}`,
+const formatTransformation = (name, { action, type, ...transformation }) => ({
+  formattedConstant: `${name}/${type || action}`,
+  type: type || action,
+  action,
   ...transformation,
 });
 
@@ -55,8 +57,13 @@ export const createModule = ({ initialState, name, selector, transformations }) 
   const finalTransformations = parseTransformations(transformations);
   for (let i = 0; i < finalTransformations.length; ++i) {
     const transformation = formatTransformation(name, finalTransformations[i]);
-    const { action, formattedConstant, reducer } = transformation;
-    const camelizedActionName = camelize(action);
+    const { action, type, formattedConstant, reducer } = transformation;
+
+    if (process.env.NODE_ENV !== 'production') {
+      action && console.warn('The `action` key is deprecated. Use `type` instead.');
+    }
+
+    const camelizedActionName = camelize(type);
     actions[camelizedActionName] = createAction(transformation, defaultMiddleware);
     constants[camelizedActionName] = formattedConstant;
     reducerMap[formattedConstant] = reducer;
