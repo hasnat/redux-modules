@@ -14,7 +14,7 @@ export const propCheckedPayloadCreator = (payloadTypes, { onError = defaultOnErr
 
     // If payloadTypes is a propcheck function
     else if (typeof payloadTypes === 'function') {
-      const { message } = payloadTypes(payload, type, type, 'prop') || {};
+      const { message } = payloadTypes(payload, 'payload', type, 'key') || {};
       message && onError(message);
     }
 
@@ -27,7 +27,7 @@ export const propCheckedPayloadCreator = (payloadTypes, { onError = defaultOnErr
         if (typeof propChecker === 'undefined') {
           continue;
         }
-        const { message } = propChecker(payload, key, type, 'prop') || {};
+        const { message } = propChecker(payload, key, type, 'key') || {};
         if (message) {
           onError(message);
         }
