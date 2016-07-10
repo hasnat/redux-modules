@@ -34,21 +34,21 @@ const payload = {
 describe('payloadPropchecker', () => {
   let warning = false;
 
-  const propCheckedPayloadCreator = payloadPropchecker({onError: err => {
-      // eslint-disable-next-line no-console
-      console.error('PROP CHECKER', err);
-      warning = err;
-    }});
+  const propCheckedPayloadCreator = payloadPropchecker(
+    { name: PropTypes.string.isRequired },
+    {
+      onError: err => {
+        // eslint-disable-next-line no-console
+        console.error('PROP CHECKER', err);
+        warning = err;
+      },
+    }
+  );
 
-  const transformation = {
-    formattedConstant: mockTransforms[0].formattedConstant,
-    payloadTypes: mockTransforms[0].payloadTypes,
-  };
+  propCheckedPayloadCreator({ type: mockTransforms[0].formattedConstant, payload });
 
-  propCheckedPayloadCreator(transformation, { payload });
-
-  it('should return a function that takes a transformation and a payload', () => {
-    propCheckedPayloadCreator.length.should.equal(2);
+  it('should return a function that takes a payload', () => {
+    propCheckedPayloadCreator.length.should.equal(1);
   });
 
   it('should throw an error when the payload does not match stated type', () => {

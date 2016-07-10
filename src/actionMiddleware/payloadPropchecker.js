@@ -6,21 +6,27 @@ const defaultOnError = err => {
   );
 };
 
-export const propCheckedPayloadCreator = ({ onError = defaultOnError, payloadTypes }) =>
+export const propCheckedPayloadCreator = (payloadTypes, { onError = defaultOnError }) =>
   ({ type, payload, meta }) => {
     if (typeof payloadTypes === 'undefined') {
       return { payload, meta };
-    }
-    const keys = Object.keys(payloadTypes);
-    for (let i = 0; i < keys.length; ++i) {
-      const key = keys[i];
-      const propChecker = payloadTypes[key];
-      if (typeof propChecker === 'undefined') {
-        continue;
-      }
-      const { message } = propChecker(payload, key, type, 'prop') || {};
+    } else if (typeof payloadTypes === 'function') {
+      const { message } = payloadTypes(payload, type, type, 'prop') || {};
       if (message) {
         onError(message);
+      }
+    } else {
+      const keys = Object.keys(payloadTypes);
+      for (let i = 0; i < keys.length; ++i) {
+        const key = keys[i];
+        const propChecker = payloadTypes[key];
+        if (typeof propChecker === 'undefined') {
+          continue;
+        }
+        const { message } = propChecker(payload, key, type, 'prop') || {};
+        if (message) {
+          onError(message);
+        }
       }
     }
 
