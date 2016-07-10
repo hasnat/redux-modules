@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import { should } from 'chai';
 require('mocha-sinon');
 import payloadPropchecker from '../../src/actionMiddleware/payloadPropchecker';
