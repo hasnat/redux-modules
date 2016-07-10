@@ -1,7 +1,7 @@
 import { PropTypes } from 'react';
 import { should } from 'chai';
 require('mocha-sinon');
-import payloadPropchecker from '../../src/createModule/payloadPropchecker';
+import payloadPropchecker from '../../src/actionMiddleware/payloadPropchecker';
 should();
 
 const mockTransforms = [
@@ -34,11 +34,11 @@ const payload = {
 describe('payloadPropchecker', () => {
   let warning = false;
 
-  const propCheckedPayloadCreator = payloadPropchecker(err => {
-    // eslint-disable-next-line no-console
-    console.error('PROP CHECKER', err);
-    warning = err;
-  });
+  const propCheckedPayloadCreator = payloadPropchecker({onError: err => {
+      // eslint-disable-next-line no-console
+      console.error('PROP CHECKER', err);
+      warning = err;
+    }});
 
   const transformation = {
     formattedConstant: mockTransforms[0].formattedConstant,

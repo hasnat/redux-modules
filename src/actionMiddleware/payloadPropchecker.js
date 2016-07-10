@@ -6,8 +6,8 @@ const defaultOnError = err => {
   );
 };
 
-export const propCheckedPayloadCreator = (onError = defaultOnError) =>
-  ({ payloadTypes, formattedConstant }, { payload, meta }) => {
+export const propCheckedPayloadCreator = ({ onError = defaultOnError, payloadTypes }) =>
+  ({ type, payload, meta }) => {
     if (typeof payloadTypes === 'undefined') {
       return { payload, meta };
     }
@@ -18,7 +18,7 @@ export const propCheckedPayloadCreator = (onError = defaultOnError) =>
       if (typeof propChecker === 'undefined') {
         continue;
       }
-      const { message } = propChecker(payload, key, formattedConstant, 'prop') || {};
+      const { message } = propChecker(payload, key, type, 'prop') || {};
       if (message) {
         onError(message);
       }

@@ -1,13 +1,8 @@
 import camelize from 'camel-case';
-
 import createAction from './createAction';
-import payloadPropchecker from './payloadPropchecker';
+import parsePayloadErrors from '../actionMiddleware/parsePayloadErrors';
 
-const parsePayloadErrors = (transformation, { payload, meta }) => ({
-  payload,
-  meta,
-  error: (payload instanceof Error),
-});
+const defaultMiddleware = [parsePayloadErrors];
 
 const formatTransformation = (name, { action, type, ...transformation }) => ({
   formattedConstant: `${name}/${type || action}`,
@@ -45,12 +40,6 @@ const parseTransformations = transformations => {
 };
 
 export const createModule = ({ initialState, name, selector, transformations }) => {
-  const defaultMiddleware = [parsePayloadErrors];
-
-  if (process.env.NODE_ENV !== 'production') {
-    defaultMiddleware.push(payloadPropchecker());
-  }
-
   const actions = {};
   const constants = {};
   const reducerMap = {};
