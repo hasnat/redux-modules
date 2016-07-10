@@ -8,14 +8,18 @@ const defaultOnError = err => {
 
 export const propCheckedPayloadCreator = (payloadTypes, { onError = defaultOnError }) =>
   ({ type, payload, meta }) => {
-    if (typeof payloadTypes === 'undefined') {
+    if (!payloadTypes) {
       return { payload, meta };
-    } else if (typeof payloadTypes === 'function') {
+    }
+
+    // If payloadTypes is a propcheck function
+    else if (typeof payloadTypes === 'function') {
       const { message } = payloadTypes(payload, type, type, 'prop') || {};
-      if (message) {
-        onError(message);
-      }
-    } else {
+      message && onError(message);
+    }
+
+    // If payloadTypes is an object (old API)
+    else {
       const keys = Object.keys(payloadTypes);
       for (let i = 0; i < keys.length; ++i) {
         const key = keys[i];
