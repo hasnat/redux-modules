@@ -8,12 +8,16 @@ const defaultOnError = err => {
 
 export const propCheckedPayloadCreator = (payloadTypes, { onError = defaultOnError }) =>
   ({ payload, meta, type, ...rest }) => {
+    if (process.env.NODE_ENV === 'production') {
+      return { payload, meta, type, ... rest };
+    }
+
     if (!payloadTypes) {
-      return { payload, meta };
+      return { payload, meta, type, ... rest };
     }
 
     // If payloadTypes is a propcheck function
-    else if (typeof payloadTypes === 'function') {
+    if (typeof payloadTypes === 'function') {
       const result = payloadTypes({ payload }, 'payload', type, 'key') || {};
       const { message } = result;
       if (message) {
