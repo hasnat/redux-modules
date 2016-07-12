@@ -1,6 +1,6 @@
 import camelize from 'camel-case';
 import createAction from './createAction';
-import parsePayloadErrors from '../actionMiddleware/parsePayloadErrors';
+import parsePayloadErrors from '../middleware/parsePayloadErrors';
 
 const defaultMiddleware = [parsePayloadErrors];
 
