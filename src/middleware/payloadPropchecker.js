@@ -16,17 +16,13 @@ export const propCheckedPayloadCreator = (payloadTypes, { onError = defaultOnErr
       return { payload, meta, type, ... rest };
     }
 
-    // If payloadTypes is a propcheck function
-    if (typeof payloadTypes === 'function') {
+    if (typeof payloadTypes === 'function') { // If payloadTypes is a propcheck function
       const result = payloadTypes({ payload }, 'payload', type, 'key') || {};
       const { message } = result;
       if (message) {
         onError(message);
       }
-    }
-
-    // If payloadTypes is an object (old API)
-    else {
+    } else { // If payloadTypes is an object (old API)
       const keys = Object.keys(payloadTypes);
       for (let i = 0; i < keys.length; ++i) {
         const key = keys[i];
