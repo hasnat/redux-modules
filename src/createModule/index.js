@@ -1,7 +1,7 @@
 import camelize from 'camel-case';
 import createAction from './createAction';
 import parsePayloadErrors from '../middleware/parsePayloadErrors';
-import payloadPropchecker from '../middleware/payloadPropchecker';
+import propCheck from '../middleware/propCheck';
 
 const defaultMiddleware = [parsePayloadErrors];
 
@@ -65,7 +65,7 @@ export const createModule = ({ initialState, name, selector, transformations }) 
 
       if (payloadTypes) {
         console.warn('The `payloadTypes` key is deprecated. Use middleware.propCheck instead');
-        const propChecker = payloadPropchecker(transformation.payloadTypes);
+        const propChecker = propCheck(transformation.payloadTypes);
         finalMiddleware.push(propChecker);
       }
     }

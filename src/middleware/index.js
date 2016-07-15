@@ -1,5 +1,5 @@
 import exportedParsePayloadErrors from './parsePayloadErrors';
-import exportedPayloadPropchecker from './payloadPropchecker';
+import exportPropCheck from './propCheck';
 
 export const parsePayloadErrors = exportedParsePayloadErrors;
-export const payloadPropchecker = exportedPayloadPropchecker;
+export const propCheck = exportPropCheck;

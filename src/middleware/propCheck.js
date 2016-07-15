@@ -6,7 +6,7 @@ const defaultOnError = err => {
   );
 };
 
-export const propCheckedPayloadCreator = (payloadTypes, params = {}) =>
+export const propCheck = (payloadTypes, params = {}) =>
   ({ payload, meta, type, ...rest }) => {
     const { onError = defaultOnError } = params;
 
@@ -42,4 +42,4 @@ export const propCheckedPayloadCreator = (payloadTypes, params = {}) =>
     return { payload, meta, type, ...rest };
   };
 
-export default propCheckedPayloadCreator;
+export default propCheck;
