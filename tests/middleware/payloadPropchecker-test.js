@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { should } from 'chai';
 import sinon from 'sinon';
-import payloadPropchecker from '../../src/middleware/payloadPropchecker';
+import propCheck from '../../src/middleware/propCheck';
 should();
 
 const mockTransforms = [
@@ -31,14 +31,14 @@ const payload = {
   label: 'Joe',
 };
 
-describe('payloadPropchecker', () => {
+describe('propCheck', () => {
   const objectSpy = sinon.spy();
   const funcSpy = sinon.spy();
 
   const objectSchema = { name: PropTypes.string.isRequired };
   const functionSchema = PropTypes.shape({ name: PropTypes.string.isRequired }).isRequired;
 
-  const propCheckedPayloadCreator = (schema, cb) => payloadPropchecker(
+  const propCheckedPayloadCreator = (schema, cb) => propCheck(
     schema,
     {
       onError: err => {
