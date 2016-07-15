@@ -1,7 +1,6 @@
-const parsePayloadErrors = (transformation, { payload, meta }) => ({
-  payload,
-  meta,
-  error: (payload instanceof Error),
+const parsePayloadErrors = (action) => ({
+  ... action,
+  error: (action.payload instanceof Error),
 });
 
 export default parsePayloadErrors;

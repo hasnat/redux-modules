@@ -6,8 +6,10 @@ const defaultOnError = err => {
   );
 };
 
-export const propCheckedPayloadCreator = (payloadTypes, { onError = defaultOnError }) =>
+export const propCheckedPayloadCreator = (payloadTypes, params = {}) =>
   ({ payload, meta, type, ...rest }) => {
+    const { onError = defaultOnError } = params;
+
     if (process.env.NODE_ENV === 'production') {
       return { payload, meta, type, ... rest };
     }
@@ -30,7 +32,7 @@ export const propCheckedPayloadCreator = (payloadTypes, { onError = defaultOnErr
         if (typeof propChecker === 'undefined') {
           continue;
         }
-        const { message } = propChecker(payload, key, type, 'key') || {};
+        const { message } = propChecker(payload, key, type, 'prop') || {};
         if (message) {
           onError(message);
         }

@@ -53,7 +53,7 @@ export const createModule = ({ initialState, name, selector, transformations }) 
         type,
         formattedConstant,
         reducer,
-        propTypes,
+        payloadTypes,
         middleware = [],
       } = transformation;
 
@@ -63,9 +63,9 @@ export const createModule = ({ initialState, name, selector, transformations }) 
     if (process.env.NODE_ENV !== 'production') {
       action && console.warn('The `action` key is deprecated. Use `type` instead.');
 
-      if (propTypes) {
-        console.warn('The `propTypes` key is deprecated. Use middleware.propCheck instead');
-        const propChecker = payloadPropchecker(transformation.propTypes);
+      if (payloadTypes) {
+        console.warn('The `payloadTypes` key is deprecated. Use middleware.propCheck instead');
+        const propChecker = payloadPropchecker(transformation.payloadTypes);
         finalMiddleware.push(propChecker);
       }
     }

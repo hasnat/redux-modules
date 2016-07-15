@@ -13,6 +13,7 @@ export default createModule({
       payloadTypes: {
         todo: shape({
           description: string.isRequired,
+          name: string.isRequired,
         }),
       },
       reducer: (state, { payload: { todo } }) => state.push(fromJS(todo)),
