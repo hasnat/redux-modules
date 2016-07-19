@@ -22,9 +22,12 @@ export default createModule({
     },
     {
       type: 'DESTROY',
-      payloadTypes: {
-        index: number.isRequired,
-      },
+      middleware: [
+        middleware.propCheck({
+          index: number.isRequired,
+          test: string.isRequired,
+        }),
+      ],
       reducer: (state, { payload: { index } }) => state.delete(index),
     },
     {
