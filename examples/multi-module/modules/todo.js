@@ -1,4 +1,4 @@
-import { createModule } from '../../../src/index';
+import { createModule, middleware } from '../../../src/index';
 import { PropTypes } from 'react';
 import { fromJS, List } from 'immutable';
 
@@ -10,18 +10,24 @@ export default createModule({
   transformations: [
     {
       type: 'CREATE',
-      payloadTypes: {
-        todo: shape({
-          description: string.isRequired,
+      middleware: [
+        middleware.propCheck({
+          todo: shape({
+            description: string.isRequired,
+            name: string.isRequired,
+          }),
         }),
-      },
+      ],
       reducer: (state, { payload: { todo } }) => state.push(fromJS(todo)),
     },
     {
       type: 'DESTROY',
-      payloadTypes: {
-        index: number.isRequired,
-      },
+      middleware: [
+        middleware.propCheck({
+          index: number.isRequired,
+          test: string.isRequired,
+        }),
+      ],
       reducer: (state, { payload: { index } }) => state.delete(index),
     },
     {

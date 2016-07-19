@@ -7,9 +7,9 @@ The `transformations` array contains objects which define different state transf
 ```js
 {
   action: 'CREATE',
-  payloadTypes: {
-    description: React.PropTypes.string,
-  },
+  middleware: [
+    middlware.propCheck(shape({ description: PropTypes.string }))
+  ],
   reducer: (state, { payload }) =>
     state.push(fromJS(payload)),
 }
@@ -17,19 +17,12 @@ The `transformations` array contains objects which define different state transf
 > Example transformation object
 
 #Usage
-> transformations: [ {action, payloadTypes, middleware, reducer} ]
+> transformations: [ {action, middleware, reducer} ]
 
 ## type
 > string
 
 The type of transformation. This is used to create a constant `<moduleName>/<action>`. The generated constant is in turn used in the final reducer.
-
-## payloadTypes
-> object
-
-> optional
-
-PropTypes for your actions. Payload types define the payload that we're expecting to call the action creator with. The console will log an error for every key in the payload that fails type validation.
 
 ## middleware
 > [function({ payload, meta }) => { payload, meta }]

@@ -22,7 +22,7 @@ describe('createAction', () => {
       let metaReceived;
 
       const middleware = [
-        (transformationObject, { payload, meta }) => {
+        ({ payload, meta }) => {
           payloadReceived = payload;
           metaReceived = meta;
           return { payload, meta };

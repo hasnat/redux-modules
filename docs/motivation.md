@@ -65,7 +65,9 @@ Both of these approaches disconnect the `constant`, the `action creator`, and th
 ```js
 {
   type: 'CREATE',
-  payloadTypes: { decription: string.isRequired },
+  middleware: [
+    middlware.propCheck(shape({ description: PropTypes.string }))
+  ],
   reducer: (state, {payload}) =>
     state.push(fromJS(payload)),
 }

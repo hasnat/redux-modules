@@ -16,7 +16,7 @@ Here's an example of a simple todo app. First create a module that allows todos 
 
 #### src/modules/todos.js
 ```js
-import { createModule } from 'redux-modules';
+import { createModule, middleware } from 'redux-modules';
 import { fromJS, List } from 'immutable';
 
 import { PropTypes } from 'react';
@@ -28,21 +28,21 @@ export default createModule({
   transformations: [
     {
       type: 'CREATE',
-      payloadTypes: {
-        todo: shape({
-          description: string.isRequired,
-        }),
-      },
-      reducer: (state, {payload: { todo }}) =>
-        state.update('collection', todos => todos.push(fromJS(todo))),
+      middleware: [
+        middleware.propCheck(
+          shape({ description: string.isRequired })
+        ),
+      ],
+      reducer: (state, { payload }) =>
+        state.update('collection', todos => todos.push(fromJS(payload))),
     },
     {
       type: 'DESTROY',
-      payloadTypes: {
-        index: number.isRequired,
-      },
-      reducer: (state, {payload: { index }}) => {
-        state.update('collection', todos => todos.delete(index)),
+      middleware: [
+        middleware.propCheck(number.isRequired),
+      ],
+      reducer: (state, { payload }) => {
+        state.update('collection', todos => todos.delete(payload)),
     },
   ],
 });

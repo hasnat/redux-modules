@@ -3,7 +3,7 @@
 The main API used in `redux-modules` is `createModule`. It expects a single parameter: an object with a `name` key, an `initialState`, and an array of `transformations`.
 
 ```js
-import { createModule } 'redux-modules';
+import { createModule, middleware } 'redux-modules';
 import { List } from 'immutable';
 
 export default createModule({
@@ -12,19 +12,19 @@ export default createModule({
   transformations: [
     {
       type: 'CREATE',
-      payloadTypes: {
-        description: React.PropTypes.string,
-      },
+      middleware: [
+        middlware.propCheck(shape({ description: PropTypes.string }))
+      ],
       reducer: (state, { payload }) =>
         state.push(fromJS(payload)),
     }
     {
       type: 'DELETE',
-      payloadTypes: {
-        index: React.PropTypes.number
-      },
-      reducer: (state, { payload: { index } }) =>
-        state.delete(index),
+      middleware: [
+        middlware.propCheck(PropTypes.number)
+      ],
+      reducer: (state, { payload }) =>
+        state.delete(payload),
     },
   ],
 });

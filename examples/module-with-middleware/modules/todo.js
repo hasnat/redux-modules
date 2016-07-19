@@ -17,7 +17,7 @@ export default createModule({
         }),
       },
       middleware: [
-        (_, { payload: { todo }, meta }) => {
+        ({ payload: { todo }, meta }) => {
           const id = v4();
           console.log('Middleware adding ID', id); // eslint-disable-line no-console
           return {

@@ -1,13 +1,9 @@
 import camelize from 'camel-case';
-
 import createAction from './createAction';
-import payloadPropchecker from './payloadPropchecker';
+import parsePayloadErrors from '../middleware/parsePayloadErrors';
+import propCheck from '../middleware/propCheck';
 
-const parsePayloadErrors = (transformation, { payload, meta }) => ({
-  payload,
-  meta,
-  error: (payload instanceof Error),
-});
+const defaultMiddleware = [parsePayloadErrors];
 
 const formatTransformation = (name, { action, type, ...transformation }) => ({
   formattedConstant: `${name}/${type || action}`,
@@ -45,26 +41,38 @@ const parseTransformations = transformations => {
 };
 
 export const createModule = ({ initialState, name, selector, transformations }) => {
-  const defaultMiddleware = [parsePayloadErrors];
-
-  if (process.env.NODE_ENV !== 'production') {
-    defaultMiddleware.push(payloadPropchecker());
-  }
-
   const actions = {};
   const constants = {};
   const reducerMap = {};
+
   const finalTransformations = parseTransformations(transformations);
   for (let i = 0; i < finalTransformations.length; ++i) {
     const transformation = formatTransformation(name, finalTransformations[i]);
-    const { action, type, formattedConstant, reducer } = transformation;
+    const {
+        action,
+        type,
+        formattedConstant,
+        reducer,
+        payloadTypes,
+        middleware = [],
+      } = transformation;
 
+    const finalMiddleware = defaultMiddleware.concat(middleware);
+
+    // DEPRECATION WARNINGS
     if (process.env.NODE_ENV !== 'production') {
       action && console.warn('The `action` key is deprecated. Use `type` instead.');
+
+      if (payloadTypes) {
+        console.warn('The `payloadTypes` key is deprecated. Use middleware.propCheck instead');
+        const propChecker = propCheck(transformation.payloadTypes);
+        finalMiddleware.push(propChecker);
+      }
     }
 
+
     const camelizedActionName = camelize(type);
-    actions[camelizedActionName] = createAction(transformation, defaultMiddleware);
+    actions[camelizedActionName] = createAction(transformation, finalMiddleware);
     constants[camelizedActionName] = formattedConstant;
     reducerMap[formattedConstant] = reducer;
   }
