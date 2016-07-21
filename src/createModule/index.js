@@ -70,7 +70,6 @@ export const createModule = ({ initialState, name, selector, transformations }) 
       }
     }
 
-
     const camelizedActionName = camelize(type);
     actions[camelizedActionName] = createAction(transformation, finalMiddleware);
     constants[camelizedActionName] = formattedConstant;

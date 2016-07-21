@@ -17,12 +17,13 @@ export default createModule({
         }),
       },
       middleware: [
-        ({ payload: { todo }, meta }) => {
+        ({ payload: { todo }, meta, ... rest }) => {
           const id = v4();
           console.log('Middleware adding ID', id); // eslint-disable-line no-console
           return {
             payload: { todo: { ...todo, id } },
             meta,
+            ... rest,
           };
         },
       ],
