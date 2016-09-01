@@ -1,4 +1,4 @@
-# redux-modules [![npm version](https://badge.fury.io/js/redux-modules.svg)](https://badge.fury.io/js/redux-modules) [![Circle CI](https://circleci.com/gh/mboperator/redux-modules/tree/master.svg?style=svg)](https://circleci.com/gh/mboperator/redux-modules/tree/master)
+# redux-modules [![npm version](https://badge.fury.io/js/redux-modules.svg)](https://badge.fury.io/js/redux-modules) [![npm](https://img.shields.io/npm/dm/redux-modules.svg?maxAge=2592000)]() [![Circle CI](https://circleci.com/gh/mboperator/redux-modules/tree/master.svg?style=svg)](https://circleci.com/gh/mboperator/redux-modules/tree/master)
 
 `redux-modules` is a refinement on the [Redux module](https://github.com/erikras/ducks-modular-redux) concept with developer experience in mind. It provides:
 - An **intuitive** way define actions and state transformations
