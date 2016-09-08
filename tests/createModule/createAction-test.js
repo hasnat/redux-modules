@@ -2,16 +2,16 @@ import { should } from 'chai';
 import createAction from '../../src/createModule/createAction';
 should();
 
-const transform = { formattedConstant: 'mock/TEST_ACTION' };
+const formattedConstant = 'mock/TEST_ACTION';
 
 describe('createAction', () => {
-  const actionNoMiddleware = createAction(transform);
+  const actionNoMiddleware = createAction(formattedConstant);
 
   describe('action with no middleware', () => {
     it('should pass the payload through', () => {
       const actionReturn = actionNoMiddleware({ foo: 'bar' });
 
-      actionReturn.type.should.equal(transform.formattedConstant);
+      actionReturn.type.should.equal(formattedConstant);
       actionReturn.payload.should.deep.equal({ foo: 'bar' });
     });
   });
@@ -29,7 +29,7 @@ describe('createAction', () => {
         },
       ];
 
-      const actionWithMiddleware = createAction(transform, middleware);
+      const actionWithMiddleware = createAction(formattedConstant, middleware);
       actionWithMiddleware({ foo: 'bar' }, { thisIs: 'meta' });
 
       payloadReceived.should.deep.equal({ foo: 'bar' });

@@ -1,12 +1,8 @@
-const createAction = (transform, defaultMiddleware = []) => {
-  const { formattedConstant, middleware = [] } = transform;
-  const actionMiddleware = middleware.concat(defaultMiddleware);
-  return (payload, meta) => ({
+const createAction = (formattedConstant, actionMiddleware = []) =>
+  (payload, meta) => ({
     ...actionMiddleware.reduce(
       (acc, func) => func(acc),
-      { payload, meta, type: formattedConstant }
-    ),
+      { payload, meta, type: formattedConstant }),
   });
-};
 
 export default createAction;
