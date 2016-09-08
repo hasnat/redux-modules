@@ -19,15 +19,15 @@ const formatTransformation = (name, { action, type, ...transformation }) => ({
   ...transformation,
 });
 
-const parseTransformation = (action, transformation) => {
+const parseTransformation = (type, transformation) => {
   if (typeof transformation === 'function') {
     return {
-      action,
+      type,
       reducer: transformation,
     };
   }
   return {
-    action,
+    type,
     ...transformation,
   };
 };
