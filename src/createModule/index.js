@@ -5,6 +5,13 @@ import propCheck from '../middleware/propCheck';
 
 const defaultMiddleware = [parsePayloadErrors];
 
+const applyReducerEnhancer = (reducer, enhancer) => {
+  if (typeof enhancer === 'function') {
+    return enhancer(reducer);
+  }
+  return reducer;
+};
+
 const formatTransformation = (name, { action, type, ...transformation }) => ({
   formattedConstant: `${name}/${type || action}`,
   type: type || action,
@@ -40,7 +47,13 @@ const parseTransformations = transformations => {
   return finalTransformations;
 };
 
-export const createModule = ({ initialState, name, selector, transformations }) => {
+export const createModule = ({
+  initialState,
+  reducerEnhancer,
+  name,
+  selector,
+  transformations,
+}) => {
   const actions = {};
   const constants = {};
   const reducerMap = {};
@@ -73,7 +86,7 @@ export const createModule = ({ initialState, name, selector, transformations }) 
     const camelizedActionName = camelize(type);
     actions[camelizedActionName] = createAction(transformation, finalMiddleware);
     constants[camelizedActionName] = formattedConstant;
-    reducerMap[formattedConstant] = reducer;
+    reducerMap[formattedConstant] = applyReducerEnhancer(reducer, reducerEnhancer);
   }
   const reducer = (state = initialState, action) => {
     const localReducer = reducerMap[action.type];

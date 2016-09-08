@@ -9,10 +9,15 @@ const mockTransforms = [
 ];
 
 describe('createModule', () => {
+  let enhancerCalled = false;
   const generatedModule = createModule({
     name: 'mock',
     // eslint-disable-next-line new-cap
     initialState: Map(),
+    reducerEnhancer: r => {
+      enhancerCalled = true;
+      return r;
+    },
     transformations: mockTransforms,
   });
   it('should generate an actions object', () => {
@@ -22,5 +27,8 @@ describe('createModule', () => {
   it('should generate a reducer function', () => {
     generatedModule.reducer.should.not.equal(null);
     (typeof generatedModule.reducer).should.equal('function');
+  });
+  it('should call the reducer enhancer function if specified', () => {
+    enhancerCalled.should.equal(true);
   });
 });
