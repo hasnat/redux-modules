@@ -84,7 +84,7 @@ export const createModule = ({
     }
 
     const camelizedActionName = camelize(type);
-    actions[camelizedActionName] = createAction(transformation, finalMiddleware);
+    actions[camelizedActionName] = createAction(formattedConstant, finalMiddleware);
     constants[camelizedActionName] = formattedConstant;
     reducerMap[formattedConstant] = applyReducerEnhancer(reducer, reducerEnhancer);
   }
