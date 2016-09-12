@@ -1,7 +1,6 @@
 import camelize from 'camel-case';
 import createAction from './createAction';
 import parsePayloadErrors from '../middleware/parsePayloadErrors';
-import propCheck from '../middleware/propCheck';
 
 const defaultMiddleware = [parsePayloadErrors];
 
@@ -12,10 +11,9 @@ const applyReducerEnhancer = (reducer, enhancer) => {
   return reducer;
 };
 
-const formatTransformation = (name, { action, type, ...transformation }) => ({
-  formattedConstant: `${name}/${type || action}`,
-  type: type || action,
-  action,
+const formatTransformation = (name, { type, ...transformation }) => ({
+  formattedConstant: name ? `${name}/${type}` : type,
+  type,
   ...transformation,
 });
 
@@ -62,26 +60,13 @@ export const createModule = ({
   for (let i = 0; i < finalTransformations.length; ++i) {
     const transformation = formatTransformation(name, finalTransformations[i]);
     const {
-        action,
         type,
         formattedConstant,
         reducer,
-        payloadTypes,
         middleware = [],
       } = transformation;
 
-    const finalMiddleware = defaultMiddleware.concat(middleware);
-
-    // DEPRECATION WARNINGS
-    if (process.env.NODE_ENV !== 'production') {
-      action && console.warn('The `action` key is deprecated. Use `type` instead.');
-
-      if (payloadTypes) {
-        console.warn('The `payloadTypes` key is deprecated. Use middleware.propCheck instead');
-        const propChecker = propCheck(transformation.payloadTypes);
-        finalMiddleware.push(propChecker);
-      }
-    }
+    const finalMiddleware = [... defaultMiddleware, ... middleware];
 
     const camelizedActionName = camelize(type);
     actions[camelizedActionName] = createAction(formattedConstant, finalMiddleware);
