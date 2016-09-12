@@ -3,6 +3,7 @@ import createAction from './createAction';
 import parsePayloadErrors from '../middleware/parsePayloadErrors';
 
 const defaultMiddleware = [parsePayloadErrors];
+const defaultReducer = state => state;
 
 const applyReducerEnhancer = (reducer, enhancer) => {
   if (typeof enhancer === 'function') {
@@ -48,6 +49,7 @@ const parseTransformations = transformations => {
 export const createModule = ({
   initialState,
   reducerEnhancer,
+  composes = [],
   name,
   selector,
   transformations,
@@ -57,6 +59,7 @@ export const createModule = ({
   const reducerMap = {};
 
   const finalTransformations = parseTransformations(transformations);
+
   for (let i = 0; i < finalTransformations.length; ++i) {
     const transformation = formatTransformation(name, finalTransformations[i]);
     const {
@@ -73,12 +76,15 @@ export const createModule = ({
     constants[camelizedActionName] = formattedConstant;
     reducerMap[formattedConstant] = applyReducerEnhancer(reducer, reducerEnhancer);
   }
+
   const reducer = (state = initialState, action) => {
-    const localReducer = reducerMap[action.type];
-    return typeof localReducer !== 'undefined' ?
-      localReducer(state, action) :
-      state;
+    const localReducer = reducerMap[action.type] || defaultReducer;
+    return [
+      localReducer,
+      ... composes,
+    ].reduce((nState, currentReducer) => currentReducer(nState, action), state);
   };
+
   return {
     actions,
     constants,
