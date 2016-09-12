@@ -17,6 +17,7 @@ function addUUID({ payload: { todo }, meta, ... rest }) {
 
 export default createModule({
   name: 'todos',
+  selector: state => ({ todos: state.todos.toJS() }),
   initialState: List(), // eslint-disable-line new-cap
   transformations: [
     {
