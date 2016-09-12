@@ -9,36 +9,36 @@ export default createModule({
   initialState: List(), // eslint-disable-line new-cap
   transformations: [
     {
-      type: 'CREATE',
+      type: 'create',
       middleware: [
         middleware.propCheck({
           todo: shape({
             description: string.isRequired,
-            name: string.isRequired,
           }),
         }),
       ],
       reducer: (state, { payload: { todo } }) => state.push(fromJS(todo)),
     },
     {
-      type: 'DESTROY',
+      type: 'destroy',
       middleware: [
         middleware.propCheck({
           index: number.isRequired,
-          test: string.isRequired,
         }),
       ],
       reducer: (state, { payload: { index } }) => state.delete(index),
     },
     {
-      type: 'UPDATE',
-      payloadTypes: {
-        index: number.isRequired,
-        todo: shape({
-          description: string,
-          checked: bool,
+      type: 'update',
+      middleware: [
+        middleware.propCheck({
+          index: number.isRequired,
+          todo: shape({
+            description: string,
+            checked: bool,
+          }),
         }),
-      },
+      ],
       reducer: (state, { payload: { index, todo: updates } }) =>
         state.update(index, todo => todo.merge(fromJS(updates))),
     },

@@ -1,4 +1,4 @@
-import { createModule } from '../../../src/index';
+import { createModule, middleware } from '../../../src/index';
 import { PropTypes } from 'react';
 import { fromJS, List } from 'immutable';
 
@@ -6,38 +6,43 @@ const { shape, number, string, bool } = PropTypes;
 
 export default createModule({
   name: 'todos',
-  // eslint-disable-next-line new-cap
-  initialState: List(),
+  initialState: List(), // eslint-disable-line new-cap
   transformations: [
     {
-      type: 'CREATE',
-      payloadTypes: {
-        todo: shape({
-          description: string.isRequired,
+      type: 'create',
+      middleware: [
+        middleware.propCheck({
+          todo: shape({
+            description: string.isRequired,
+            name: string.isRequired,
+          }),
         }),
-      },
+      ],
       reducer: (state, { payload: { todo } }) => state.push(fromJS(todo)),
     },
     {
-      type: 'DESTROY',
-      payloadTypes: {
-        index: number.isRequired,
-      },
+      type: 'destroy',
+      middleware: [
+        middleware.propCheck({
+          index: number.isRequired,
+          test: string.isRequired,
+        }),
+      ],
       reducer: (state, { payload: { index } }) => state.delete(index),
     },
     {
-      type: 'UPDATE',
-      payloadTypes: {
-        index: number.isRequired,
-        todo: shape({
-          description: string,
-          checked: bool,
+      type: 'update',
+      middleware: [
+        middleware.propCheck({
+          index: number.isRequired,
+          todo: shape({
+            description: string,
+            checked: bool,
+          }),
         }),
-      },
+      ],
       reducer: (state, { payload: { index, todo: updates } }) =>
-        state.update(
-          index,
-          todo => todo.merge(fromJS(updates))),
+        state.update(index, todo => todo.merge(fromJS(updates))),
     },
   ],
 });
