@@ -13,7 +13,7 @@ const applyReducerEnhancer = (reducer, enhancer) => {
 };
 
 const formatTransformation = (name, { type, ...transformation }) => ({
-  formattedConstant: name ? `${name}/${type}` : type,
+  formattedConstant: `${name}/${type}`,
   type,
   ...transformation,
 });
@@ -64,17 +64,19 @@ export const createModule = ({
     const transformation = formatTransformation(name, finalTransformations[i]);
     const {
         type,
+        namespaced = true,
         formattedConstant,
         reducer,
         middleware = [],
       } = transformation;
 
     const finalMiddleware = [... defaultMiddleware, ... middleware];
+    const constant = namespaced ? formattedConstant : type;
 
     const camelizedActionName = camelize(type);
-    actions[camelizedActionName] = createAction(formattedConstant, finalMiddleware);
-    constants[camelizedActionName] = formattedConstant;
-    reducerMap[formattedConstant] = applyReducerEnhancer(reducer, reducerEnhancer);
+    actions[camelizedActionName] = createAction(constant, finalMiddleware);
+    constants[camelizedActionName] = constant;
+    reducerMap[constant] = applyReducerEnhancer(reducer, reducerEnhancer);
   }
 
   const reducer = (state = initialState, action) => {
