@@ -84,7 +84,7 @@ export const createModule = ({
     return [
       localReducer,
       ... composes,
-    ].reduce((nState, currentReducer) => currentReducer(nState, action), state);
+    ].reduce((newState, currentReducer) => currentReducer(newState, action), state);
   };
 
   return {
