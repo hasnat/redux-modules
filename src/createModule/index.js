@@ -13,7 +13,7 @@ const applyReducerEnhancer = (reducer, enhancer) => {
   return reducer;
 };
 
-const formatTransformation = (name, { type, action, ...transformation }) => ({
+const formatTransformation = (name, { action, type, ...transformation }) => ({
   formattedConstant: `${name}/${type || action}`,
   type: type || action,
   action,
