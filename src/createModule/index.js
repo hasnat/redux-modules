@@ -14,8 +14,8 @@ const applyReducerEnhancer = (reducer, enhancer) => {
 };
 
 const formatTransformation = (name, { type, action, ...transformation }) => ({
-  formattedConstant: `${name}/${action || type}`,
-  type: action || type,
+  formattedConstant: `${name}/${type || action}`,
+  type: type || action,
   action,
   ...transformation,
 });
