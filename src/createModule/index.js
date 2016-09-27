@@ -4,6 +4,7 @@ import parsePayloadErrors from '../middleware/parsePayloadErrors';
 import propCheck from '../middleware/propCheck';
 
 const defaultMiddleware = [parsePayloadErrors];
+const defaultReducer = state => state;
 
 const applyReducerEnhancer = (reducer, enhancer) => {
   if (typeof enhancer === 'function') {
@@ -50,6 +51,7 @@ const parseTransformations = transformations => {
 export const createModule = ({
   initialState,
   reducerEnhancer,
+  composes = [],
   name,
   selector,
   transformations,
@@ -59,41 +61,53 @@ export const createModule = ({
   const reducerMap = {};
 
   const finalTransformations = parseTransformations(transformations);
+
   for (let i = 0; i < finalTransformations.length; ++i) {
     const transformation = formatTransformation(name, finalTransformations[i]);
     const {
         action,
         type,
+        namespaced = true,
         formattedConstant,
         reducer,
         payloadTypes,
         middleware = [],
       } = transformation;
 
-    const finalMiddleware = defaultMiddleware.concat(middleware);
+    const finalMiddleware = [... defaultMiddleware, ... middleware];
+    const constant = namespaced ? formattedConstant : type;
 
     // DEPRECATION WARNINGS
     if (process.env.NODE_ENV !== 'production') {
-      action && console.warn('The `action` key is deprecated. Use `type` instead.');
+      action && console.warn(
+      `${constant}::`,
+      'The `action` key is deprecated. Use `type` instead.'
+    );
 
       if (payloadTypes) {
-        console.warn('The `payloadTypes` key is deprecated. Use middleware.propCheck instead');
+        console.warn(
+          `${constant}::`,
+          'The `payloadTypes` key is deprecated. Use middleware.propCheck instead'
+        );
         const propChecker = propCheck(transformation.payloadTypes);
         finalMiddleware.push(propChecker);
       }
     }
 
     const camelizedActionName = camelize(type);
-    actions[camelizedActionName] = createAction(formattedConstant, finalMiddleware);
-    constants[camelizedActionName] = formattedConstant;
-    reducerMap[formattedConstant] = applyReducerEnhancer(reducer, reducerEnhancer);
+    actions[camelizedActionName] = createAction(constant, finalMiddleware);
+    constants[camelizedActionName] = constant;
+    reducerMap[constant] = applyReducerEnhancer(reducer, reducerEnhancer);
   }
+
   const reducer = (state = initialState, action) => {
-    const localReducer = reducerMap[action.type];
-    return typeof localReducer !== 'undefined' ?
-      localReducer(state, action) :
-      state;
+    const localReducer = reducerMap[action.type] || defaultReducer;
+    return [
+      localReducer,
+      ... composes,
+    ].reduce((newState, currentReducer) => currentReducer(newState, action), state);
   };
+
   return {
     actions,
     constants,
