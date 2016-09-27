@@ -29,9 +29,9 @@
   },
   "license": "ISC",
   "dependencies": {
-    "camel-case": "^1.2.2",
     "deep-assign": "^2.0.0",
-    "hoist-non-react-statics": "^1.2.0"
+    "hoist-non-react-statics": "^1.2.0",
+    "lodash-es": "^4.16.2"
   },
   "peerDependencies": {
     "redux": "^3.3.1"
