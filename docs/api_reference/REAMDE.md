@@ -2,6 +2,7 @@
 
 - createModule({ name, initialState, transformations })
   - transformation object ({ })
+- connetModule(
 - connectModule(selector, moduleOrModules)
 
 ## `createModule`
@@ -14,7 +15,11 @@ Used to prefix the actions defined in the `transformations` array, as well as na
 ### initialState
 > any
 
+<<<<<<< HEAD
 The initialState of this reducer of the state tree.
+=======
+The initialState of this portion of the state tree.
+>>>>>>> 9b8c6f0d52cf34983d5ec69ce00adb1c58e4f728
 
 ### reducerEnhancer
 > function
@@ -24,6 +29,7 @@ The initialState of this reducer of the state tree.
 Allows use of a `reducerEnhancer` on the module. Examples include `redux-undo` and `redux-ignore`.
 
 ### composes
+<<<<<<< HEAD
 > array of reducer functions with signature (state, action) => newState
 
 > optional
