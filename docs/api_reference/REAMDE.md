@@ -1,7 +1,7 @@
 # API Reference
 
 - createModule({ name, initialState, transformations })
-- transformation object ({ })
+- transformation object ({ type, namespaced, composes, middleware, reducer })
 - connectModule(moduleOrModules)
 - connectModule(selector, moduleOrModules)
 
