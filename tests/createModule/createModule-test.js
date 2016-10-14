@@ -1,34 +1,101 @@
 import { should } from 'chai';
-import { Map } from 'immutable';
 import createModule from '../../src/createModule';
 should();
 
-const mockTransforms = [
-  { type: 'MOCK_ONE' },
-  { type: 'MOCK_TWO' },
-];
+const mirrorAction = (_, action) => action;
+const initialState = {};
+
+let transformMiddlewareCalled = false;
+let enhancerCalled = false;
+let firstMiddlewareCalled = false;
+let secondMiddlewareCalled = false;
+
+const generatedModule = createModule({
+  name: 'mock',
+  // eslint-disable-next-line new-cap
+  initialState,
+  reducerEnhancer: r => {
+    enhancerCalled = true;
+    return r;
+  },
+  middleware: [
+    a => {
+      firstMiddlewareCalled = true;
+      return a;
+    },
+    a => {
+      secondMiddlewareCalled = true;
+      return a;
+    },
+  ],
+  transformations: [
+    {
+      type: 'MOCK_ONE',
+      middleware: [
+        a => {
+          transformMiddlewareCalled = true;
+          return a;
+        },
+      ],
+      reducer: mirrorAction,
+    },
+    { type: 'MOCK_TWO', reducer: mirrorAction },
+  ],
+});
 
 describe('createModule', () => {
-  let enhancerCalled = false;
-  const generatedModule = createModule({
-    name: 'mock',
-    // eslint-disable-next-line new-cap
-    initialState: Map(),
-    reducerEnhancer: r => {
-      enhancerCalled = true;
-      return r;
-    },
-    transformations: mockTransforms,
-  });
   it('should generate an actions object', () => {
     generatedModule.actions.should.not.equal(null);
     (typeof generatedModule.actions).should.equal('object');
   });
+
   it('should generate a reducer function', () => {
     generatedModule.reducer.should.not.equal(null);
     (typeof generatedModule.reducer).should.equal('function');
   });
+
   it('should call the reducer enhancer function if specified', () => {
     enhancerCalled.should.equal(true);
+  });
+
+  describe('generated reducer', () => {
+    it('should respond to generated actions', () => {
+      const result = generatedModule.reducer(
+        undefined,
+        generatedModule.actions.mockOne()
+      );
+
+      result.should.deep.equal(generatedModule.actions.mockOne());
+    });
+
+    it('should return initialState if a transformation is not defined for the action type', () => {
+      const result = generatedModule.reducer(
+        undefined,
+        { type: 'NON EXISTANT' }
+      );
+
+      result.should.equal(initialState);
+    });
+
+    it('should respond to every possible action that is generated', () => {
+      Object.keys(generatedModule.actions).forEach(key => {
+        const action = generatedModule.actions[key]();
+        const result = generatedModule.reducer(undefined, action);
+        result.should.deep.equal(action);
+      });
+    });
+  });
+
+  describe('generated action', () => {
+    it('should run all module wide action middleware', () => {
+      generatedModule.actions.mockTwo();
+      firstMiddlewareCalled.should.equal(true);
+      secondMiddlewareCalled.should.equal(true);
+    });
+
+    it('should run module specific action middleware', () => {
+      generatedModule.actions.mockOne();
+      transformMiddlewareCalled.should.equal(true);
+    });
   });
 });

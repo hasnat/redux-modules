@@ -33,10 +33,12 @@ function parseTransformations(transformations) {
 export default function createModule({
   composes = [],
   initialState,
+  middleware: moduleMiddleware = [],
   name,
   reducerEnhancer,
   selector,
-  transformations }) {
+  transformations,
+}) {
   const finalTransformations = parseTransformations(transformations);
   const actions = {};
   const constants = {};
@@ -52,7 +54,12 @@ export default function createModule({
       type,
     } = formatTransformation(name, finalTransformations[i]);
 
-    const finalMiddleware = [parsePayloadErrors, ...middleware];
+    const finalMiddleware = [
+      parsePayloadErrors,
+      ...middleware,
+      ...moduleMiddleware,
+    ];
+
     const constant = namespaced ? formattedConstant : type;
 
     // DEPRECATION WARNINGS
