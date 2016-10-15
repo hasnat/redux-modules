@@ -31,7 +31,7 @@
   "dependencies": {
     "deep-assign": "^2.0.0",
     "hoist-non-react-statics": "^1.2.0",
-    "lodash-es": "^4.16.2"
+    "lodash": "^4.16.4"
   },
   "peerDependencies": {
     "redux": "^3.3.1"

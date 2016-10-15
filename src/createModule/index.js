@@ -1,5 +1,5 @@
 import createAction from './createAction';
-import { camelCase, defaults, forEach, map, snakeCase } from 'lodash';
+import { defaults, forEach, map, snakeCase } from 'lodash';
 import parsePayloadErrors from '../middleware/parsePayloadErrors';
 
 const defaultReducer = state => state;
@@ -17,13 +17,13 @@ function formatType(actionName) {
 
 function parseTransformation(transformation, actionName) {
   if (typeof actionName !== 'string' && typeof transformation.type !== 'string') {
-    throw new Error(`'type' must be a string if 'transformations' is an array.`);
+    throw new Error('`type` must be a string if `transformations` is an array.');
   }
   const type = typeof actionName === 'string' ? formatType(actionName) : transformation.type;
   if (typeof transformation === 'function') {
     return { actionName, reducer: transformation, type };
   }
-  return defaults({}, transformation, { type });
+  return defaults({}, transformation, { actionName, type });
 }
 
 export default function createModule({
@@ -39,15 +39,15 @@ export default function createModule({
   const actions = {};
   const constants = {};
   const reducerMap = {};
-  forEach(parsedTransformations, ({ middleware = [], namespaced = true, reducer, type }) => {
-    const finalMiddleware = [parsePayloadErrors, ...middleware, ...moduleMiddleware];
-    const constant = namespaced ? `${name}/${type}` : type;
-    const camelizedActionName = camelCase(type);
-    actions[camelizedActionName] = createAction(constant, finalMiddleware);
-    constants[camelizedActionName] = constant;
-    reducerMap[constant] = reducer;
-  });
-  function reducer(state = initialState, action) {
+  forEach(parsedTransformations,
+    ({ actionName, middleware = [], namespaced = true, reducer, type }) => {
+      const finalMiddleware = [parsePayloadErrors, ...middleware, ...moduleMiddleware];
+      const constant = namespaced ? `${name}/${type}` : type;
+      actions[actionName] = createAction(constant, finalMiddleware);
+      constants[actionName] = constant;
+      reducerMap[constant] = reducer;
+    });
+  function finalReducer(state = initialState, action) {
     const localReducer = reducerMap[action.type] || defaultReducer;
     return [localReducer, ...composes]
       .reduce((newState, currentReducer) => currentReducer(newState, action), state);
@@ -56,7 +56,7 @@ export default function createModule({
     actions,
     constants,
     name,
-    reducer: applyReducerEnhancer(reducer, reducerEnhancer),
+    reducer: applyReducerEnhancer(finalReducer, reducerEnhancer),
     selector,
   };
 }

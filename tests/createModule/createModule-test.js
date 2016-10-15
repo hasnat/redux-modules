@@ -28,9 +28,8 @@ const generatedModule = createModule({
       return a;
     },
   ],
-  transformations: [
-    {
-      type: 'MOCK_ONE',
+  transformations: {
+    mockOne: {
       middleware: [
         a => {
           transformMiddlewareCalled = true;
@@ -39,8 +38,8 @@ const generatedModule = createModule({
       ],
       reducer: mirrorAction,
     },
-    { type: 'MOCK_TWO', reducer: mirrorAction },
-  ],
+    mockTwo: mirrorAction,
+  },
 });
 
 describe('createModule', () => {
