@@ -62,10 +62,12 @@ describe('propCheck', () => {
   });
 
   it('should throw an error when the payload does not match stated type', () => {
+    // eslint-disable-next-line no-unused-expressions
     objectSpy.calledOnce.should.be.ok;
   });
 
   it('should work when propChecker is given a function instead of an object', () => {
+    // eslint-disable-next-line no-unused-expressions
     funcSpy.calledOnce.should.be.ok;
   });
 

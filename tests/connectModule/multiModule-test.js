@@ -16,10 +16,10 @@ should();
 const generateMockModule = id => createModule({
   name: `mock${id}`,
   initialState: 0,
-  transformations: [
-    { type: 'INCREMENT', reducer: state => state + 1 },
-    { type: 'DECREMENT', reducer: state => state - 1 },
-  ],
+  transformations: {
+    decrement: state => state - 1,
+    increment: state => state + 1,
+  },
 });
 
 const store = createStore(state => state, {});

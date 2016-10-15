@@ -16,10 +16,10 @@ should();
 const mockModule = createModule({
   name: 'mock',
   initialState: 0,
-  transformations: [
-    { type: 'INCREMENT', reducer: state => state + 1 },
-    { type: 'DECREMENT', reducer: state => state - 1 },
-  ],
+  transformations: {
+    decrement: state => state - 1,
+    increment: state => state + 1,
+  },
 });
 const store = createStore(state => state, {});
 const selector = state => ({ count: state.mock });
@@ -71,7 +71,7 @@ describe('ConnectedComponent', () => {
     const wrapper = mount(
       <ModuleProvider store={store}>
         <div>
-          <Single count={1} dispatch={() => {}} />
+          <Single count={1} dispatch={() => { }} />
         </div>
       </ModuleProvider>
     );
