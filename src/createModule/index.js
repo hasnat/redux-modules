@@ -1,7 +1,6 @@
 import createAction from './createAction';
-import { camelCase, map } from 'lodash';
+import { camelCase, defaults, forEach, map, snakeCase } from 'lodash';
 import parsePayloadErrors from '../middleware/parsePayloadErrors';
-import propCheck from '../middleware/propCheck';
 
 const defaultReducer = state => state;
 
@@ -12,22 +11,19 @@ const applyReducerEnhancer = (reducer, enhancer) => {
   return reducer;
 };
 
-const formatTransformation = (name, { action, type, ...transformation }) => ({
-  formattedConstant: `${name}/${type || action}`,
-  type: type || action,
-  action,
-  ...transformation,
-});
+function formatType(actionName) {
+  return snakeCase(actionName).toUpperCase();
+}
 
-function parseTransformations(transformations) {
-  function parseTransformation(type, transformation) {
-    return (typeof transformation === 'function') ?
-      { type, reducer: transformation } :
-      { type, ...transformation };
+function parseTransformation(transformation, actionName) {
+  if (typeof actionName !== 'string' && typeof transformation.type !== 'string') {
+    throw new Error(`'type' must be a string if 'transformations' is an array.`);
   }
-  return Array.isArray(transformations) ?
-    transformations :
-    map(transformations, parseTransformation);
+  const type = typeof actionName === 'string' ? formatType(actionName) : transformation.type;
+  if (typeof transformation === 'function') {
+    return { actionName, reducer: transformation, type };
+  }
+  return defaults({}, transformation, { type });
 }
 
 export default function createModule({
@@ -39,58 +35,23 @@ export default function createModule({
   selector,
   transformations,
 }) {
-  const finalTransformations = parseTransformations(transformations);
+  const parsedTransformations = map(transformations, parseTransformation);
   const actions = {};
   const constants = {};
   const reducerMap = {};
-  for (let i = 0; i < finalTransformations.length; ++i) {
-    const {
-      action,
-      formattedConstant,
-      middleware = [],
-      namespaced = true,
-      payloadTypes,
-      reducer,
-      type,
-    } = formatTransformation(name, finalTransformations[i]);
-
-    const finalMiddleware = [
-      parsePayloadErrors,
-      ...middleware,
-      ...moduleMiddleware,
-    ];
-
-    const constant = namespaced ? formattedConstant : type;
-
-    // DEPRECATION WARNINGS
-    if (process.env.NODE_ENV !== 'production') {
-      action && console.warn(
-        `${constant}::`,
-        'The `action` key is deprecated. Use `type` instead.'
-      );
-
-      if (payloadTypes) {
-        console.warn(
-          `${constant}::`,
-          'The `payloadTypes` key is deprecated. Use middleware.propCheck instead'
-        );
-        const propChecker = propCheck(payloadTypes);
-        finalMiddleware.push(propChecker);
-      }
-    }
-
+  forEach(parsedTransformations, ({ middleware = [], namespaced = true, reducer, type }) => {
+    const finalMiddleware = [parsePayloadErrors, ...middleware, ...moduleMiddleware];
+    const constant = namespaced ? `${name}/${type}` : type;
     const camelizedActionName = camelCase(type);
     actions[camelizedActionName] = createAction(constant, finalMiddleware);
     constants[camelizedActionName] = constant;
     reducerMap[constant] = reducer;
-  }
-  const reducer = (state = initialState, action) => {
+  });
+  function reducer(state = initialState, action) {
     const localReducer = reducerMap[action.type] || defaultReducer;
-    return [
-      localReducer,
-      ...composes,
-    ].reduce((newState, currentReducer) => currentReducer(newState, action), state);
-  };
+    return [localReducer, ...composes]
+      .reduce((newState, currentReducer) => currentReducer(newState, action), state);
+  }
   return {
     actions,
     constants,
