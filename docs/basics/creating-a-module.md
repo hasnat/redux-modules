@@ -9,17 +9,15 @@ import { List } from 'immutable';
 export default createModule({
   name: 'todos',
   initialState: List(),
-  transformations: [
-    {
-      type: 'CREATE',
+  transformations: {
+    create: {
       middleware: [
         middlware.propCheck(shape({ description: PropTypes.string }))
       ],
       reducer: (state, { payload }) =>
         state.push(fromJS(payload)),
-    }
-    {
-      type: 'DELETE',
+    },
+    delete: {
       middleware: [
         middlware.propCheck(PropTypes.number)
       ],
@@ -30,4 +28,8 @@ export default createModule({
 });
 ```
 
-The `name` specified is used to prefix the actions defined in the `transformations` array. The `initialState` is the initial state of the reducer for this piece of the state tree. The `transformations` key contains an array of objects which represent different state transformations.
+The `name` specified is used to determine which slice of the state tree the generated reducer operates on, and to prefix the actions defined in the `transformations` array.
+
+The `initialState` is the initial state of the reducer for this piece of the state tree.
+
+The key/value paris in the `transformations` object represent each state transformation.

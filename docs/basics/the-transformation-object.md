@@ -6,30 +6,43 @@ The `transformations` array contains objects which define different state transf
 
 ```js
 {
-  action: 'CREATE',
-  middleware: [
-    middlware.propCheck(shape({ description: PropTypes.string }))
-  ],
-  reducer: (state, { payload }) =>
-    state.push(fromJS(payload)),
+  create: {
+    middleware: [
+      middlware.propCheck(shape({ description: PropTypes.string }))
+    ],
+    reducer: (state, { payload }) =>
+      state.push(fromJS(payload)),
+  }
 }
 ```
 > Example transformation object
 
 #Usage
-> transformations: [ {action, middleware, reducer} ]
+> transformations: { [transformationName]{type*, namespaced*, middleware*, reducer} }
+
+## transformationName
+> string
+
+This represents:
+- the action creator name: `module.actions.transformationName`
+- the constant name: `module.constants.transformationName`
+- the default action type: `moduleName/transformationName`
+
+This type can be overridden by using the `type` key.
 
 ## type
 > string
 
-The type of transformation. This is used to create a constant `<moduleName>/<action>`. The generated constant is in turn used in the final reducer.
+> optional
+
+The type key can be used to rename the `action type`. Specifying a `type` does _not_ change the name of the generated constants and action creators. The generated constants and action creators are always based on the `transformationName`
 
 ## middleware
-> [function({ payload, meta }) => { payload, meta }]
+> [function({ type, payload, meta }) => { type, payload, meta }]
 
 > optional
 
-Middleware is an array of functions that receive {payload, meta} and return {payload, meta}. These functions can be used to decorate the action before it's received by the reducer.
+Middleware is an array of functions that receive `{type, payload, meta}` and return `{type, payload, meta}`. These functions can be used to decorate the action before it's received by the reducer.
 
 ## reducer
 > function(state, action)

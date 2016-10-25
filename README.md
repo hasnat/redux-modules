@@ -25,9 +25,8 @@ const  { shape, string, number } = PropTypes;
 export default createModule({
   name: 'todos',
   initialState: List(),
-  transformations: [
-    {
-      type: 'CREATE',
+  transformations: {
+    create: {
       middleware: [
         middleware.propCheck(
           shape({ description: string.isRequired })
@@ -36,15 +35,14 @@ export default createModule({
       reducer: (state, { payload }) =>
         state.update('collection', todos => todos.push(fromJS(payload))),
     },
-    {
-      type: 'DESTROY',
+    destroy: {
       middleware: [
         middleware.propCheck(number.isRequired),
       ],
       reducer: (state, { payload }) => {
         state.update('collection', todos => todos.delete(payload)),
     },
-  ],
+  },
 });
 ```
 

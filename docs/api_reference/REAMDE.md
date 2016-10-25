@@ -32,18 +32,18 @@ Allows use of a `reducerEnhancer` on the module. Examples include `redux-undo` a
 Allows composition of reducers. The action will be run through the current module's reducer first. The newState will then be run through the array of specified functions. Implementation and usage is exactly the same as acdlite's [reduce-reducers](https://github.com/acdlite/reduce-reducers) library.
 
 ### transformations
-> array
+> object
 
-An array of objects that define state transformations.
+An object whose key/values define state transformations.
 
 ## `transformation object`
 
 ### type
 > string
 
-> required
+> optional
 
-The action type. By default, this constant will be appended to the `name` of the module to create the action constant.
+The action type. By default, this type is generated from the key of the transformation.
 
 ### namespaced
 > boolean
@@ -52,14 +52,18 @@ The action type. By default, this constant will be appended to the `name` of the
 
 > optional
 
-Determines whether the module name is combined with the action type.
+Determines whether the generated action is `namespaced` with the module name. You can use `namespaced: false` to respond to actions from **other** modules.
 
 ### middleware
 > array of functions with signature (action) => newAction
 
 > optional
 
-Middleware allows the action to be transformed before reaching the reducer function. Example use cases include adding a `uuid` to the action's `payload` or `meta` object, `payload` type checking, or action logging.
+Middleware allows the action to be transformed before reaching the reducer function. Example use cases include:
+- Adding a `uuid` to the action's `payload` or `meta` object
+- `payload` type checking
+- Action logging
+- Converting the action `payload` into an immutable object before it reaches the reducer
 
 ### reducer
 > function with signature (state, action) => newState
@@ -72,7 +76,7 @@ State transformation that corresponds to this action.
 
 ## `connectModule [ one parameter ]`
 
-### use with a single module
+### props when used with a single module
 ```js
 @connectModule(todosModule)
 export default class Todos extends Component {
@@ -87,7 +91,7 @@ export default class Todos extends Component {
   };
 }
 ```
-### use with an array of modules
+### props when used with an array of modules
 ```js
 @connectModule([todosModule, userModule])
 export default class TodosHomeHandler extends Component {
@@ -117,7 +121,7 @@ export default class TodosHomeHandler extends Component {
 
 ## `connectModule [ two parameters ]`
 
-### use with a selector and a single module
+### props when used with a selector and a single module
 ```js
 @connectModule(selector, todosModule)
 export default class Todos extends Component {
@@ -132,7 +136,7 @@ export default class Todos extends Component {
   };
 }
 ```
-### use with a selector and an array of modules
+### props when used with a selector and an array of modules
 ```js
 @connectModule(selector [todosModule, userModule])
 export default class TodosHomeHandler extends Component {
