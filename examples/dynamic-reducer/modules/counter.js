@@ -1,16 +1,10 @@
-import { createModule, utils } from '../../../src/index';
+import { createModule } from '../../../src/index';
 
 export default createModule({
   name: 'counter',
   initialState: 0,
-  transformations: utils.transformationsToObject([
-    {
-      type: 'increment',
-      reducer: state => state + 1,
-    },
-    {
-      type: 'decrement',
-      reducer: state => state - 1,
-    },
-  ]),
+  transformations: {
+    increment: state => state + 1,
+    decrement: state => state - 1,
+  },
 });
