@@ -2,10 +2,9 @@
 
 `redux-modules` is a refinement on the [Redux module](https://github.com/erikras/ducks-modular-redux) concept with developer experience in mind. It provides:
 - An **intuitive** way define actions and state transformations
-- The ability to add action creator middleware
-- **propType style typechecking** for action payloads
-![Example](https://raw.githubusercontent.com/mboperator/redux-modules/master/examples/screenshots/payloadTypes.png "redux-modules")
-- A decorator for passing bound module actions to React views
+- The ability transform actions before they reach the reducer
+- A decorator that handles the mapState and mapDispatch functions
+- A modified Redux Provider that dynamically registers new reducers as connected components are mounted
 
 ## Getting Started
 ### Install
