@@ -1,4 +1,4 @@
-import { createModule, middleware } from '../../../src/index';
+import { createModule, middleware, utils } from '../../../src/index';
 import { PropTypes } from 'react';
 import { fromJS, List } from 'immutable';
 import { v4 } from 'uuid';
@@ -19,7 +19,7 @@ export default createModule({
   name: 'todos',
   selector: state => ({ todos: state.todos.toJS() }),
   initialState: List(), // eslint-disable-line new-cap
-  transformations: [
+  transformations: utils.transformationsToObject([
     {
       type: 'create',
       middleware: [
@@ -55,5 +55,5 @@ export default createModule({
       reducer: (state, { payload: { index, todo: updates } }) =>
         state.update(index, todo => todo.merge(fromJS(updates))),
     },
-  ],
+  ]),
 });
