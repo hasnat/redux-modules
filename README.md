@@ -106,3 +106,4 @@ That's it! Check the documentation for comparisons with idiomatic Redux, in dept
 - [Basic Concepts](https://mboperator.gitbooks.io/redux-modules/content/docs/basics/)
 - Recipes
 - [API Reference](https://mboperator.gitbooks.io/redux-modules/content/docs/api_reference/REAMDE.html)
+- [Tooling](https://mboperator.gitbooks.io/redux-modules/content/docs/tooling/REAMDE.html)
