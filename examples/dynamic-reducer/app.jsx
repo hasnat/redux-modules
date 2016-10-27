@@ -9,7 +9,7 @@ export default class ExampleApp extends React.Component {
     return (
       <ModuleProvider store={store}>
         <div>
-          <h1>Multi Module Example</h1>
+          <h1>Dynamic Reducer Example</h1>
           <MultipleConnected />
         </div>
       </ModuleProvider>

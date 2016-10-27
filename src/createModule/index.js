@@ -20,7 +20,7 @@ const formatTransformation = (name, { action, type, ...transformation }) => ({
 });
 
 function parseTransformations(transformations) {
-  function parseTransformation(type, transformation) {
+  function parseTransformation(transformation, type) {
     return (typeof transformation === 'function') ?
       { type, reducer: transformation } :
       { type, ...transformation };
