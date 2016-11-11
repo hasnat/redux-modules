@@ -32,4 +32,4 @@ The `name` specified is used to determine which slice of the state tree the gene
 
 The `initialState` is the initial state of the reducer for this piece of the state tree.
 
-The key/value paris in the `transformations` object represent each state transformation.
+The key/value pairs in the `transformations` object represent each state transformation.
