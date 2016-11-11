@@ -17,10 +17,12 @@ function formatType(actionName) {
 }
 
 function parseTransformation(transformation, actionName) {
-  if (typeof actionName !== 'string' && typeof transformation.type !== 'string') {
-    throw new Error('`type` must be a string if `transformations` is an array.');
+  if (typeof actionName !== 'string') {
+    throw new Error('`transformations` value must be an object');
   }
-  const type = typeof actionName === 'string' ? formatType(actionName) : transformation.type;
+
+  const type = formatType(actionName);
+
   if (typeof transformation === 'function') {
     return { actionName, reducer: transformation, type };
   }

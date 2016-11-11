@@ -64,12 +64,19 @@ Both of these approaches disconnect the `constant`, the `action creator`, and th
 
 ```js
 {
-  type: 'CREATE',
-  middleware: [
-    middlware.propCheck(shape({ description: PropTypes.string }))
-  ],
-  reducer: (state, {payload}) =>
-    state.push(fromJS(payload)),
+  create: {
+    middleware: [
+      middlware.propCheck(shape({ description: PropTypes.string }))
+    ],
+    reducer: (state, {payload}) =>
+      state.push(fromJS(payload)),
+  }
 }
 ```
-By colocating these concerns, adding a new state transformation is as easy as adding a new object to an array. Additionally, by generating `action creators` dynamically we're able to inject middleware behavior such as `payload typechecking`.
+By colocating these concerns, adding a new state transformation is as easy as adding a new object to an array.
+
+Additionally, by generating `action creators` we're able to operate on actions before they reach the reducer function. This means we can do things like:
+- Introspect for `payload typechecking`
+- Run transformations on the payload (e.g. for deserializing API responses)
+- Add meta information
+- Change the action type based on some logic

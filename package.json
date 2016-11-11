@@ -1,6 +1,6 @@
 {
   "name": "redux-modules",
-  "version": "0.6.4",
+  "version": "1.0.0",
   "description": "A library for defining clear, boilerplate free Redux reducers.",
   "main": "lib/index.js",
   "scripts": {
@@ -65,6 +65,7 @@
     "react": "^15",
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15",
+    "react-redux": "^4.4.5",
     "redux": "^3.3.1",
     "redux-logger": "^2.6.1",
     "sinon": "^1.17.4",

@@ -4,24 +4,22 @@
 export default createModule({
   name: 'todos',
   initialState: List(),
-  transformations: [
-    {
-      type: 'CREATE',
+  transformations: {
+    create: {
       payloadTypes: {
         description: React.PropTypes.string,
       },
       reducer: (state, { payload }) =>
         state.push(fromJS(payload)),
-    }
-    {
-      type: 'DELETE',
+    },
+    delete: {
       payloadTypes: {
         index: React.PropTypes.number
       },
       reducer: (state, { payload: { index } }) =>
         state.delete(index),
     },
-  ],
+  },
 });
 ```
 
