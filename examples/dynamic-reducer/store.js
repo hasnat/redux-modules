@@ -10,7 +10,7 @@ const logger = createLogger({
 });
 
 const createStoreWithMiddleware = compose(
-  applyMiddleware(logger)
+  applyMiddleware(logger),
 )(createStore);
 
 export default createStoreWithMiddleware(state => state, {});

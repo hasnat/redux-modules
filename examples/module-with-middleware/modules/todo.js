@@ -5,13 +5,13 @@ import { v4 } from 'uuid';
 
 const { shape, number, string, bool } = PropTypes;
 
-function addUUID({ payload: { todo }, meta, ... rest }) {
+function addUUID({ payload: { todo }, meta, ...rest }) {
   const id = v4();
   console.log('Middleware adding ID', id); // eslint-disable-line no-console
   return {
     payload: { todo: { ...todo, id } },
     meta,
-    ... rest,
+    ...rest,
   };
 }
 

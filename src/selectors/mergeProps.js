@@ -1,7 +1,5 @@
-﻿import deepAssign from 'deep-assign';
+import deepAssign from 'deep-assign';
 
-export const mergeProps =
-  (stateProps, dispatchProps, ownProps) =>
-    deepAssign({}, stateProps, dispatchProps, ownProps);
-
-export default mergeProps;
+export default function mergeProps(stateProps, dispatchProps, ownProps) {
+  return deepAssign({}, stateProps, dispatchProps, ownProps);
+}

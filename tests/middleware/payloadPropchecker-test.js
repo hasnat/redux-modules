@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
-import { should } from 'chai';
 import sinon from 'sinon';
+import { should } from 'chai';
+
 import propCheck from '../../src/middleware/propCheck';
+
 should();
 
 const mockTransforms = [
@@ -35,26 +37,36 @@ describe('propCheck', () => {
   const objectSpy = sinon.spy();
   const funcSpy = sinon.spy();
 
-  const objectSchema = { name: PropTypes.string.isRequired };
-  const functionSchema = PropTypes.shape({ name: PropTypes.string.isRequired }).isRequired;
+  const objectSchema = {
+    name: PropTypes.string.isRequired,
+  };
+  const functionSchema = PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired;
 
   const propCheckedPayloadCreator = (schema, cb) => propCheck(
     schema,
     {
-      onError: err => {
+      onError: (err) => {
         // eslint-disable-next-line no-console
         console.error('PROP CHECKER', err);
         cb(err);
       },
-    }
+    },
   );
 
   propCheckedPayloadCreator(objectSchema, objectSpy)(
-    { type: mockTransforms[0].formattedConstant, payload }
+    {
+      type: mockTransforms[0].formattedConstant,
+      payload,
+    },
   );
 
   propCheckedPayloadCreator(functionSchema, funcSpy)(
-    { type: mockTransforms[0].formattedConstant, payload }
+    {
+      type: mockTransforms[0].formattedConstant,
+      payload,
+    },
   );
 
   it('should return a function that takes a payload', () => {

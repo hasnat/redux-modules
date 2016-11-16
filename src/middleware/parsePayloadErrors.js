@@ -1,5 +1,5 @@
-const parsePayloadErrors = (action) => ({
-  ... action,
+const parsePayloadErrors = action => ({
+  ...action,
   error: (action.payload instanceof Error),
 });
 

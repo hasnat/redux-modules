@@ -1,5 +1,5 @@
 export default transformations =>
   transformations.reduce((memo, transform) => ({
-    ... memo,
+    ...memo,
     [transform.type]: transform,
   }), {});

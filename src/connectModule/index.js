@@ -1,6 +1,6 @@
 import connectModules from './connectModules';
 
-export const createModuleSelector = modules => {
+export const createModuleSelector = (modules) => {
   if (modules.length === 1) {
     return modules[0].selector || (() => ({}));
   }
@@ -8,14 +8,17 @@ export const createModuleSelector = modules => {
   const selectors = modules
     .filter(m => m.selector)
     .map(
-      ({ selector, name }) => ({ selector, name })
-    );
+      ({ selector, name }) => ({
+        selector,
+        name,
+      }),
+  );
 
   return (state, props) => selectors
-    .reduce((acc, { selector, name }) =>
-      ({ ... acc, [name]: selector(state, props) })
-      , {}
-    );
+    .reduce((acc, { selector, name }) => ({
+      ...acc,
+      [name]: selector(state, props),
+    }), {});
 };
 
 export const connectModule = (selector, modules) => {

@@ -1,5 +1,7 @@
 import { should } from 'chai';
+
 import createModule from '../../src/createModule';
+
 should();
 
 const mirrorAction = (_, action) => action;
@@ -14,16 +16,16 @@ const generatedModule = createModule({
   name: 'mock',
   // eslint-disable-next-line new-cap
   initialState,
-  reducerEnhancer: r => {
+  reducerEnhancer: (r) => {
     enhancerCalled = true;
     return r;
   },
   middleware: [
-    a => {
+    (a) => {
       firstMiddlewareCalled = true;
       return a;
     },
-    a => {
+    (a) => {
       secondMiddlewareCalled = true;
       return a;
     },
@@ -31,7 +33,7 @@ const generatedModule = createModule({
   transformations: {
     mockOne: {
       middleware: [
-        a => {
+        (a) => {
           transformMiddlewareCalled = true;
           return a;
         },
@@ -61,7 +63,7 @@ describe('createModule', () => {
     it('should respond to generated actions', () => {
       const result = generatedModule.reducer(
         undefined,
-        generatedModule.actions.mockOne()
+        generatedModule.actions.mockOne(),
       );
 
       result.should.deep.equal(generatedModule.actions.mockOne());
@@ -70,14 +72,16 @@ describe('createModule', () => {
     it('should return initialState if a transformation is not defined for the action type', () => {
       const result = generatedModule.reducer(
         undefined,
-        { type: 'NON EXISTANT' }
+        {
+          type: 'NON EXISTANT',
+        },
       );
 
       result.should.equal(initialState);
     });
 
     it('should respond to every possible action that is generated', () => {
-      Object.keys(generatedModule.actions).forEach(key => {
+      Object.keys(generatedModule.actions).forEach((key) => {
         const action = generatedModule.actions[key]();
         const result = generatedModule.reducer(undefined, action);
         result.should.deep.equal(action);

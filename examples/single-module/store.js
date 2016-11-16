@@ -16,7 +16,7 @@ const logger = createLogger({
 });
 
 const createStoreWithMiddleware = compose(
-  applyMiddleware(logger)
+  applyMiddleware(logger),
 )(createStore);
 
 export default createStoreWithMiddleware(reducer, List()); // eslint-disable-line new-cap

@@ -1,10 +1,11 @@
 import React from 'react';
+import jsdom from 'jsdom';
 import { createStore } from 'redux';
 import { expect, should } from 'chai';
-import { ModuleProvider, connectModule, createModule } from '../../src';
 import { mount } from 'enzyme';
 
-import jsdom from 'jsdom';
+import { ModuleProvider, connectModule, createModule } from '../../src';
+
 const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
 const win = doc.defaultView;
 
@@ -22,7 +23,9 @@ const mockModule = createModule({
   },
 });
 const store = createStore(state => state, {});
-const selector = state => ({ count: state.mock });
+const selector = state => ({
+  count: state.mock,
+});
 const Component = () => <div>Hello world.</div>;
 
 describe('ConnectedComponent', () => {
@@ -33,7 +36,7 @@ describe('ConnectedComponent', () => {
         <div>
           <Single />
         </div>
-      </ModuleProvider>
+      </ModuleProvider>,
     );
     const child = wrapper.findWhere(node => node.type() === Component);
     const props = child.props();
@@ -56,7 +59,7 @@ describe('ConnectedComponent', () => {
         <div>
           <Single />
         </div>
-      </ModuleProvider>
+      </ModuleProvider>,
     );
     const child = wrapper.findWhere(node => node.type() === Component);
 
@@ -67,13 +70,18 @@ describe('ConnectedComponent', () => {
   });
 
   describe('Single Module a selector and passed props', () => {
-    const Single = connectModule(() => ({ count: 0, foo: 2 }), mockModule)(Component);
+    const Single = connectModule(() => ({
+      count: 0,
+      foo: 2,
+    }), mockModule)(Component);
+    function noop() {
+    }
     const wrapper = mount(
       <ModuleProvider store={store}>
         <div>
-          <Single count={1} dispatch={() => { }} />
+          <Single count={1} dispatch={noop} />
         </div>
-      </ModuleProvider>
+      </ModuleProvider>,
     );
     const child = wrapper.findWhere(node => node.type() === Component);
 
