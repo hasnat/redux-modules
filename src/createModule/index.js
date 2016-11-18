@@ -1,6 +1,5 @@
 import createAction from './createAction';
-import map from 'lodash.map';
-import snakeCase from 'lodash.snakecase';
+import { defaults, forEach, map, snakeCase } from 'lodash';
 import parsePayloadErrors from '../middleware/parsePayloadErrors';
 
 const defaultReducer = state => state;
@@ -26,8 +25,7 @@ function parseTransformation(transformation, actionName) {
   if (typeof transformation === 'function') {
     return { actionName, reducer: transformation, type };
   }
-
-  return Object.assign({}, transformation, { actionName, type });
+  return defaults({}, transformation, { actionName, type });
 }
 
 export default function createModule({
@@ -43,8 +41,7 @@ export default function createModule({
   const actions = {};
   const constants = {};
   const reducerMap = {};
-
-  parsedTransformations.forEach(
+  forEach(parsedTransformations,
     ({ actionName, middleware = [], namespaced = true, reducer, type }) => {
       const finalMiddleware = [parsePayloadErrors, ...middleware, ...moduleMiddleware];
       const constant = namespaced ? `${name}/${type}` : type;
@@ -52,13 +49,11 @@ export default function createModule({
       constants[actionName] = constant;
       reducerMap[constant] = reducer;
     });
-
   function finalReducer(state = initialState, action) {
     const localReducer = reducerMap[action.type] || defaultReducer;
     return [localReducer, ...composes]
       .reduce((newState, currentReducer) => currentReducer(newState, action), state);
   }
-
   return {
     actions,
     constants,
