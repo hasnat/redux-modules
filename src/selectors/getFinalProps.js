@@ -1,6 +1,6 @@
-﻿import mergeProps from './mergeProps';
+import mergeProps from './mergeProps';
 
-export const createFinalPropsSelector = ({ getState, getDispatch }) => {
+export default function createFinalPropsSelector({ getState, getDispatch }) {
   let lastOwn;
   let lastState;
   let lastMerged;
@@ -20,6 +20,4 @@ export const createFinalPropsSelector = ({ getState, getDispatch }) => {
     }
     return lastMerged;
   };
-};
-
-export default createFinalPropsSelector;
+}

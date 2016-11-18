@@ -3,7 +3,7 @@ import { connectModule } from '../../../src/index';
 import TodoList from '../components/TodoList';
 
 const Connected = connectModule(
-  todoModule
+  todoModule,
 )(TodoList);
 
 export default Connected;

@@ -1,10 +1,11 @@
 import React from 'react';
+import jsdom from 'jsdom';
 import { createStore } from 'redux';
 import { expect, should } from 'chai';
-import { ModuleProvider, connectModule, createModule } from '../../src';
 import { mount } from 'enzyme';
 
-import jsdom from 'jsdom';
+import { ModuleProvider, connectModule, createModule } from '../../src';
+
 const doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
 const win = doc.defaultView;
 
@@ -36,7 +37,7 @@ describe('ConnectedComponent', () => {
     const wrapper = mount(
       <ModuleProvider store={store}>
         <Multi />
-      </ModuleProvider>
+      </ModuleProvider>,
     );
 
     const child = wrapper.findWhere(node => node.type() === Component);
@@ -44,7 +45,10 @@ describe('ConnectedComponent', () => {
     const actions = child.props().actions;
 
     it('should pass selector props', () => {
-      expect(props).to.contain({ mock1: 0, mock2: 0 });
+      expect(props).to.contain({
+        mock1: 0,
+        mock2: 0,
+      });
     });
 
     it('should pass namespaced dispatched actions', () => {
@@ -64,7 +68,7 @@ describe('ConnectedComponent', () => {
     const wrapper = mount(
       <ModuleProvider store={store}>
         <Multi />
-      </ModuleProvider>
+      </ModuleProvider>,
     );
 
     const child = wrapper.findWhere(node => node.type() === Component);

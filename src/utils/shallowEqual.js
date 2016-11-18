@@ -1,6 +1,6 @@
-﻿const hasOwn = Object.prototype.hasOwnProperty;
+const hasOwn = Object.prototype.hasOwnProperty;
 
-export const shallowEqual = (objA, objB) => {
+export default function shallowEqual(objA, objB) {
   if (objA === objB) {
     return true;
   }
@@ -10,13 +10,11 @@ export const shallowEqual = (objA, objB) => {
   if (lengthA !== keysB.length) {
     return false;
   }
-  for (let i = 0; i < lengthA; ++i) {
+  for (let i = 0; i < lengthA; i += 1) {
     const key = keysA[i];
     if (!hasOwn.call(objB, key) || objA[key] !== objB[key]) {
       return false;
     }
   }
   return true;
-};
-
-export default shallowEqual;
+}

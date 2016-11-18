@@ -8,7 +8,7 @@ import storeShape from '../utils/storeShape';
 
 import createFinalPropsSelector from '../selectors/getFinalProps';
 
-export const createMapOrMapFactoryProxy = mapToProps => {
+export const createMapOrMapFactoryProxy = (mapToProps) => {
   let map;
   const firstRun = (storePart, props) => {
     const result = mapToProps(storePart, props);
@@ -25,7 +25,7 @@ export const createMapOrMapFactoryProxy = mapToProps => {
   return proxy;
 };
 
-export const createGetState = mapStateToProps => {
+export const createGetState = (mapStateToProps) => {
   const map = createMapOrMapFactoryProxy(mapStateToProps);
   const memoizeMapResult = memoizeProps();
   let lastState;
@@ -43,11 +43,12 @@ export const createGetState = mapStateToProps => {
   };
 };
 
-export const selectorFactory = ({ dispatch, mapDispatchToProps, mapStateToProps }) =>
-  createFinalPropsSelector({
-    getState: createGetState(mapStateToProps),
+export function selectorFactory({ dispatch, mapDispatchToProps, mapStateToProps }) {
+  return createFinalPropsSelector({
     getDispatch: props => mapDispatchToProps(dispatch, props),
+    getState: createGetState(mapStateToProps),
   });
+}
 
 export const createMapDispatchToProps = modules => (dispatch, ownProps) => {
   const props = {};
@@ -56,12 +57,14 @@ export const createMapDispatchToProps = modules => (dispatch, ownProps) => {
   if (modules.length === 1) {
     props.actions = bindActionCreators(
       modules[0].actions,
-      dispatchFunc
+      dispatchFunc,
     );
   } else {
-    for (let i = 0; i < modules.length; ++i) {
+    for (let i = 0; i < modules.length; i += 1) {
       const { actions, name } = modules[i];
-      if (!props.actions) { props.actions = {}; }
+      if (!props.actions) {
+        props.actions = {};
+      }
       props.actions[name] = bindActionCreators(actions, dispatchFunc);
     }
   }
@@ -69,19 +72,20 @@ export const createMapDispatchToProps = modules => (dispatch, ownProps) => {
 };
 
 let hotReloadingVersion = 0;
-export const connectModules = (mapStateToProps, modules) => {
-  const version = ++hotReloadingVersion;
+export default function connectModules(mapStateToProps, modules) {
+  hotReloadingVersion += 1;
+  const version = hotReloadingVersion;
   const mapDispatchToProps = createMapDispatchToProps(modules);
 
-  return WrappedComponent => {
+  return (WrappedComponent) => {
     class Connect extends Component {
-      static contextTypes = {
+      static contextTypes ={
         registerModule: PropTypes.func,
         store: storeShape.isRequired,
         storeSubscription: PropTypes.instanceOf(Subscription),
       };
 
-      static childContextTypes = {
+      static childContextTypes ={
         storeSubscription: PropTypes.instanceOf(Subscription).isRequired,
       };
 
@@ -102,7 +106,9 @@ export const connectModules = (mapStateToProps, modules) => {
       }
 
       getChildContext() {
-        return { storeSubscription: this.subscription };
+        return {
+          storeSubscription: this.subscription,
+        };
       }
 
       componentDidMount() {
@@ -119,7 +125,9 @@ export const connectModules = (mapStateToProps, modules) => {
 
       componentWillUnmount() {
         this.subscription.tryUnsubscribe();
-        this.subscription = { isSubscribed: () => false };
+        this.subscription = {
+          isSubscribed: () => false,
+        };
         this.store = null;
         this.parentSub = null;
         this.selector = () => this.lastRenderedProps;
@@ -137,7 +145,7 @@ export const connectModules = (mapStateToProps, modules) => {
         const memoizeOwn = memoizeProps();
         const memoizeFinal = memoizeProps();
 
-        this.selector = ownProps => {
+        this.selector = (ownProps) => {
           const state = this.store.getState();
           const props = memoizeOwn(ownProps);
           return memoizeFinal(sourceSelector(state, props));
@@ -145,7 +153,7 @@ export const connectModules = (mapStateToProps, modules) => {
       }
 
       initSubscription() {
-        const onStoreStateChange = notifyNestedSubs => {
+        const onStoreStateChange = (notifyNestedSubs) => {
           if (this.shouldComponentUpdate(this.props)) {
             this.setState({}, notifyNestedSubs);
           } else {
@@ -185,6 +193,4 @@ export const connectModules = (mapStateToProps, modules) => {
 
     return hoistStatics(Connect, WrappedComponent);
   };
-};
-
-export default connectModules;
+}

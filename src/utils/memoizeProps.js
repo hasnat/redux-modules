@@ -1,9 +1,9 @@
-﻿import shallowEqual from './shallowEqual';
+import shallowEqual from './shallowEqual';
 
-export const memoizeProps = () => {
+export default function memoizeProps() {
   let lastProps;
   let result;
-  return nextProps => {
+  return (nextProps) => {
     if (lastProps !== nextProps) {
       if (!lastProps || !shallowEqual(lastProps, nextProps)) {
         result = nextProps;
@@ -12,6 +12,4 @@ export const memoizeProps = () => {
     }
     return result;
   };
-};
-
-export default memoizeProps;
+}

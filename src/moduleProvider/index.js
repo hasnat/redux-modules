@@ -1,4 +1,4 @@
-﻿import { Children, Component, PropTypes } from 'react';
+import { Children, Component, PropTypes } from 'react';
 import { combineReducers } from 'redux';
 
 import registerModule from './registerModule';
@@ -9,11 +9,12 @@ export default class ModuleProvider extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     combineReducers: PropTypes.func,
+    // eslint-disable-next-line react/forbid-prop-types
     staticReducers: PropTypes.object,
     store: storeShape.isRequired,
   };
 
-  static childContextTypes = {
+  static childContextTypes ={
     registerModule: PropTypes.func.isRequired,
     store: storeShape.isRequired,
   };

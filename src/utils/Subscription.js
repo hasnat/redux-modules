@@ -1,4 +1,4 @@
-﻿export default class Subscription {
+export default class Subscription {
   constructor(store, parentSub, onStateChange) {
     this.subscribe = parentSub
       ? parentSub.addNestedSub.bind(parentSub)
@@ -14,8 +14,8 @@
 
   addNestedSub(listener) {
     this.trySubscribe();
-
-    const id = ++this.lastNestedSubId;
+    this.lastNestedSubId += 1;
+    const id = this.lastNestedSubId;
     this.nestedSubs[id] = listener;
     return () => {
       if (this.nestedSubs[id]) {
@@ -30,7 +30,7 @@
 
   notifyNestedSubs() {
     const keys = Object.keys(this.nestedSubs);
-    for (let i = 0; i < keys.length; ++i) {
+    for (let i = 0; i < keys.length; i += 1) {
       this.nestedSubs[keys[i]]();
     }
   }
