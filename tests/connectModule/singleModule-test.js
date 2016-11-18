@@ -59,8 +59,7 @@ describe('ConnectedComponent', () => {
         <div>
           <Single />
         </div>
-      </ModuleProvider>,
-    );
+      </ModuleProvider>);
     const child = wrapper.findWhere(node => node.type() === Component);
 
     it('should only pass dispatched actions', () => {
