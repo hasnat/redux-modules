@@ -5,7 +5,7 @@ import createRegisterModule from './createRegisterModule';
 import storeShape from '../utils/storeShape';
 
 export default class ModuleProvider extends Component {
-  static propTypes ={
+  static propTypes = {
     children: PropTypes.element.isRequired,
     combineReducers: PropTypes.func,
     // eslint-disable-next-line react/forbid-prop-types
@@ -13,7 +13,7 @@ export default class ModuleProvider extends Component {
     store: storeShape.isRequired,
   };
 
-  static childContextTypes ={
+  static childContextTypes = {
     registerModule: PropTypes.func.isRequired,
     store: storeShape.isRequired,
   };

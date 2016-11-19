@@ -15,13 +15,13 @@ export default function connectModules(mapStateToProps, modules) {
   const mapDispatchToProps = createMapDispatchToProps(modules);
   return (WrappedComponent) => {
     class Connect extends Component {
-      static contextTypes ={
+      static contextTypes = {
         registerModule: PropTypes.func,
         store: storeShape.isRequired,
         storeSubscription: PropTypes.instanceOf(Subscription),
       };
 
-      static childContextTypes ={
+      static childContextTypes = {
         storeSubscription: PropTypes.instanceOf(Subscription).isRequired,
       };
 
