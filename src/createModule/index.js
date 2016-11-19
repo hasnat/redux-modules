@@ -1,16 +1,14 @@
-import { defaults, forEach, map, snakeCase } from 'lodash';
+import { forEach, get, identity, map, snakeCase } from 'lodash';
 
 import createAction from './createAction';
 import parsePayloadErrors from '../middleware/parsePayloadErrors';
 
-const defaultReducer = state => state;
-
-const applyReducerEnhancer = (reducer, enhancer) => {
+function applyReducerEnhancer(reducer, enhancer) {
   if (typeof enhancer === 'function') {
     return enhancer(reducer);
   }
   return reducer;
-};
+}
 
 function formatType(actionName) {
   return snakeCase(actionName).toUpperCase();
@@ -30,10 +28,11 @@ function parseTransformation(transformation, actionName) {
       type,
     };
   }
-  return defaults({}, transformation, {
+  return {
     actionName,
     type,
-  });
+    ...transformation,
+  };
 }
 
 export default function createModule({ composes = [], initialState, middleware: moduleMiddleware = [], name, reducerEnhancer, selector, transformations }) {
@@ -50,7 +49,7 @@ export default function createModule({ composes = [], initialState, middleware: 
       reducerMap[constant] = reducer;
     });
   function finalReducer(state = initialState, action) {
-    const localReducer = reducerMap[action.type] || defaultReducer;
+    const localReducer = get(reducerMap, action.type, identity);
     return [localReducer, ...composes]
       .reduce((newState, currentReducer) => currentReducer(newState, action), state);
   }
