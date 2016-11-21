@@ -24,6 +24,7 @@ const  { shape, string, number } = PropTypes;
 export default createModule({
   name: 'todos',
   initialState: List(),
+  selector: state => ({ todos: state.get('todos') }),
   transformations: {
     create: {
       middleware: [
@@ -79,13 +80,7 @@ import { connectModule } from 'redux-modules';
 import { Component, PropTypes } from 'react';
 const  { array, func, shape } = PropTypes;
 
-const selector = state => {
-  return {
-    todos: state.get('todos').toJS(),
-  };
-};
-
-@connectModule(selector, todoModule)
+@connectModule(todoModule)
 export default class Todos extends Component {
   static propTypes = {
     todos: array,
