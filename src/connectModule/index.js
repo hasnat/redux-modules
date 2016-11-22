@@ -1,37 +1,30 @@
+import { get, mapValues } from 'lodash';
+
 import connectModules from './connectModules';
+import toObject from '../utils/toObject';
 
-export const createModuleSelector = (modules) => {
+function getSelector(module) {
+  return get(module, 'selector', () => Object.create(null));
+}
+
+function createModuleSelector(modules) {
+  if (!Array.isArray(modules)) {
+    return getSelector(modules);
+  }
   if (modules.length === 1) {
-    return modules[0].selector || (() => ({}));
+    return getSelector(modules[0]);
   }
+  const selectorMap = toObject(modules, 'name', getSelector);
+  return function moduleSelector(state, props) {
+    return mapValues(selectorMap, selector => selector(state, props));
+  };
+}
 
-  const selectors = modules
-    .filter(m => m.selector)
-    .map(
-      ({ selector, name }) => ({
-        selector,
-        name,
-      }),
-  );
-
-  return (state, props) => selectors
-    .reduce((acc, { selector, name }) => ({
-      ...acc,
-      [name]: selector(state, props),
-    }), {});
-};
-
-export const connectModule = (selector, modules) => {
-  let formattedSelector;
-  let formattedModules;
+export default function connectModule(selector, modules) {
   if (typeof modules === 'undefined') {
-    formattedModules = Array.isArray(selector) ? selector : [selector];
-    formattedSelector = createModuleSelector(formattedModules);
-  } else {
-    formattedSelector = selector;
-    formattedModules = Array.isArray(modules) ? modules : [modules];
+    const formattedSelector = createModuleSelector(selector);
+    return connectModule(formattedSelector, selector);
   }
-  return connectModules(formattedSelector, formattedModules);
-};
-
-export default connectModule;
+  const formattedModules = Array.isArray(modules) ? modules : [modules];
+  return connectModules(selector, formattedModules);
+}
