@@ -5,35 +5,45 @@ import module from './module';
 import logo from './logo.svg';
 import './styles.css';
 
+const getDirection = direction =>
+  (direction === 'horizontal') ? 'row' : 'column';
+
 class ChatBox extends Component {
   render() {
+    const { children, lines, actions, currentSplitDirection } = this.props;
     return (
-      <div style={{ flex: 1, margin: '20px' }}>
-        {this.props.lines.map(line => (
+      <div style={{
+        flex: 1,
+        margin: '20px',
+        border: '1px solid black',
+      }}>
+        {!children.length && lines.map(line => (
           <div>{line}</div>
         ))}
         >
 
-        {this.props.children.map((chatBox, id) => (
-          <ChatBox
-            key={id}
-            {...chatBox}
-            actions={{
-              ...bindActionCreators(
-                module.actions,
-                a => this.props.actions.updateChild(a, { id })
-              )
-            }}
-          />
-        ))}
+        <div style={{flexDirection: getDirection(currentSplitDirection)}}>
+          {children.map((chatBox, id) => (
+            <ChatBox
+              key={id}
+              {...chatBox}
+              actions={{
+                ...bindActionCreators(
+                  module.actions,
+                  a => actions.updateChild(a, { id })
+                )
+              }}
+            />
+          ))}
+        </div>
         <div>
-          <button onClick={() => this.props.actions.addLine('Hello')}>
+          <button onClick={() => actions.addLine('Hello')}>
             New Line
           </button>
-          <button onClick={() => this.props.actions.splitRequest('horizontal')}>
+          <button onClick={() => actions.splitRequest('horizontal')}>
             Split Horizontal
           </button>
-          <button onClick={() => this.props.actions.splitRequest('vertical')}>
+          <button onClick={() => actions.splitRequest('vertical')}>
             Split Vertical
           </button>
         </div>
