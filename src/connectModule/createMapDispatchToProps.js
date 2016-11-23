@@ -12,9 +12,11 @@ export default function createMapDispatchToProps(modules) {
     if (modules.length === 1) {
       return {
         actions: bindDispatch(modules[0]),
+        dispatch,
       };
     }
     return {
+      dispatch,
       actions: toObject(modules, 'name', bindDispatch),
     };
   };
