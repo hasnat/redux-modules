@@ -20,9 +20,10 @@ class ChatBox extends Component {
         position: 'relative',
       }}>
         {!children.length && lines.map(line => (
-          <div>{line}</div>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            {line}
+          </div>
         ))}
-        >
 
         <div style={{
           display: 'flex',
