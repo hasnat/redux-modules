@@ -18,6 +18,7 @@ const module = createModule({
   },
   selector: state => state.chatBox,
   composes: [ liftState ],
+  middleware: [ a => { console.log(a); return a }],
   transformations: {
     init: state => state,
 
@@ -45,24 +46,26 @@ const module = createModule({
       const childToUpdate = children[meta.id];
       const [updatedChild, neff] = module.reducer(childToUpdate, payload);
 
-      let effects;
+      let effects = Effects.none();
       const { action: neffAction } = neff.valueOf();
 
-      if (neffAction && neffAction.type !== module.constants.splitRequest) {
-        return {
-          ...state,
-          children: replaceAtIndex(meta.id, updatedChild, children)
-        };
-      }
+      if (neffAction) {
+        if (neffAction.type !== module.constants.splitRequest) {
+          return {
+            ...state,
+            children: replaceAtIndex(meta.id, updatedChild, children)
+          };
+        }
 
-      const direction = neffAction.payload.direction;
-      if (direction === state.currentSplitDirection) {
-        effects = Effects.constant(module.actions.addChild);
-      } else {
-        effects = Effects.lift(
-          module.actions.split(direction),
-          module.actions.updateChild
-        );
+        const direction = neffAction.payload.direction;
+        if (direction === state.currentSplitDirection) {
+          effects = Effects.constant(module.actions.addChild);
+        } else {
+          effects = Effects.lift(
+            module.actions.split(direction),
+            module.actions.updateChild
+          );
+        }
       }
 
       return loop(
