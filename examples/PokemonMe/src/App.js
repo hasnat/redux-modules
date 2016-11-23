@@ -4,13 +4,17 @@ import { compose, lifecycle } from 'recompose';
 import module from './module';
 import './App.css';
 
-const PokemonMe = ({ actions, activePokemon = {}, ...props }) => (
-  <div>
-    <label>{activePokemon.name}</label>
-    <img src={activePokemon.picture} />
-    <button onClick={actions.fetch}>
-      another one
-    </button>
+const PokemonMe = ({ actions, active = {} }) => (
+  <div className="PokemonMe">
+    <div className="PokemonMe-menu">
+      <label>{active.name}</label>
+      <button onClick={actions.fetch}>
+        another one
+      </button>
+    </div>
+    <div className="PokemonMe-image">
+      <img src={active.picture} />
+    </div>
   </div>
 );
 
@@ -18,7 +22,7 @@ PokemonMe.PropTypes = {
   actions: PropTypes.shape({
     fetch: PropTypes.func.isRequired,
   }),
-  activePokemon: PropTypes.shape({
+  active: PropTypes.shape({
     name: PropTypes.string,
     number: PropTypes.number,
     picture: PropTypes.string,
