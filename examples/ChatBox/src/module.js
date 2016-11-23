@@ -22,8 +22,8 @@ const module = createModule({
   transformations: {
     init: state => state,
 
-    addChild: (state, { payload: direction }) => {
-      const [newChild, neff] = module.reducer({ direction }, module.actions.init());
+    addChild: state => {
+      const [newChild, neff] = module.reducer(undefined, module.actions.init());
       return { ...state, children: [ ...state.children, newChild ]};
     },
 
@@ -35,7 +35,11 @@ const module = createModule({
     split: (state, { payload: direction }) => {
       const [child1, neff1] = module.reducer(state, module.actions.init());
       const [child2, neff2] = module.reducer(undefined, module.actions.init());
-      return { ...state, children: [ child1, child2 ] };
+      return {
+        ...state,
+        currentSplitDirection: direction,
+        children: [ child1, child2 ],
+      };
     },
 
     splitRequest: (state, { payload: direction }) => {
@@ -48,15 +52,21 @@ const module = createModule({
 
       let effects = Effects.none();
       const { action: neffAction } = neff.valueOf();
-
+      console.log('neffAction', neffAction);
       if (neffAction) {
         const direction = neffAction.payload.direction;
         if (direction === state.currentSplitDirection) {
-          effects = Effects.constant(module.actions.addChild);
+          console.log('ADDING CHILD');
+          effects = Effects.constant(module.actions.addChild());
         } else {
+          console.log('UPDATE SELF');
+          const neff = Effects.constant(module.actions.split(direction));
           effects = Effects.lift(
-            module.actions.split(direction),
-            module.actions.updateChild
+            neff,
+            a => module.actions.updateChild(
+              a,
+              { id: meta.id }
+            )
           );
         }
       }
