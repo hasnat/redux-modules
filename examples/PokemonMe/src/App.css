@@ -14,4 +14,7 @@
 
 .PokemonMe-image {
   flex: 9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

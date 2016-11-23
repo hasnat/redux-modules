@@ -8,12 +8,14 @@ const PokemonMe = ({ actions, active = {} }) => (
   <div className="PokemonMe">
     <div className="PokemonMe-menu">
       <label>{active.name}</label>
-      <button onClick={actions.fetch}>
-        another one
-      </button>
     </div>
     <div className="PokemonMe-image">
       <img src={active.picture} />
+    </div>
+    <div className="PokemonMe-menu">
+      <button onClick={actions.fetch}>
+        another one
+      </button>
     </div>
   </div>
 );
