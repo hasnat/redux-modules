@@ -13,16 +13,22 @@ class ChatBox extends Component {
     const { children, lines, actions, currentSplitDirection } = this.props;
     return (
       <div style={{
+        display: 'flex',
         flex: 1,
-        margin: '20px',
         border: '1px solid black',
+        height: '100%',
+        position: 'relative',
       }}>
         {!children.length && lines.map(line => (
           <div>{line}</div>
         ))}
         >
 
-        <div style={{flexDirection: getDirection(currentSplitDirection)}}>
+        <div style={{
+          display: 'flex',
+          flex: 10,
+          flexDirection: getDirection(currentSplitDirection),
+        }}>
           {children.map((chatBox, id) => (
             <ChatBox
               key={id}
@@ -36,7 +42,7 @@ class ChatBox extends Component {
             />
           ))}
         </div>
-        <div>
+        <div style={{position: 'absolute', left: 0, top: 0}}>
           <button onClick={() => actions.addLine('Hello')}>
             New Line
           </button>

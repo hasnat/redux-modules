@@ -10,7 +10,9 @@ const store = createStore(s => s, {}, install());
 
 ReactDOM.render(
   <ModuleProvider store={store} combineReducers={combineReducers}>
-    <App />
+    <div style={{display: 'flex', width: '100%', height: '100%'}}>
+      <App />
+    </div>
   </ModuleProvider>,
   document.getElementById('root')
 );

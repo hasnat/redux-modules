@@ -43,33 +43,19 @@ const module = createModule({
     },
 
     splitRequest: (state, { payload: direction }) => {
-      return loop(state, Effects.constant(module.actions.split(direction)));
+      if (direction !== state.currentSplitDirection) {
+        return loop(state, Effects.constant(module.actions.split(direction)));
+      }
+      return loop(state, Effects.constant(module.actions.addChild()));
     },
 
     updateChild: ({children, ...state}, { payload, meta }) => {
       const childToUpdate = children[meta.id];
       const [updatedChild, neff] = module.reducer(childToUpdate, payload);
-
-      let effects = Effects.none();
-      const { action: neffAction } = neff.valueOf();
-      console.log('neffAction', neffAction);
-      if (neffAction) {
-        const direction = neffAction.payload.direction;
-        if (direction === state.currentSplitDirection) {
-          console.log('ADDING CHILD');
-          effects = Effects.constant(module.actions.addChild());
-        } else {
-          console.log('UPDATE SELF');
-          const neff = Effects.constant(module.actions.split(direction));
-          effects = Effects.lift(
-            neff,
-            a => module.actions.updateChild(
-              a,
-              { id: meta.id }
-            )
-          );
-        }
-      }
+      const effects = Effects.lift(
+        neff,
+        a => module.actions.updateChild(a, { id: meta.id })
+      );
 
       return loop(
         { ...state, children: replaceAtIndex(meta.id, updatedChild, children)},
