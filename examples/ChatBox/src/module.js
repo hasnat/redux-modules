@@ -9,14 +9,14 @@ const replaceAtIndex = (index, object, array) =>
   );
 
 const module = createModule({
-  name: 'ChatBox',
+  name: 'chatBox',
   initialState: {
     name: '',
     lines: [],
     children: [],
     currentSplitDirection: null,
   },
-  selector: state => state,
+  selector: state => state.chatBox,
   composes: [ liftState ],
   transformations: {
     init: state => state,
