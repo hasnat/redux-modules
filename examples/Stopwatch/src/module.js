@@ -12,10 +12,10 @@ const module = createModule({
   middleware: [a => { console.log(a); return a; }],
   transformations: {
     init: state => state,
-    start: state => ({ ...state, running: true, time: state.time + 1 }),
+    start: state => ({ ...state, running: true }),
+    tick: state => ({ ...state, time: state.time + 1 }),
     stop: state => ({ ...state, running: false }),
-    setTime: (state, { payload: time }) => ({ ...state, time }),
-    reset: state => ({ ...state, time: 0 }),
+    reset: state => ({ ...state, time: 0, running: false }),
   },
 });
 

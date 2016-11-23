@@ -6,15 +6,24 @@ import module from './module';
 const { start, stop } = module.actions;
 
 class Stopwatch extends Component {
+  constructor(props) {
+    super(props);
+    this.interval = setInterval(() => this.tick(), 1000);
+  }
+
+  tick() {
+    this.props.running && this.props.actions.tick(this.props.time + 1);
+  }
+
   render() {
-    const { dispatch, time } = this.props;
+    const { time, actions } = this.props;
     return (
       <div className="App">
-        StopWatch
         <div> {time} </div>
         <div>
-          <button onClick={dispatch(start())}>Start</button>
-          <button onClick={dispatch(stop())}>Stop</button>
+          <button onClick={actions.start}>Start</button>
+          <button onClick={actions.stop}>Stop</button>
+          <button onClick={actions.reset}>Reset</button>
         </div>
       </div>
     );
