@@ -12,7 +12,7 @@ class Stopwatch extends Component {
   }
 
   tick() {
-    this.props.running && this.props.actions.tick(this.props.time + 1);
+    this.props.running && this.props.actions.tick();
   }
 
   render() {
