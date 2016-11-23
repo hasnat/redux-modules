@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connectModule } from 'redux-modules';
+import module from './module';
 import logo from './logo.svg';
 import './styles.css';
 
@@ -12,4 +14,4 @@ class ChatBox extends Component {
   }
 }
 
-export default ChatBox;
+export default connectModule(module)(ChatBox);
