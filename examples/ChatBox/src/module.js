@@ -50,13 +50,6 @@ const module = createModule({
       const { action: neffAction } = neff.valueOf();
 
       if (neffAction) {
-        if (neffAction.type !== module.constants.splitRequest) {
-          return {
-            ...state,
-            children: replaceAtIndex(meta.id, updatedChild, children)
-          };
-        }
-
         const direction = neffAction.payload.direction;
         if (direction === state.currentSplitDirection) {
           effects = Effects.constant(module.actions.addChild);
@@ -69,7 +62,7 @@ const module = createModule({
       }
 
       return loop(
-        { ...state, children: []},
+        { ...state, children: replaceAtIndex(meta.id, updatedChild, children)},
         effects,
       );
     }
