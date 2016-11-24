@@ -73,7 +73,7 @@ export default function connectModules(mapStateToProps, modules) {
         this.lastRenderedProps = null;
         const sourceSelector = createFinalPropsSelector(
           createMapStateToProps(mapStateToProps),
-          props => mapDispatchToProps(this.store.dispatch, props));
+          (dispatch, props) => mapDispatchToProps(this.store.dispatch, props));
 
         const memoizeOwn = memoizeProps();
         const memoizeFinal = memoizeProps();
