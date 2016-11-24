@@ -1,5 +1,6 @@
 import { createModule } from 'redux-modules';
 import { loop, Effects, liftState } from 'redux-loop';
+import { module as PokemonModule } from '../../PokemonMe/src';
 
 const replaceAtIndex = (index, object, array) =>
   [].concat(
@@ -15,6 +16,7 @@ const module = createModule({
     lines: [],
     childBoxes: [],
     widget: 'default',
+    widgetState: {},
     currentSplitDirection: null,
   },
   selector: state => state.uberBox,
