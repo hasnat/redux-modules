@@ -4,6 +4,11 @@ import { connectModule } from 'redux-modules';
 import module from './module';
 import './styles.css';
 
+import {
+  Stopwatch,
+  module as stopwatchModule,
+} from 'Stopwatch/src/module.js';
+
 const getOrientation = orientation =>
   (orientation === 'horizontal' ? 'row' : 'column');
 
@@ -21,6 +26,14 @@ class Dashboard extends Component {
           position: 'relative',
         }}
       >
+      <Stopwatch
+        actions={{
+          ...bindActionCreators(
+            stopwatchModule.actions,
+            a => actions.updateContent(a)
+          )
+        }}
+      />
         <div
           style={{
             display: 'flex',

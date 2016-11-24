@@ -1,5 +1,6 @@
 import { createModule } from 'redux-modules';
 import { loop, liftState, Effects } from 'redux-loop';
+import { module as stopwatchModule } from 'Stopwatch';
 
 const replaceAtIndex = (index, object, array) =>
   [].concat(
@@ -38,7 +39,26 @@ const module = createModule({
         neff,
       );
     },
-    setContent: state => state,
+    setContent: (state, { payload }) => {
+      const [content, effect] = stopwatchModule.reducer(
+        payload,
+        stopwatchModule.actions.init(),
+      );
+      return loop(
+        { ...state, content },
+        Effects.lift(effect, a => module.actions.updateContent(a)),
+      );
+    },
+    updateContent: (state, { payload: action }) => {
+      const [content, effect] = stopwatchModule.reducer(
+        state.content,
+        action,
+      );
+      return loop(
+        { ...state, content },
+        Effects.lift(effect, a => module.actions.updateContent(a)),
+      );
+    },
     split: (state, { payload: orientation }) => {
       const reduceChild = [module.reducer, module.actions.init];
       const childrenModels = [[state], [undefined]];
