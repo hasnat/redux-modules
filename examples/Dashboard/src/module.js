@@ -48,16 +48,6 @@ const module = createModule({
         neff,
       );
     },
-    setContent: (state, { payload }) => {
-      const [content, effect] = stopwatchModule.reducer(
-        payload,
-        stopwatchModule.actions.init(),
-      );
-      return loop(
-        { ...state, content },
-        Effects.lift(effect, a => module.actions.updateContent(a)),
-      );
-    },
     updateContent: (state, { payload: action }) => {
       const [content, effect] = childModules[state.contentType].reducer(
         state.content,
