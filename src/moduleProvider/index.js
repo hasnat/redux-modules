@@ -1,6 +1,7 @@
 import { Children, Component, PropTypes } from 'react';
+import { combineReducers } from 'redux';
 
-import createRegisterModule from './createRegisterModule';
+import registerModule from './registerModule';
 
 import storeShape from '../utils/storeShape';
 
@@ -13,7 +14,7 @@ export default class ModuleProvider extends Component {
     store: storeShape.isRequired,
   };
 
-  static childContextTypes = {
+  static childContextTypes ={
     registerModule: PropTypes.func.isRequired,
     store: storeShape.isRequired,
   };
@@ -21,10 +22,10 @@ export default class ModuleProvider extends Component {
   constructor(props, context) {
     super(props, context);
     this.store = props.store;
-    this.registerModule = createRegisterModule(props.store, props.combineReducers);
-    if (typeof props.staticReducers !== 'undefined') {
-      this.registerModule(props.staticReducers);
-    }
+    this.registerModule = registerModule(
+      props.store,
+      props.combineReducers || combineReducers,
+      props.staticReducers);
   }
 
   getChildContext() {

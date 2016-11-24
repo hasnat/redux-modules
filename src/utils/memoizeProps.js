@@ -1,11 +1,15 @@
-import { isEqual } from 'lodash';
+import shallowEqual from './shallowEqual';
 
 export default function memoizeProps() {
-  let props;
-  return function selectProps(nextProps) {
-    if (!isEqual(props, nextProps)) {
-      props = nextProps;
+  let lastProps;
+  let result;
+  return (nextProps) => {
+    if (lastProps !== nextProps) {
+      if (!lastProps || !shallowEqual(lastProps, nextProps)) {
+        result = nextProps;
+      }
+      lastProps = nextProps;
     }
-    return props;
+    return result;
   };
 }

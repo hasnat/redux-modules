@@ -1,27 +1,91 @@
 import hoistStatics from 'hoist-non-react-statics';
 import { Component, createElement, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 
-import createFinalPropsSelector from './createFinalPropsSelector';
-import createMapDispatchToProps from './createMapDispatchToProps';
-import createMapStateToProps from './createMapStateToProps';
 import memoizeProps from '../utils/memoizeProps';
 import Subscription from '../utils/Subscription';
 import storeShape from '../utils/storeShape';
+
+import createFinalPropsSelector from '../selectors/getFinalProps';
+
+export const createMapOrMapFactoryProxy = (mapToProps) => {
+  let map;
+  const firstRun = (storePart, props) => {
+    const result = mapToProps(storePart, props);
+    if (typeof result === 'function') {
+      map = result;
+      return map(storePart, props);
+    }
+    map = mapToProps;
+    return result;
+  };
+
+  const proxy = (storePart, props) => (map || firstRun)(storePart, props);
+  proxy.dependsOnProps = () => (map || mapToProps).length !== 1;
+  return proxy;
+};
+
+export const createGetState = (mapStateToProps) => {
+  const map = createMapOrMapFactoryProxy(mapStateToProps);
+  const memoizeMapResult = memoizeProps();
+  let lastState;
+  let lastProps;
+  let result;
+
+  return (state, props) => {
+    const nextProps = map.dependsOnProps() ? props : {};
+    if (lastState !== state || lastProps !== nextProps) {
+      result = memoizeMapResult(map(state, nextProps));
+      lastState = state;
+      lastProps = nextProps;
+    }
+    return result;
+  };
+};
+
+export function selectorFactory({ dispatch, mapDispatchToProps, mapStateToProps }) {
+  return createFinalPropsSelector({
+    getDispatch: props => mapDispatchToProps(dispatch, props),
+    getState: createGetState(mapStateToProps),
+  });
+}
+
+export const createMapDispatchToProps = modules => (dispatch, ownProps) => {
+  const props = {};
+  const dispatchFunc = ownProps.dispatch || dispatch;
+
+  if (modules.length === 1) {
+    props.actions = bindActionCreators(
+      modules[0].actions,
+      dispatchFunc,
+    );
+  } else {
+    for (let i = 0; i < modules.length; i += 1) {
+      const { actions, name } = modules[i];
+      if (!props.actions) {
+        props.actions = {};
+      }
+      props.actions[name] = bindActionCreators(actions, dispatchFunc);
+    }
+  }
+  return props;
+};
 
 let hotReloadingVersion = 0;
 export default function connectModules(mapStateToProps, modules) {
   hotReloadingVersion += 1;
   const version = hotReloadingVersion;
   const mapDispatchToProps = createMapDispatchToProps(modules);
+
   return (WrappedComponent) => {
     class Connect extends Component {
-      static contextTypes = {
+      static contextTypes ={
         registerModule: PropTypes.func,
         store: storeShape.isRequired,
         storeSubscription: PropTypes.instanceOf(Subscription),
       };
 
-      static childContextTypes = {
+      static childContextTypes ={
         storeSubscription: PropTypes.instanceOf(Subscription).isRequired,
       };
 
@@ -71,9 +135,12 @@ export default function connectModules(mapStateToProps, modules) {
 
       initSelector() {
         this.lastRenderedProps = null;
-        const sourceSelector = createFinalPropsSelector(
-          createMapStateToProps(mapStateToProps),
-          props => mapDispatchToProps(this.store.dispatch, props));
+
+        const sourceSelector = selectorFactory({
+          mapDispatchToProps,
+          mapStateToProps,
+          dispatch: this.store.dispatch,
+        });
 
         const memoizeOwn = memoizeProps();
         const memoizeFinal = memoizeProps();
@@ -97,7 +164,7 @@ export default function connectModules(mapStateToProps, modules) {
         this.subscription = new Subscription(
           this.store,
           this.parentSub,
-          this::onStoreStateChange);
+          onStoreStateChange.bind(this));
       }
 
       isSubscribed() {
@@ -106,6 +173,7 @@ export default function connectModules(mapStateToProps, modules) {
 
       render() {
         this.lastRenderedProps = this.selector(this.props);
+
         return createElement(WrappedComponent, this.lastRenderedProps);
       }
     }
@@ -115,6 +183,7 @@ export default function connectModules(mapStateToProps, modules) {
         if (this.version !== version) {
           this.version = version;
           this.initSelector();
+
           this.subscription.tryUnsubscribe();
           this.initSubscription();
           this.subscription.trySubscribe();

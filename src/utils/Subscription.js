@@ -1,9 +1,7 @@
-import { forEach, unset } from 'lodash';
-
 export default class Subscription {
   constructor(store, parentSub, onStateChange) {
     this.subscribe = parentSub
-      ? ::parentSub.addNestedSub
+      ? parentSub.addNestedSub.bind(parentSub)
       : store.subscribe;
 
     this.onStateChange = onStateChange;
@@ -11,7 +9,7 @@ export default class Subscription {
     this.unsubscribe = null;
     this.nestedSubs = {};
 
-    this.notifyNestedSubs = ::this.notifyNestedSubs;
+    this.notifyNestedSubs = this.notifyNestedSubs.bind(this);
   }
 
   addNestedSub(listener) {
@@ -19,7 +17,11 @@ export default class Subscription {
     this.lastNestedSubId += 1;
     const id = this.lastNestedSubId;
     this.nestedSubs[id] = listener;
-    return () => unset(this.nestedSubs, id);
+    return () => {
+      if (this.nestedSubs[id]) {
+        delete this.nestedSubs[id];
+      }
+    };
   }
 
   isSubscribed() {
@@ -27,7 +29,10 @@ export default class Subscription {
   }
 
   notifyNestedSubs() {
-    forEach(this.nestedSubs, nestedSub => nestedSub());
+    const keys = Object.keys(this.nestedSubs);
+    for (let i = 0; i < keys.length; i += 1) {
+      this.nestedSubs[keys[i]]();
+    }
   }
 
   trySubscribe() {
@@ -35,7 +40,9 @@ export default class Subscription {
       return;
     }
 
-    this.unsubscribe = this.subscribe(() => this.onStateChange(this.notifyNestedSubs));
+    this.unsubscribe = this.subscribe(() => {
+      this.onStateChange(this.notifyNestedSubs);
+    });
   }
 
   tryUnsubscribe() {
