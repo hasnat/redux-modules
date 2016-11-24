@@ -59,7 +59,7 @@ const module = createModule({
       );
     },
     updateContent: (state, { payload: action }) => {
-      const [content, effect] = stopwatchModule.reducer(
+      const [content, effect] = childModules[state.contentType].reducer(
         state.content,
         action,
       );
