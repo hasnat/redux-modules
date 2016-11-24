@@ -3,7 +3,7 @@ import { loop, liftState, Effects } from 'redux-loop';
 import stopwatchModule from '../../Stopwatch/src/module';
 import pokemonModule from '../../PokemonMe/src/module';
 
-export const randomBool = n => !!Math.round(Math.random());
+export const randomBool = () => !!Math.round(Math.random());
 
 const replaceAtIndex = (index, object, array) =>
   [].concat(
@@ -27,20 +27,21 @@ const childModules = {
   stopwatch: stopwatchModule,
 };
 
+
 const module = createModule({
   name: 'dashboard',
   initialState: {
     name: '',
     content: {},
-    contentType: '',
     children: [],
     orientation: null,
+    contentType: 'stopwatch',
   },
   selector: state => state.dashboard,
   composes: [liftState],
   middleware: [(a) => { console.log(a); return a; }],
   transformations: {
-    init: state => ({...state, contentType: randomBool() ? 'pokemonMe' : 'stopwatch' }),
+    init: state => ({...state, contentType: randomBool() ? 'pokemonMe' : 'stopwatch'}),
     addChild: (state) => {
       const [newChild, neff] = module.reducer(undefined, module.actions.init());
       return loop(
@@ -58,14 +59,14 @@ const module = createModule({
         Effects.lift(effect, a => module.actions.updateContent(a)),
       );
     },
-    updateContent: (state, { payload: action }) => {
-      const [content, effect] = stopwatchModule.reducer(
+    updateContent: ({contentType, ...state}, { payload: action }) => {
+      const [content, effect] = childModules[contentType].reducer(
         state.content,
         action,
       );
 
       return loop(
-        { ...state, content },
+        { ...state, contentType, content },
         Effects.lift(effect, a => module.actions.updateContent(a)),
       );
     },
