@@ -10,12 +10,9 @@ import stopwatchModule from '../../Stopwatch/src/module';
 const getOrientation = orientation =>
   (orientation === 'horizontal' ? 'row' : 'column');
 
-// const ConnectedStopwatch = connectModule(stopwatchModule)(Stopwatch);
-
 class Dashboard extends Component {
   render() {
-    const { children, actions, orientation } = this.props;
-    debugger;
+    const { children, content, actions, orientation } = this.props;
     return (
       <div
         style={{
@@ -26,9 +23,12 @@ class Dashboard extends Component {
           position: 'relative',
         }}
       >
-      <Stopwatch
-        dispatch={this.props.actions.updateContent}
-      />
+        {!children.length &&
+          <Stopwatch
+            {...content}
+            dispatch={this.props.actions.updateContent}
+          />
+        }
         <div
           style={{
             display: 'flex',
@@ -49,7 +49,7 @@ class Dashboard extends Component {
             />
           ))}
         </div>
-        <div style={{ position: 'absolute', left: 0, top: '20px' }}>
+        <div style={{ position: 'absolute', left: 0, top: '40px' }}>
           <button onClick={() => actions.splitRequest('horizontal')}>
             Split Horizontal
           </button>

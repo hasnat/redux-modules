@@ -1,21 +1,20 @@
 import { createModule } from '../../../src';
 import { loop, Effects, liftState } from 'redux-loop';
 
+const initialState = {
+  running: false,
+  time: 0,
+};
+
 const module = createModule({
   name: 'stopwatch',
-  initialState: {
-    running: false,
-    time: 0,
-  },
+  initialState,
   selector: state => state.stopwatch,
   composes: [liftState],
   middleware: [a => { console.log(a); return a; }],
   transformations: {
-    init: state => state,
-    start: state => {
-      debugger;
-      return ({ ...state, running: true });
-    },
+    init: state => ({ ...initialState, ...state }),
+    start: state => ({ ...state, running: true }),
     tick: state => ({ ...state, time: state.time + 1 }),
     stop: state => ({ ...state, running: false }),
     reset: state => ({ ...state, time: 0, running: false }),

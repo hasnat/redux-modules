@@ -8,8 +8,8 @@ const { start, stop } = module.actions;
 class Stopwatch extends React.Component {
   constructor(props) {
     super(props);
-    debugger;
     this.interval = setInterval(() => this.tick(), 1000);
+    this.props.actions.init();
   }
 
   tick() {
@@ -22,7 +22,7 @@ class Stopwatch extends React.Component {
       <div className="App">
         <div> {time} </div>
         <div>
-          <button onClick={() => { debugger; actions.start(); }}>Start</button>
+          <button onClick={actions.start}>Start</button>
           <button onClick={actions.stop}>Stop</button>
           <button onClick={actions.reset}>Reset</button>
         </div>

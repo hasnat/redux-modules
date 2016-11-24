@@ -23,7 +23,7 @@ const module = createModule({
   name: 'dashboard',
   initialState: {
     name: '',
-    content: [],
+    content: {},
     children: [],
     orientation: null,
   },
