@@ -1,4 +1,4 @@
-import { createModule } from 'redux-modules';
+import { createModule } from '../../../src';
 import { loop, Effects as Ef, liftState } from 'redux-loop';
 import {
   decoratePayload,

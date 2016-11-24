@@ -5,14 +5,25 @@ import module from './module';
 import './styles.css';
 
 import Stopwatch from '../../Stopwatch/src/App';
+import PokemonMe from '../../PokemonMe/src/App';
 import stopwatchModule from '../../Stopwatch/src/module';
 
 const getOrientation = orientation =>
   (orientation === 'horizontal' ? 'row' : 'column');
 
+const components = {
+  stopwatch: Stopwatch,
+  pokemonMe: PokemonMe,
+};
+const getComponent = (contentType) => {
+  return components[contentType] || (() => <div>None</div>);
+}
+
 class Dashboard extends Component {
+
   render() {
-    const { children, content, actions, orientation } = this.props;
+    const { children, content, actions, orientation, contentType } = this.props;
+    const ContentComponent = getComponent(contentType);
     return (
       <div
         style={{
@@ -24,7 +35,7 @@ class Dashboard extends Component {
         }}
       >
         {!children.length &&
-          <Stopwatch
+          <ContentComponent
             {...content}
             dispatch={this.props.actions.updateContent}
           />

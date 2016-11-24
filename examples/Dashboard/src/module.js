@@ -1,6 +1,9 @@
 import { createModule } from 'redux-modules';
 import { loop, liftState, Effects } from 'redux-loop';
 import stopwatchModule from '../../Stopwatch/src/module';
+import pokemonModule from '../../PokemonMe/src/module';
+
+export const randomBool = n => !!Math.round(Math.random());
 
 const replaceAtIndex = (index, object, array) =>
   [].concat(
@@ -19,11 +22,17 @@ const composeLoops = (composition, models) =>
     ];
   }, [[], []]);
 
+const childModules = {
+  pokemonMe: pokemonModule,
+  stopwatch: stopwatchModule,
+};
+
 const module = createModule({
   name: 'dashboard',
   initialState: {
     name: '',
     content: {},
+    contentType: '',
     children: [],
     orientation: null,
   },
@@ -31,7 +40,7 @@ const module = createModule({
   composes: [liftState],
   middleware: [(a) => { console.log(a); return a; }],
   transformations: {
-    init: state => state,
+    init: state => ({...state, contentType: randomBool() ? 'pokemonMe' : 'stopwatch' }),
     addChild: (state) => {
       const [newChild, neff] = module.reducer(undefined, module.actions.init());
       return loop(

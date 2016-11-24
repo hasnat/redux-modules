@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { connectModule } from 'redux-modules';
+import { connectModule } from '../../../src';
 import { compose, lifecycle } from 'recompose';
 import module from './module';
 import './App.css';
