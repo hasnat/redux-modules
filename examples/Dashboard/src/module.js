@@ -1,6 +1,6 @@
 import { createModule } from 'redux-modules';
 import { loop, liftState, Effects } from 'redux-loop';
-import { module as stopwatchModule } from 'Stopwatch';
+import stopwatchModule from '../../Stopwatch/src/module';
 
 const replaceAtIndex = (index, object, array) =>
   [].concat(
@@ -54,6 +54,7 @@ const module = createModule({
         state.content,
         action,
       );
+
       return loop(
         { ...state, content },
         Effects.lift(effect, a => module.actions.updateContent(a)),

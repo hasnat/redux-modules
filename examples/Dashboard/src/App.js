@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import { connectModule } from 'redux-modules';
+import { connectModule } from '../../../src';
 import module from './module';
 import './styles.css';
 
-import {
-  Stopwatch,
-  module as stopwatchModule,
-} from 'Stopwatch/src/module.js';
+import Stopwatch from '../../Stopwatch/src/App';
+import stopwatchModule from '../../Stopwatch/src/module';
 
 const getOrientation = orientation =>
   (orientation === 'horizontal' ? 'row' : 'column');
+
+// const ConnectedStopwatch = connectModule(stopwatchModule)(Stopwatch);
 
 class Dashboard extends Component {
   render() {
@@ -27,12 +27,7 @@ class Dashboard extends Component {
         }}
       >
       <Stopwatch
-        actions={{
-          ...bindActionCreators(
-            stopwatchModule.actions,
-            a => actions.updateContent(a)
-          )
-        }}
+        dispatch={this.props.actions.updateContent}
       />
         <div
           style={{
@@ -54,7 +49,7 @@ class Dashboard extends Component {
             />
           ))}
         </div>
-        <div style={{ position: 'absolute', left: 0, top: 0 }}>
+        <div style={{ position: 'absolute', left: 0, top: '20px' }}>
           <button onClick={() => actions.splitRequest('horizontal')}>
             Split Horizontal
           </button>
