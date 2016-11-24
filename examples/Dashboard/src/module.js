@@ -8,7 +8,14 @@ const replaceAtIndex = (index, object, array) =>
     array.slice(index + 1),
   );
 
-debugger;
+const composeLoops = (...funcs) => funcs.reduce((acc, func) => {
+  const [model, effect] = func();
+  return [
+    acc[0].concat([model]),
+    acc[1].concat([effect]),
+  ];
+}, [[], []]);
+
 const module = createModule({
   name: 'dashboard',
   initialState: {
@@ -31,13 +38,15 @@ const module = createModule({
     },
     setContent: state => state,
     split: (state, { payload: orientation }) => {
-      const [child1, neff1] = module.reducer(state, module.actions.init());
-      const [child2, neff2] = module.reducer(undefined, module.actions.init());
-      const children = [child1, child2];
-      const effects = Effects.batch([
-        Effects.lift(neff1, a => module.actions.updateChild(a, { id: 0 })),
-        Effects.lift(neff2, a => module.actions.updateChild(a, { id: 1 })),
-      ]);
+      const [children, childrenEff] = composeLoops(
+        () => module.reducer(state, module.actions.init()),
+        () => module.reducer(undefined, module.actions.init()),
+      );
+      const effects = Effects.batch(
+        childrenEff.map((effect, id) =>
+          Effects.lift(effect, a => module.actions.updateChild(a, { id })),
+        ),
+      );
       return loop(
         { ...state, orientation, children },
         effects,
