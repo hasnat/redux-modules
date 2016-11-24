@@ -1,8 +1,12 @@
-const createAction = (formattedConstant, actionMiddleware = []) =>
-  (payload, meta) => ({
-    ...actionMiddleware.reduce(
-      (acc, func) => func(acc),
-      { payload, meta, type: formattedConstant }),
-  });
+import { flow } from 'lodash';
 
-export default createAction;
+export default function createAction(type, actionMiddleware = []) {
+  const middleware = flow(actionMiddleware);
+  return function actionCreator(payload, meta) {
+    return middleware({
+      meta,
+      payload,
+      type,
+    });
+  };
+}
