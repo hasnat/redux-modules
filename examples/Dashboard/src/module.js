@@ -8,13 +8,15 @@ const replaceAtIndex = (index, object, array) =>
     array.slice(index + 1),
   );
 
-const composeLoops = (...funcs) => funcs.reduce((acc, func) => {
-  const [model, effect] = func();
-  return [
-    acc[0].concat([model]),
-    acc[1].concat([effect]),
-  ];
-}, [[], []]);
+const composeLoops = (composition, models) =>
+  models.reduce((acc, [state, args]) => {
+    const [reducer, action] = composition;
+    const [model, effect] = reducer(state, action(args));
+    return [
+      acc[0].concat([model]),
+      acc[1].concat([effect]),
+    ];
+  }, [[], []]);
 
 const module = createModule({
   name: 'dashboard',
@@ -38,10 +40,10 @@ const module = createModule({
     },
     setContent: state => state,
     split: (state, { payload: orientation }) => {
-      const [children, childrenEff] = composeLoops(
-        () => module.reducer(state, module.actions.init()),
-        () => module.reducer(undefined, module.actions.init()),
-      );
+      const reduceChild = [module.reducer, module.actions.init];
+      const childrenModels = [[state], [undefined]];
+      const [children, childrenEff] = composeLoops(reduceChild, childrenModels);
+
       const effects = Effects.batch(
         childrenEff.map((effect, id) =>
           Effects.lift(effect, a => module.actions.updateChild(a, { id })),
