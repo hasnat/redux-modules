@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "css": "^2.2.1",
+    "postcss": "^5.2.6",
+    "style": "^0.0.3"
+  }
+}
