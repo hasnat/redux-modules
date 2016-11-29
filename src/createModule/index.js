@@ -1,7 +1,6 @@
 import { forEach, get, identity, map, snakeCase } from 'lodash';
 
 import createAction from './createAction';
-import parsePayloadErrors from '../middleware/parsePayloadErrors';
 
 function applyReducerEnhancer(reducer, enhancer) {
   if (typeof enhancer === 'function') {
@@ -42,7 +41,7 @@ export default function createModule({ composes = [], initialState, middleware: 
   const reducerMap = {};
   forEach(parsedTransformations,
     ({ actionName, middleware = [], namespaced = true, reducer, type }) => {
-      const finalMiddleware = [parsePayloadErrors, ...middleware, ...moduleMiddleware];
+      const finalMiddleware = [...middleware, ...moduleMiddleware];
       const constant = namespaced ? `${name}/${type}` : type;
       actions[actionName] = createAction(constant, finalMiddleware);
       constants[actionName] = constant;
