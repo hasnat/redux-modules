@@ -1,3 +1,4 @@
+import { v4 } from 'uuid';
 import { createModule } from '../../../../../src';
 import { loop, liftState, Effects } from 'redux-loop';
 import stopwatchModule from '../Stopwatch/module';
@@ -44,7 +45,7 @@ const module = createModule({
     addChild: (state) => {
       const [newChild, neff] = module.reducer(undefined, module.actions.init());
       return loop(
-        { ...state, children: [...state.children, newChild] },
+        { ...state, children: { ...state.children, [v4()]: newChild } },
         neff,
       );
     },
@@ -70,7 +71,7 @@ const module = createModule({
         ),
       );
       return loop(
-        { ...state, orientation, children },
+        { ...state, orientation, children: children.reduce((acc, child) => ({ ...acc, [v4()]: child }), {}) },
         effects,
       );
     },
