@@ -20,6 +20,9 @@ const getComponent = (contentType) => {
 }
 
 class Dashboard extends Component {
+  componentDidMount() {
+    this.props.actions.init();
+  }
   render() {
     const { children, content, actions, orientation, contentType } = this.props;
     const ContentComponent = getComponent(contentType);
