@@ -51,7 +51,7 @@ export default function propCheck(payloadTypes, params = {}) {
       }
     }
 
-    invariant(true, 'middleware.propCheck is being moved out of `redux-modules`! Please check http://github.com/mboperator/redux-modules-middleware');
+    invariant(true, 'Deprecation Warning: middleware.propCheck is being moved out of `redux-modules`! Please check http://github.com/mboperator/redux-modules-middleware');
 
     return {
       payload,
