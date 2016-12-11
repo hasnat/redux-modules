@@ -1,10 +1,10 @@
 # redux-modules [![npm version](https://badge.fury.io/js/redux-modules.svg)](https://badge.fury.io/js/redux-modules) [![npm](https://img.shields.io/npm/dt/redux-modules.svg?maxAge=2592000)](https://www.npmjs.com/package/redux-modules) [![Circle CI](https://circleci.com/gh/procore/redux-modules/tree/master.svg?style=svg)](https://circleci.com/gh/procore/redux-modules/tree/master)
 
 `redux-modules` is a refinement on the [Redux module](https://github.com/erikras/ducks-modular-redux) concept with developer experience in mind. It provides:
-- An **intuitive** way to define actions and state transformations
-- The ability transform actions before they reach the reducer via middleware
-- A decorator that handles the mapState and mapDispatch functions
-- A modified Redux Provider that dynamically registers new reducers as connected components are mounted
+- A concise, **intuitive** way to define actions and state transformations
+- Action creator middleware for transforming actions before they're dispatched
+- A decorator that handles mapping state and actions to components
+- A modified Redux Provider that dynamically registers new reducers as connected components mount
 
 ## Getting Started
 ### Install
@@ -97,5 +97,5 @@ That's it! Check the documentation for comparisons with idiomatic Redux, in dept
 - [Motivation](https://mboperator.gitbooks.io/redux-modules/content/docs/motivation.html)
 - [Basic Concepts](https://mboperator.gitbooks.io/redux-modules/content/docs/basics/)
 - Recipes
-- [API Reference](https://mboperator.gitbooks.io/redux-modules/content/docs/api_reference/REAMDE.html)
-- [Tooling](https://mboperator.gitbooks.io/redux-modules/content/docs/tooling/REAMDE.html)
+- [API Reference](https://mboperator.gitbooks.io/redux-modules/content/docs/api_reference/)
+- [Tooling](https://mboperator.gitbooks.io/redux-modules/content/docs/tooling)

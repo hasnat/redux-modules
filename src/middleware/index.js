@@ -1,5 +1,4 @@
-import exportedParsePayloadErrors from './parsePayloadErrors';
 import exportPropCheck from './propCheck';
 
-export const parsePayloadErrors = exportedParsePayloadErrors;
+// eslint-disable-next-line import/prefer-default-export
 export const propCheck = exportPropCheck;
