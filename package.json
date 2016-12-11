@@ -58,6 +58,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.0",
     "immutable": "^3.7.6",
+    "invariant": "^2.2.2",
     "jsdom": "^9.3.0",
     "mocha": "^2.4.5",
     "mocha-sinon": "^1.1.5",

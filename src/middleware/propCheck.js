@@ -1,8 +1,9 @@
+import invariant from 'invariant';
+
 const defaultOnError = (err) => {
-  // eslint-disable-next-line no-console
-  console.error(
-    'Warning: Failed payloadType:',
+  invariant(
     err,
+    `Warning: Failed payloadType: ${err}`,
   );
 };
 
@@ -49,6 +50,8 @@ export default function propCheck(payloadTypes, params = {}) {
         }
       }
     }
+
+    invariant(true, 'middleware.propCheck is being moved out of `redux-modules`! Please check http://github.com/mboperator/redux-modules-middleware');
 
     return {
       payload,
