@@ -1,5 +1,5 @@
 import { createModule } from '../../../src';
-import { loop, Effects, liftState } from 'redux-loop';
+import { liftState } from 'redux-loop';
 
 const initialState = {
   running: false,

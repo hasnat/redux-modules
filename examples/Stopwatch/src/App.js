@@ -3,8 +3,6 @@ import { connectModule } from '../../../src';
 import './App.css';
 import module from './module';
 
-const { start, stop } = module.actions;
-
 class Stopwatch extends React.Component {
   constructor(props) {
     super(props);
