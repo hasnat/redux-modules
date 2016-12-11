@@ -1,11 +1,7 @@
-import { createModule } from '../../../src';
 import { loop, Effects as Ef, liftState } from 'redux-loop';
-import {
-  decoratePayload,
-  checkOrAssignNumber,
-  sanitizeResponse,
-  logAction,
-} from './helpers';
+import { decoratePayload, log } from 'redux-modules-middleware';
+import { createModule } from '../../../src';
+import { checkOrAssignNumber, sanitizeResponse } from './helpers';
 
 const apiBaseUrl = 'http://pokeapi.co/api/v2';
 const pokemonApi = {
@@ -21,14 +17,12 @@ const module = createModule({
   initialState: { active: {}, loading: false, errors: null },
   selector: state => state.pokemonMe,
   composes: [liftState],
+  middleware: [log({})],
   transformations: {
     init: state => state,
 
     fetch: {
-      middleware: [
-        decoratePayload(checkOrAssignNumber),
-        logAction,
-      ],
+      middleware: [decoratePayload(checkOrAssignNumber)],
       reducer: (state, { payload: pokemonNumber }) => loop(
         { ...state, loading: true },
         Ef.promise(
@@ -42,10 +36,7 @@ const module = createModule({
     },
 
     fetchSuccess: {
-      middleware: [
-        decoratePayload(sanitizeResponse),
-        logAction,
-      ],
+      middleware: [decoratePayload(sanitizeResponse)],
       reducer: (state, { payload }) =>
         ({ ...state, active: payload, loading: false }),
     },

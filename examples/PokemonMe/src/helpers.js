@@ -1,15 +1,5 @@
 export const randomInteger = n => Math.floor((Math.random() * n) + 1);
 
-export const decoratePayload = func => ({ payload, ...action }) => ({
-  ...action,
-  payload: func(payload),
-});
-
-export const logAction = (action) => {
-  console.log(action.type, action);
-  return action;
-};
-
 export const checkOrAssignNumber = (number) => {
   let pokemonNumber = number;
 
