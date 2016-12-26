@@ -18,11 +18,11 @@ export default function connectModules(mapStateToProps, modules) {
       static contextTypes = {
         registerModule: PropTypes.func,
         store: storeShape.isRequired,
-        storeSubscription: PropTypes.instanceOf(Subscription),
+        Subscription: PropTypes.instanceOf(Subscription),
       };
 
       static childContextTypes = {
-        storeSubscription: PropTypes.instanceOf(Subscription).isRequired,
+        Subscription: PropTypes.instanceOf(Subscription).isRequired,
       };
 
       constructor(props, context) {
@@ -31,7 +31,7 @@ export default function connectModules(mapStateToProps, modules) {
         this.version = version;
         this.state = {};
         this.store = this.context.store;
-        this.parentSub = this.context.storeSubscription;
+        this.parentSub = this.context.Subscription;
 
         if (context.registerModule) {
           context.registerModule(modules);
@@ -43,7 +43,7 @@ export default function connectModules(mapStateToProps, modules) {
 
       getChildContext() {
         return {
-          storeSubscription: this.subscription,
+          Subscription: this.subscription,
         };
       }
 
