@@ -95,7 +95,7 @@ That's it! Check the documentation for comparisons with idiomatic Redux, in dept
 
 # Documentation
 - [Motivation](https://mboperator.gitbooks.io/redux-modules/content/docs/motivation.html)
-- [Basic Concepts](https://mboperator.gitbooks.io/redux-modules/content/docs/basics/)
+- [Basic Concepts](https://mboperator.gitbooks.io/redux-modules/content/docs/basics/creating-a-module.html)
 - Recipes
 - [API Reference](https://mboperator.gitbooks.io/redux-modules/content/docs/api_reference/)
-- [Tooling](https://mboperator.gitbooks.io/redux-modules/content/docs/tooling)
+- [Tooling](https://mboperator.gitbooks.io/redux-modules/content/docs/tooling/)
