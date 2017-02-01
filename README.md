@@ -39,7 +39,7 @@ export default createModule({
       middleware: [
         middleware.propCheck(number.isRequired),
       ],
-      reducer: (state, { payload }) => {
+      reducer: (state, { payload }) => 
         state.update('collection', todos => todos.delete(payload)),
     },
   },
