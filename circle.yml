@@ -9,7 +9,3 @@ deployment:
     branch: master
     commands:
       - npm publish
-  staging:
-    branch: /^(?!master\/.*).*$/
-    commands:
-      - npm publish --tag $CIRCLE_BRANCH
