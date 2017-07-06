@@ -1,5 +1,6 @@
 import hoistStatics from 'hoist-non-react-statics';
-import { Component, createElement, PropTypes } from 'react';
+import { Component, createElement } from 'react';
+import PropTypes from 'prop-types';
 
 import createFinalPropsSelector from './createFinalPropsSelector';
 import createMapDispatchToProps from './createMapDispatchToProps';

@@ -18,8 +18,7 @@ Here's an example of a simple todo app. First create a module that allows todos 
 import { createModule, middleware } from 'redux-modules';
 import { fromJS, List } from 'immutable';
 
-import { PropTypes } from 'react';
-const  { shape, string, number } = PropTypes;
+import { shape, string, number } from 'prop-types';
 
 export default createModule({
   name: 'todos',
@@ -78,7 +77,7 @@ The last step is to connect the module to the view. This works like a normal Red
 ```js
 import { connectModule } from 'redux-modules';
 import { Component, PropTypes } from 'react';
-const  { array, func, shape } = PropTypes;
+import { array, func, shape } from 'prop-types';
 
 @connectModule(todoModule)
 export default class Todos extends Component {

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const defaultOnError = (err) => {
   // eslint-disable-next-line no-console
   console.error(
@@ -28,26 +30,10 @@ export default function propCheck(payloadTypes, params = {}) {
       };
     }
 
-    if (typeof payloadTypes === 'function') { // If payloadTypes is a propcheck function
-      const result = payloadTypes({
-        payload,
-      }, 'payload', type, 'key') || {};
-      const { message } = result;
-      if (message) {
-        onError(message);
-      }
-    } else { // If payloadTypes is an object (old API)
-      const keys = Object.keys(payloadTypes);
-      for (let i = 0; i < keys.length; i += 1) {
-        const key = keys[i];
-        const propChecker = payloadTypes[key];
-        if (typeof propChecker !== 'undefined') {
-          const { message } = propChecker(payload, key, type, 'prop') || {};
-          if (message) {
-            onError(message);
-          }
-        }
-      }
+    if (typeof payloadTypes === 'function') {
+      PropTypes.checkPropTypes({ payload: payloadTypes }, { payload }, '', type, () => onError(type));
+    } else {
+      PropTypes.checkPropTypes(payloadTypes, payload, '', type, () => onError(type));
     }
 
     return {

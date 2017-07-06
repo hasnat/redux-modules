@@ -64,7 +64,7 @@ describe('propCheck', () => {
 
   propCheckedPayloadCreator(functionSchema, funcSpy)(
     {
-      type: mockTransforms[0].formattedConstant,
+      type: mockTransforms[1].formattedConstant,
       payload,
     },
   );
@@ -90,8 +90,10 @@ describe('propCheck', () => {
     });
 
     it('contains the name of the action', () => {
-      // objectSpy.should.contain('mock/MOCK_ONE');
-      // funcSpy.should.contain('mock/MOCK_ONE');
+      // eslint-disable-next-line no-unused-expressions
+      objectSpy.calledWith('mock/MOCK_ONE').should.be.ok;
+      // eslint-disable-next-line no-unused-expressions
+      funcSpy.calledWith('mock/MOCK_TWO').should.be.ok;
     });
   });
 });

@@ -7,14 +7,14 @@ export default createModule({
   transformations: {
     create: {
       payloadTypes: {
-        description: React.PropTypes.string,
+        description: PropTypes.string,
       },
       reducer: (state, { payload }) =>
         state.push(fromJS(payload)),
     },
     delete: {
       payloadTypes: {
-        index: React.PropTypes.number
+        index: PropTypes.number
       },
       reducer: (state, { payload: { index } }) =>
         state.delete(index),
