@@ -5,6 +5,7 @@ The main API used in `redux-modules` is `createModule`. It expects a single para
 ```js
 import { createModule, middleware } 'redux-modules';
 import { List } from 'immutable';
+import PropTypes from 'prop-types';
 
 export default createModule({
   name: 'todos',
