@@ -33,7 +33,7 @@
     "lodash": "^4.16.4"
   },
   "peerDependencies": {
-    "prop-types": "^0.2.0",
+    "prop-types": "^15.5.0",
     "react": "^15.0.0",
     "redux": "^3.3.1"
   },
